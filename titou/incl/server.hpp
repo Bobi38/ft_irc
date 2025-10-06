@@ -16,6 +16,9 @@ class Server{
         std::string _password;
         bool    _signal;
     public:
+        Server();
+        Server(std::string password, int port);
+        ~Server();
 };
 
 #endif
