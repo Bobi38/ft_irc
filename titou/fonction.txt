@@ -1,0 +1,154 @@
+🔹 socket()
+
+But : Crée un point de communication (socket).
+
+Prototype : int socket(int domain, int type, int protocol);
+
+Exemple : socket(AF_INET, SOCK_STREAM, 0); → crée une socket TCP IPv4.
+
+🔹 close()
+
+But : Ferme un descripteur de fichier ou de socket.
+
+Prototype : int close(int fd);
+
+🔹 setsockopt()
+
+But : Configure des options sur une socket (ex. réutilisation d’adresse).
+
+Prototype : int setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen);
+
+🔹 getsockname()
+
+But : Récupère l'adresse locale associée à une socket.
+
+Prototype : int getsockname(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+
+🔹 getprotobyname()
+
+But : Récupère le numéro de protocole à partir du nom (ex: "tcp" → 6).
+
+Prototype : struct protoent *getprotobyname(const char *name);
+
+🔹 gethostbyname()
+
+But : Récupère l’adresse IP associée à un nom d’hôte (obsolète, remplacé par getaddrinfo).
+
+Prototype : struct hostent *gethostbyname(const char *name);
+
+🔹 getaddrinfo()
+
+But : Récupère des infos sur une adresse réseau (nom, port, etc).
+
+Prototype : int getaddrinfo(const char *node, const char *service, const struct addrinfo *hints, struct addrinfo **res);
+
+🔹 freeaddrinfo()
+
+But : Libère la mémoire allouée par getaddrinfo.
+
+Prototype : void freeaddrinfo(struct addrinfo *res);
+
+🔹 bind()
+
+But : Attache une adresse locale à une socket.
+
+Prototype : int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+
+🔹 connect()
+
+But : Établit une connexion à un serveur (client → serveur).
+
+Prototype : int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+
+🔹 listen()
+
+But : Met la socket en mode "écoute" (serveur).
+
+Prototype : int listen(int sockfd, int backlog);
+
+🔹 accept()
+
+But : Accepte une connexion entrante (serveur).
+
+Prototype : int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+
+🔹 htons() / htonl()
+
+But : Convertit des entiers du format hôte → réseau.
+
+htons() : short → réseau
+
+htonl() : long → réseau
+
+🔹 ntohs() / ntohl()
+
+But : Convertit des entiers du format réseau → hôte.
+
+ntohs() : short
+
+ntohl() : long
+
+🔹 inet_addr()
+
+But : Convertit une adresse IP en chaîne ("127.0.0.1") → format binaire.
+
+Prototype : in_addr_t inet_addr(const char *cp);
+
+🔹 inet_ntoa()
+
+But : Convertit une adresse IP binaire → chaîne lisible.
+
+Prototype : char *inet_ntoa(struct in_addr in);
+
+🔹 send() / recv()
+
+But : Envoie / reçoit des données via une socket.
+
+Prototype :
+
+ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+
+ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+
+⚙️ GESTION DES SIGNALS
+🔹 signal()
+
+But : Définit un gestionnaire pour un signal (SIGINT, etc.).
+
+Prototype : void (*signal(int signum, void (*handler)(int)))(int);
+
+⚠️ : Moins recommandé que sigaction.
+
+🔹 sigaction()
+
+But : Définit un gestionnaire de signal (version plus robuste).
+
+Prototype : int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
+
+📂 FONCTIONS FICHIERS / BAS NIVEAU
+🔹 lseek()
+
+But : Change la position actuelle de lecture/écriture dans un fichier.
+
+Prototype : off_t lseek(int fd, off_t offset, int whence);
+
+🔹 fstat()
+
+But : Récupère des infos sur un fichier à partir de son descripteur.
+
+Prototype : int fstat(int fd, struct stat *statbuf);
+
+🔹 fcntl()
+
+But : Gère les descripteurs (verrouillage, mode non-bloquant, etc.).
+
+Prototype : int fcntl(int fd, int cmd, ...);
+
+🕓 ENTRÉE/SORTIE MULTIPLEXÉE
+🔹 poll()
+
+But : Surveille plusieurs descripteurs pour vérifier leur disponibilité (lecture/écriture).
+
+Prototype : int poll(struct pollfd *fds, nfds_t nfds, int timeout);
+
+Utilisé pour : gérer plusieurs connexions sans thread.
