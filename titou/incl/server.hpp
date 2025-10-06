@@ -16,7 +16,9 @@
 # include <arpa/inet.h> 
 # include <poll.h>
 # include <vector>
-// # include "client.hpp"
+# include "client.hpp"
+
+# define BUFFER_SIZE 500
 
 class Server{
     private:
@@ -24,10 +26,12 @@ class Server{
         std::string _password;
         int _server_fd;
         bool    _signal;
-        // std::vector<Client> _client;
+        std::vector<Client> _client;
+		std::vector<struct pollfd> _fds;
     public:
         Server(const char* password, const char* port);
-        // void addClient();
+        void addClient(int fd);
+		void addFd(int fd);
         void GoServ();
         ~Server();
 	class WrongPort : public std::exception {

@@ -8,8 +8,7 @@ SRCDIR = src
 INCDIR = incl
 OBJDIR = obj
 
-SRCS = main.cpp server.cpp \
-#client.cpp
+SRCS = main.cpp server.cpp client.cpp
 OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.cpp=.o))
 DEPS = $(addprefix $(OBJDIR)/, $(SRCS:.cpp=.d))
 
