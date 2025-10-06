@@ -5,5 +5,14 @@ int main(int ac , char **av){
         std::cout << " WRONG arg number, send only 2 arg" << std::endl;
         return 1;
     }
+
+    try{
+        Server serv(av[1], av[2]);
+        serv.GoServ();
+    }catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    }
+    return 0;
     
 }
