@@ -67,7 +67,5 @@ void Server::GoServ(){
                 }
             }
         }
-
-
     }
 }
