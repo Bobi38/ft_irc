@@ -18,39 +18,40 @@
 # include <vector>
 # include "client.hpp"
 
-# define BUFFER_SIZE 500
+
+# define BUFFER_SIZE 512 // 512 = max RFC1459 et si ca depasse ?
 
 class Server{
-    private:
-        int _port;
-        std::string _password;
-        int _server_fd;
-        bool    _signal;
-        std::vector<Client> _client;
+	private:
+		int _port;
+		std::string _password;
+		int _server_fd;
+		std::vector<Client> _client;
 		std::vector<struct pollfd> _fds;
-    public:
-        Server(const char* password, const char* port);
-        void addClient(int fd);
+		std::vector<std::pair<std::string, std::string> > _chan; // max, nb_user, topic, pwd
+	public:
+		Server(const char* password, const char* port);
+		void addClient(int fd);
 		void addFd(int fd);
-        void GoServ();
-        ~Server();
+		void GoServ();
+		~Server();
 	class WrongPort : public std::exception {
 		public:
-    		virtual const char* what() const throw(){
-        		return "Port is not available!";
-    		}
-    };
+			virtual const char* what() const throw(){
+				return "Port is not available!";
+			}
+	};
 	class ErrorSocket : public std::exception {
 		public:
-    		virtual const char* what() const throw(){
-        		return "Error Socket!";
-    		}
-    };
-	class WromgPassword : public std::exception {
+			virtual const char* what() const throw(){
+				return "Error Socket!";
+			}
+	};
+	class WrongPassword : public std::exception {
 		public:
-    		virtual const char* what() const throw(){
-        		return "Password is not available!";
-    		}
+			virtual const char* what() const throw(){
+				return "Password is not available!";
+			}
 	};
 };
 

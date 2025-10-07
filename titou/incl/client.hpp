@@ -21,9 +21,9 @@ class Client{
     private:
         int _fd;
         // int _adress;
-        // std::vector<std::string> _info;
-        // std::vector<std::string> _channel;
-
+        std::string _nick;
+        std::string _name;
+        std::vector<std::pair<std::string, int> > _chan; // is, operator, ban, invit
     public:
         // Client(std::string name);
         Client(int fd);
@@ -31,7 +31,7 @@ class Client{
         // void write_fd(const std::string& msg);
         // void rmChannel(std::string& channel);
         // void addChannel(std::string& channel);
-        // bool is_Channel(std::string& channel);
+        int is_Channel(std::string& channel);
         ~Client();
 };
 

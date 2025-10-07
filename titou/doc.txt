@@ -11,3 +11,22 @@ type client "operateur"
 
 int socket (int domain, int type, int protocol) = creer un endpoint pour la 
                         communication client server et retourne un FD
+
+NICK
+USER
+PASS
+
+JOIN
+KICK
+MODE
+INVITE
+TOPIC
+PRIVMSG
+
+PART?
+SQUIT?
+QUIT?
+LIST?
+NAMES?
+SERVER?
+OPER?

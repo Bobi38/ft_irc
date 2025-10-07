@@ -1,0 +1,77 @@
+KICK <channel> <user> [<comment>]
+checking :
+Channel existe ? OK : (403 : ERRNOSUCHCHANNEL)
+user must be in channel else (442 -> ERR_NOTONCHANNEL)
+user is operator ? ok : (482 -> ERR_CHANOPRIVSNEEDED)
+user target be in channel else (441 -> ERR_USERNOTINCHANNEL)
+
+Ok -> :operator!user@host KICK #channel victim :raison
+
+attention KICK Multiple
+
+INVITE <nickname> <channel>
+checking :
+Channel existe ? OK : (403 : ERRNOSUCHCHANNEL)
+user must be in channel else (442 -> ERR_NOTONCHANNEL)
+user target exsit ? ok : (401 : ERR_NOSUCHNICK)
+user target be already in channel else (443 -> ERR_USERONCHANNEL)
+if MODE +i, user is operator ? ok : (482 -> ERR_CHANOPRIVSNEEDED)
+
+ok -> 
+for user
+:server 341 inviter alice #private (format RPL_INVITING (341))
+for target :
+:inviter!user@host INVITE alice :#private
+he can temporatly JOIN
+
+
+TOPIC <channel>              # edit topic (1)
+TOPIC <channel> :<new topic> # def new topic (2)
+TOPIC <channel> :            # clean topic (3)
+
+checking :
+Channel existe ? OK : (403 : ERRNOSUCHCHANNEL)
+All user can edit topic () (else option)
+if mode +t, user is operator ? ok : (482 -> ERR_CHANOPRIVSNEEDED)
+
+ok ->
+(1)
+:server 332 client #channel :Le topic actuel (RPL_TOPIC)
+:server 333 client #channel USER TIME (RPL_TOPICWHOTIME) #option
+
+(2)
+if no TOPIC
+:server 331 client #channel :No topic is set
+if modif TOPIC
+:setter!user@host TOPIC #channel :new topic
+
+(3)
+Pas de topic : le channel n'a jamais eu de topic → RPL_NOTOPIC (331)
+Topic vide : le topic a été explicitement vidé → RPL_TOPIC (332) avec chaîne vide
+
+
+MODE <channel>                    # edit MODE
+MODE <channel> <+/-modes> [params]  # set MODE
+
++i = invite only
+    MODE <channel> +i
++t = only operator modif TOPIC
+    MODE #general +t
++k = use key
+    MODE #secret +k PSW123
++o = user -> operateur
+    MODE #chan +o nick
++l = limite max person
+    MODE #chan
+
+403	ERR_NOSUCHCHANNEL	Le channel n'existe pas
+441	ERR_USERNOTINCHANNEL	L'utilisateur cible (+o/-o) n'est pas sur le channel
+442	ERR_NOTONCHANNEL	Tu n'es pas sur ce channel
+461	ERR_NEEDMOREPARAMS	Paramètre manquant (ex: +k sans clé)
+472	ERR_UNKNOWNMODE	Mode inconnu
+482	ERR_CHANOPRIVSNEEDED	Tu n'es pas opérateur
+471	ERR_CHANNELISFULL	Channel plein (lors du JOIN avec +l)
+473	ERR_INVITEONLYCHAN	Channel invite-only (lors du JOIN avec +i)
+475	ERR_BADCHANNELKEY	Mauvaise clé (lors du JOIN avec +k)
+
+key max= 23 char,  no " ", ":", "'", ">32"

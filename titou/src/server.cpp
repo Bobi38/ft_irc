@@ -35,7 +35,7 @@ void Server::addFd(int fd){
 void Server::GoServ(){
     struct sockaddr_in s, c;
     socklen_t client_len = sizeof(c);
-    char buffer[BUFFER_SIZE];
+    char buffer[512];
     s.sin_family = AF_INET;
     s.sin_port = htons(_port);
     s.sin_addr.s_addr = INADDR_ANY;
@@ -46,7 +46,7 @@ void Server::GoServ(){
         throw std::runtime_error("Bind failed");
     if (listen(_server_fd, 100) == -1)
         throw std::runtime_error("listen failed");
-    _signal = true;
+
     std::cout << "server good" << std::endl;
     
     while(1){
