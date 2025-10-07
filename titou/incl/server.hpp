@@ -34,6 +34,7 @@ class Server{
 		void addClient(int fd);
 		void addFd(int fd);
 		void GoServ();
+		bool check_psswd(int fd);
 		~Server();
 	class WrongPort : public std::exception {
 		public:

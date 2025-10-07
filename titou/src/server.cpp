@@ -32,6 +32,32 @@ void Server::addFd(int fd){
 }
 
 
+bool Server::check_psswd(int fd){
+    char buffer[BUFFER_SIZE];
+    std::cout << "test passwd" << std::endl;
+    while (1){
+        int n = recv(fd, buffer, BUFFER_SIZE, 0);
+        buffer[n] = '\0';
+        if (!strncmp(buffer, "PASS", 4))
+            break ;
+        std::cout << "buff = " << buffer << std::endl;
+        memset(buffer, 0, sizeof(buffer));
+    }
+    std::string rest(buffer + 5);
+    for(size_t i = 0; i < rest.size(); i++){
+        if (!isprint(rest[i])){
+            rest.erase(i);
+            i = 0;
+        }
+    }
+    if (rest == _password){
+        std::cout << "good" << std::endl;
+        return true;
+    }
+    return false;
+}
+
+
 void Server::GoServ(){
     struct sockaddr_in s, c;
     socklen_t client_len = sizeof(c);
@@ -53,10 +79,21 @@ void Server::GoServ(){
         if (poll(_fds.data(), _fds.size(), -1) == -1)
             throw std::runtime_error("poll failed");
         if (_fds[0].revents & POLLIN){
-            int nfd = accept(_server_fd, (struct sockaddr *)&c, &client_len);
-            addFd(nfd);
-            addClient(nfd);
-        }
+                int nfd = accept(_server_fd, (struct sockaddr *)&c, &client_len);
+                if (check_psswd(nfd) == true){
+                    addFd(nfd);
+                    addClient(nfd);
+                    std::cout << "new client add " << std::endl;
+                    std::string gg = "welcome to ft_IRC\n";
+                    send(nfd, gg.c_str(), gg.size(), 0);
+                }
+                else{
+                std::cout << "wrong password" << std::endl;
+                std::string error = "password incorrect boloss\n";
+                send(nfd, error.c_str(), error.size(), 0);
+                close (nfd);
+                }
+            }
         for (size_t i = 1; i < _fds.size(); ++i) {
             if (_fds[i].revents & POLLIN) {
                 int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
