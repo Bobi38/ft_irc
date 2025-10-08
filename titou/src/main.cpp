@@ -7,7 +7,7 @@ int main(int ac , char **av){
     }
 
     try{
-        Server serv(av[1], av[2]);
+        Server serv(av[2], av[1]);
         serv.GoServ();
     }catch (const std::exception& e) {
         std::cout << e.what() << std::endl;

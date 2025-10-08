@@ -20,8 +20,27 @@ Server::~Server(){
 // }
 
 void Server::addClient(int fd){
-    Client toto(fd);
+    Client* toto = new Client(fd);
     _client.push_back(toto);
+}
+
+void Server::addChannel(std::string name, Client* client){
+    Channel* toto = new Channel(name, Client);
+    _chan.push_back(toto);
+}
+
+void Server::linkClienttoChannel(Client* client, Channel* channel){
+    if (!channel->isIn(client->getName()))
+        channel->addClient(client);
+    if (!client->is_channel(channel->getName()))
+        client->addChannel(channel);
+}
+
+void Server::unlinkClienttoChannel(Client* client, Channel* channel){
+    if (channel->isIn(client->getName()))
+        channel->rmClient(client);
+    if (client->is_channel(channel->getName()))
+        client->rmChannel(channel);
 }
 
 void Server::addFd(int fd){
@@ -38,9 +57,9 @@ bool Server::check_psswd(int fd){
     while (1){
         int n = recv(fd, buffer, BUFFER_SIZE, 0);
         buffer[n] = '\0';
-        if (!strncmp(buffer, "PASS", 4))
+        if (!strncmp(buffer, "PASS ", 5))
             break ;
-        std::cout << "buff = " << buffer << std::endl;
+        std::cout << "send the server password with the cmd PASS <password> " << std::endl;
         memset(buffer, 0, sizeof(buffer));
     }
     std::string rest(buffer + 5);

@@ -1,5 +1,5 @@
-#ifndef CLIENT_HPP
-# define CLIENT_HPP
+#ifndef CHANNEL_HPP
+# define CHANNEL_HPP
 
 # include <vector>
 # include <stdio.h>
@@ -16,22 +16,21 @@
 # include <netinet/in.h>
 # include <arpa/inet.h> 
 # include <poll.h>
-# include "channel.hpp"
+# include "client.hpp"
 
-class Client{
+class Channel{
     private:
-        int _fd;
-        std::string _nick;
         std::string _name;
-        std::vector<Channel*>_chan;
+        int flag;
+        std::vector<Client*> _member;
     public:
-        Client(int fd);
-        int getFd();
+        Channel(std::string name, Client* client);
         std::string getName();
-        void rmChannel(Channel* chan);
-        void addChannel(Channel* chan);
-        bool is_Channel(std::string channel);
-        ~Client();
+        bool is_in(std::string _client_name);
+        void addClient(Client* client);
+        void rmClient(Client* Client);
+        void send_msg(std::string msg, int fd);
+        ~Channel();
 };
 
 #endif
