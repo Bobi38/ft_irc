@@ -40,18 +40,6 @@ class Server{
 		void linkClienttoChannel(Client* client, Channel* channel);
 		void unlinkClienttoChannel(Client* client, Channel* channel);
 		~Server();
-	class WrongPort : public std::exception {
-		public:
-			virtual const char* what() const throw(){
-				return "Port is not available!";
-			}
-	};
-	class ErrorSocket : public std::exception {
-		public:
-			virtual const char* what() const throw(){
-				return "Error Socket!";
-			}
-	};
 	class WrongPassword : public std::exception {
 		public:
 			virtual const char* what() const throw(){

@@ -2,16 +2,20 @@
 
 Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password)  {
     if (_port < 0 || _port > 65535)
-        throw WrongPort();
+        throw std::runtime_error("Port is not valid");
     _server_fd = socket (AF_INET, SOCK_STREAM, 0);
     if (_server_fd == -1)
-        throw ErrorSocket();
+        throw std::runtime_error("Socket failed");
     addFd(_server_fd);
 }
 
 Server::~Server(){
     if (_server_fd != -1)
         close(_server_fd);
+    for(std::vector<Client*>::iterrator it = _client.begin(); it != _client.end(); it ++)
+        delete *it;
+    for(std::vector<Channel*>::iterrator it = _chan.begin(); it != _chan.end(); it ++)
+        delete *it;
 }
 
 // void Server::addClient(std::string name){
