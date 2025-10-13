@@ -2,24 +2,6 @@
 # define PREFIX_HPP
 # include <iostream>
 
-// enum e_cmd{
-// 	CMD_UNKNOW,
-// 	PASS,
-// 	NICK,
-// 	USER,
-// 	JOIN,
-// 	PART,
-// 	KICK,
-// 	MODE,
-// 	INVITE,
-// 	TOPIC,
-// 	PRIVMSG,
-// 	QUIT,
-// 	NAMES,
-// 	LIST,
-// 	OPER
-// };
-
 class Prefix{
 	private:
 		std::string _nick;
@@ -34,7 +16,7 @@ class Prefix{
 		std::string getNick()const;
 		std::string getUser()const;
 		std::string getHost()const;
-        // std::string& getPrefix() const;
+        std::string getPrefix() const;
 		void putPrefix() const;
 };
 

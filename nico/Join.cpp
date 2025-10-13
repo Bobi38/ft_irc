@@ -20,7 +20,7 @@ bool Join::check(const Server* serv) const{
 void Join::exec(Server* serv){
 	(void) serv;
 
-	std::cout << "je suis un " << _cmd1 << std::endl;  
+	std::cout << "je suis un " << _tab[0] << std::endl;  
 }
 
 Request* Join::newJoin(const Request& rq){

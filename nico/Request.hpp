@@ -68,8 +68,6 @@ class Server{
 class Request{
 	protected:
 		Prefix _user;
-		std::string	_cmd1;
-		std::string _param;
 		std::string _msg;
 		std::string* _tab;
 		int	_tabSize;
@@ -78,8 +76,8 @@ class Request{
 		Request(const Request& other);
 		virtual ~Request();
 
-		void putNick() const;
-		std::string& getNick() const;
+		// void putNick() const;
+		std::string getNick() const;
 		std::string getCmd() const;
 		virtual bool check(const Server* Serv) const {(void) Serv; return true;};
 		virtual void exec(Server* Serv) {(void) Serv; std::cout << "ne viens pas la " << std::endl;};	

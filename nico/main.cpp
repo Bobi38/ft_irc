@@ -2,7 +2,7 @@
 
 int main(){
 	Server a;
-	std::string str = "TEST1 #chan      #chan2 project\n\t";
+	std::string str = "    TEST1 #chan      #chan2 project        :peloponeses     \n\t";
 	Makern b;
 	Request *rq = b.select(str);
 	if (!rq)

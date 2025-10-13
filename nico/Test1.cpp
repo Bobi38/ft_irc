@@ -20,11 +20,12 @@ bool Test1::check(const Server* serv) const{
 void Test1::exec(Server* serv){
 	(void) serv;
 
-	std::cout << "je suis un " << _cmd1 << std::endl;
-	for (int i = 0; i < _tabSize; i++)
-		std::cout << "je vois " << i << " :" << _tab[i] << std::endl;
+	std::cout << "je suis un " << _tab[0] << std::endl;
+	for (int i = 1; i < _tabSize; i++)
+		std::cout << "je vois " << i << " :" << _tab[i] << "<---" << std::endl;
 	if (!_msg.empty())
-		std::cout << "mon message est :"<< _msg << std::endl;
+		std::cout << "mon message est :"<< _msg << "<---" << std::endl;
+	std::cout << "si User :"<< _user.getPrefix() << "<---" << std::endl;
 }
 
 Request* Test1::newTest1(const Request& rq){

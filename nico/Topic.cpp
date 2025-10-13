@@ -20,7 +20,7 @@ bool Topic::check(const Server* serv) const{
 void Topic::exec(Server* serv){
 	(void) serv;
 
-	std::cout << "je suis un " << _cmd1 << std::endl;
+	std::cout << "je suis un " << _tab[0] << std::endl;
 }
 
 Request* Topic::newTopic(const Request& rq){
