@@ -12,9 +12,9 @@ Server::Server(const char* password, const char* port): _port(atoi(port)), _pass
 Server::~Server(){
     if (_server_fd != -1)
         close(_server_fd);
-    for(std::vector<Client*>::iterrator it = _client.begin(); it != _client.end(); it ++)
+    for(std::vector<Client*>::iterator it = _client.begin(); it != _client.end(); it ++)
         delete *it;
-    for(std::vector<Channel*>::iterrator it = _chan.begin(); it != _chan.end(); it ++)
+    for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it ++)
         delete *it;
 }
 
@@ -29,21 +29,21 @@ void Server::addClient(int fd){
 }
 
 void Server::addChannel(std::string name, Client* client){
-    Channel* toto = new Channel(name, Client);
+    Channel* toto = new Channel(name, client);
     _chan.push_back(toto);
 }
 
 void Server::linkClienttoChannel(Client* client, Channel* channel){
-    if (!channel->isIn(client->getName()))
+    if (!channel->is_in(client->getName()))
         channel->addClient(client);
-    if (!client->is_channel(channel->getName()))
+    if (!client->is_Channel(channel->getName()))
         client->addChannel(channel);
 }
 
 void Server::unlinkClienttoChannel(Client* client, Channel* channel){
-    if (channel->isIn(client->getName()))
+    if (channel->is_in(client->getName()))
         channel->rmClient(client);
-    if (client->is_channel(channel->getName()))
+    if (client->is_Channel(channel->getName()))
         client->rmChannel(channel);
 }
 

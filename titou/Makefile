@@ -1,17 +1,29 @@
 NAME = ircserv
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -I incl
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -I incl -I incl/cmd
 DEPFLAGS = -MM -MP
 
 SRCDIR = src
+CMDDIR = $(SRCDIR)/cmd
 INCDIR = incl
 OBJDIR = obj
 
-SRCS = main.cpp Maker.cpp Join.cpp PrivMsg.cpp split.cpp Prefix.cpp
-#server.cpp client.cpp
-OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.cpp=.o))
-DEPS = $(addprefix $(OBJDIR)/, $(SRCS:.cpp=.d))
+SRCS = \
+	$(SRCDIR)/main.cpp \
+	$(SRCDIR)/channel.cpp \
+	$(SRCDIR)/server.cpp \
+	$(SRCDIR)/client.cpp \
+	$(CMDDIR)/Join.cpp \
+	$(CMDDIR)/Topic.cpp \
+	$(CMDDIR)/Test1.cpp \
+	$(CMDDIR)/Request.cpp \
+	$(CMDDIR)/Makern.cpp \
+	$(CMDDIR)/Prefix.cpp \
+	$(CMDDIR)/split.cpp \
+
+OBJS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
+DEPS = $(OBJS:.o=.d)
 
 all: $(NAME)
 
@@ -20,7 +32,8 @@ $(NAME): $(OBJS)
 
 -include $(DEPS)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	@mkdir -p $(dir $@)      
 	@$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 $(OBJDIR):
 	mkdir -p $(OBJDIR)

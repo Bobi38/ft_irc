@@ -16,8 +16,12 @@
 # include <arpa/inet.h> 
 # include <poll.h>
 # include <vector>
+# include <algorithm>
 # include "client.hpp"
 # include "channel.hpp"
+
+class Client;
+class Channel;
 
 
 # define BUFFER_SIZE 512 // 512 = max RFC1459 et si ca depasse ?
@@ -27,9 +31,9 @@ class Server{
 		int _port;
 		std::string _password;
 		int _server_fd;
-		std::vector<Client> _client;
+		std::vector<Client*> _client;
 		std::vector<struct pollfd> _fds;
-		std::vector<Channel> _chan; // max, nb_user, topic, pwd
+		std::vector<Channel*> _chan; // max, nb_user, topic, pwd
 	public:
 		Server(const char* password, const char* port);
 		void addClient(int fd);

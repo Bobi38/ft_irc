@@ -1,6 +1,6 @@
 #include "channel.hpp"
 
-Channel::Channel(std::string name, Client* client): _name(name), _flag(0) {
+Channel::Channel(std::string name, Client* client): _name(name), flag(0) {
     if (client)
         _member.push_back(client);
 }

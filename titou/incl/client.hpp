@@ -18,6 +18,8 @@
 # include <poll.h>
 # include "channel.hpp"
 
+class Channel;
+
 class Client{
     private:
         int _fd;

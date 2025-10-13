@@ -17,6 +17,9 @@
 # include <arpa/inet.h> 
 # include <poll.h>
 # include "client.hpp"
+# include "server.hpp"
+
+class Client;
 
 class Channel{
     private:

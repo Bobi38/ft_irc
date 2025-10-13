@@ -19,7 +19,7 @@ bool Client::is_Channel(std::string channel){
 }
 
 void Client::addChannel(Channel* chan){
-    if (!chan->is_Channel(chan->getName()))
+    if (!chan->is_in(chan->getName()))
         _chan.push_back(chan);
 }
 
