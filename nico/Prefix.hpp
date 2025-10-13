@@ -2,23 +2,23 @@
 # define PREFIX_HPP
 # include <iostream>
 
-enum e_cmd{
-	CMD_UNKNOW,
-	PASS,
-	NICK,
-	USER,
-	JOIN,
-	PART,
-	KICK,
-	MODE,
-	INVITE,
-	TOPIC,
-	PRIVMSG,
-	QUIT,
-	NAMES,
-	LIST,
-	OPER
-};
+// enum e_cmd{
+// 	CMD_UNKNOW,
+// 	PASS,
+// 	NICK,
+// 	USER,
+// 	JOIN,
+// 	PART,
+// 	KICK,
+// 	MODE,
+// 	INVITE,
+// 	TOPIC,
+// 	PRIVMSG,
+// 	QUIT,
+// 	NAMES,
+// 	LIST,
+// 	OPER
+// };
 
 class Prefix{
 	private:

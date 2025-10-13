@@ -2,7 +2,7 @@ NAME = request
 CC = c++
 FLAG = -Wall -Wextra -Werror -std=c++98 -g3 -MMD
 
-SRC =	main.cpp Request.cpp Prefix.cpp Topic.cpp split.cpp
+SRC =	main.cpp Request.cpp Prefix.cpp Topic.cpp split.cpp Join.cpp Test1.cpp Makern.cpp
 		
 OBJDIR = obj
 OBJS = $(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))

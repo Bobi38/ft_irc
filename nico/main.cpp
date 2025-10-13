@@ -1,33 +1,14 @@
-#include "topic.hpp"
-
-// enum e_cmd{
-// 	CMD_UNKNOW,
-// 	PASS,
-// 	NICK,
-// 	USER,
-// 	JOIN,
-// 	PART,
-// 	KICK,
-// 	MODE,
-// 	INVITE,
-// 	TOPIC,
-// 	PRIVMSG,
-// 	QUIT,
-// 	NAMES,
-// 	LIST,
-// 	OPER
-// };
-
-Request* parse(std::string& str){
-    Request rq(str);
-    return topic::newRequest(rq);
-}
+#include "Makern.hpp"
 
 int main(){
-    std::string str = "TOPIC #chan :project";
-    Request *rq = parse(str);
-    if (rq->check())
-        rq->exec();
-    // delete rq; //pourtant il le faut
-    return 0;
+	Server a;
+	std::string str = "TEST1 #chan      #chan2 project\n\t";
+	Makern b;
+	Request *rq = b.select(str);
+	if (!rq)
+		return 0;
+	if (rq->check(&a))
+		rq->exec(&a);
+	delete rq;
+	return 0;
 }

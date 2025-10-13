@@ -2,17 +2,18 @@
 
 std::string* split(char sep, std::string& str);
 
-Request::Request(std::string& str): _user(Prefix(str)){
-	if (str.empty())
+Request::Request(const std::string& str_init): _user(Prefix(str_init)){
+	if (str_init.empty())
 		return ;
-	int size = str.size();
+	int size = str_init.size();
 	
 	int start = 0;
-	if (str[0] == ':'){
-		start = str.find(' ');
-		start = str.find_first_not_of(' ', start);
+	if (str_init[0] == ':'){
+		start = str_init.find(' ');
+		start = str_init.find_first_not_of(' ', start);
 	}
 
+	std::string str = str_init.substr(start);
 	int msg = str.rfind(':');
 	if (size - 1 > msg && msg != -1){
 		_msg = str.substr(msg + 1);
@@ -23,17 +24,35 @@ Request::Request(std::string& str): _user(Prefix(str)){
 
 	int end = str.find(' ', start);
 	_cmd1 = str.substr(start, end - start);
-	// _cmd = CMD_UNKNOW;
-	// for (int i = 0; i < 15; i++)
-	// 	if (_cmd1 == _fct[i])
-	// 		_cmd = i;
 	start = str.find_first_not_of(' ', end);
 	_param = str.substr(start);
 	_tab = split(' ', _param);
+	_tabSize = 0;
+	while (!_tab[_tabSize].empty())
+		_tabSize++;
 }
 
-Request::~Request(){
-	delete[] _tab;
+Request::Request(const Request& other) 
+	: _user(other._user), _cmd1(other._cmd1), _param(other._param), \
+		_msg(other._msg), _tabSize(other._tabSize)
+{
+	if (other._tab && _tabSize > 0) {
+		_tab = new std::string[_tabSize];
+		for (int i = 0; i < _tabSize; i++) {
+			_tab[i] = other._tab[i];
+		}
+	} else {
+		_tab = NULL;
+	}
+}
+
+Request::~Request() {
+	if (_tab)
+		delete[] _tab;
+}
+
+std::string Request::getCmd() const {
+	return _cmd1;
 }
 
 void Request::putNick() const {

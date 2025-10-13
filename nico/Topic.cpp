@@ -1,25 +1,28 @@
-#include "topic.hpp"
+#include "Topic.hpp"
 
-topic::topic(const Request& rq): Request(rq){
+Topic::Topic(const Request& rq): Request(rq){
 }
 
-topic::topic(const topic& other): Request(other){}
+Topic::Topic(const Topic& other): Request(other){}
 
-topic& topic::operator=(const topic& other){
+Topic& Topic::operator=(const Topic& other){
 	(void) other;
 	return *this;
 }
 
-topic::~topic() {}
+Topic::~Topic() {}
 
-bool topic::check() const{
+bool Topic::check(const Server* serv) const{
+	(void) serv;
 	return true;
 }
 
-void topic::exec() const{
-	std::cout << "je suis un topic" << std::endl;  
+void Topic::exec(Server* serv){
+	(void) serv;
+
+	std::cout << "je suis un " << _cmd1 << std::endl;
 }
 
-Request* topic::newRequest(const Request& rq){
-	return new topic(rq);
+Request* Topic::newTopic(const Request& rq){
+	return new Topic(rq);
 }
