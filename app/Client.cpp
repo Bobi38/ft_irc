@@ -57,6 +57,8 @@ void Client::setNick(const std::string& str){
 
 void Client::setName(const std::string& str){
     _name = str;
+	_host = "localhost";
+	_co = true;
 }
 
 bool Client::is_Channel(std::string channel){
@@ -81,5 +83,5 @@ void Client::rmChannel(Channel* chan){
 }
 
 std::string Client::getName() const{
-    return _name;
+    return _nick;
 }

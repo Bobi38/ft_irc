@@ -1,4 +1,5 @@
 #include "include/Server.hpp"
+#include "Maker.hpp"
 
 Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password)  {
     if (_port < 0 || _port > 65535)
@@ -129,6 +130,8 @@ bool Server::check_psswd(int fd){
 // }
 
 void Server::GoServ(){
+	Maker mm;
+	Client us(":henry");
     struct sockaddr_in s, c;
     socklen_t client_len = sizeof(c);
     char buffer[512];
@@ -156,7 +159,11 @@ void Server::GoServ(){
         for (size_t i = 1; i < _fds.size(); ++i) {
             if (_fds[i].revents & POLLIN) {
                 int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
-                std::cout << n << " message = " << buffer << std::endl;
+				Request* rq = mm.select(buffer);
+				if (!rq)
+                	std::cout << n << " message = " << buffer << std::endl;
+				else
+					rq->exec(NULL, &us);
                 for (size_t j = 1; j < _fds.size(); ++j) {
                     if (_fds[j].fd != _fds[i].fd)
                         send(_fds[j].fd, buffer, n, 0);
