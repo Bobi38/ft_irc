@@ -1,6 +1,6 @@
 #include "include/Client.hpp"
 
-Client::Client(int fd): _fd(fd) {}
+Client::Client(int fd): _fd(fd), _co(false) {}
 
 Client::Client(const std::string& prefix) {
 	size_t size = prefix.size();

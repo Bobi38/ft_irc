@@ -22,7 +22,8 @@ class Channel;
 
 class Client{
     private:
-        int _fd;	
+        int _fd;
+        bool _co;
         std::string _nick;
         std::string _name;
         std::string _host;

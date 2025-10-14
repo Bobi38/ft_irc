@@ -16,16 +16,30 @@
 # include <netinet/in.h>
 # include <arpa/inet.h> 
 # include <poll.h>
+# include <vector>
+# include <utility>
 # include "Client.hpp"
 # include "Server.hpp"
 
 class Client;
 
+enum e_client{
+    PRESENT,
+    CHANOP,
+    INVITE,
+    BAN
+};
+
 class Channel{
     private:
         std::string _name;
-        int flag;
-        std::vector<Client*> _member;
+        std::string _psswrd;
+        std::string _topic;
+        int _limit;
+        bool _i_private;
+        bool _t_topicop;
+        bool _topic_exist;
+        std::vector<std::pair<int,Client*> > _member;
     public:
         Channel(std::string name, Client* client);
         std::string getName();
