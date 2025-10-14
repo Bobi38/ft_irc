@@ -1,4 +1,4 @@
-#include "include/Server.hpp"
+#include "server.hpp"
 
 Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password)  {
     if (_port < 0 || _port > 65535)
@@ -12,11 +12,16 @@ Server::Server(const char* password, const char* port): _port(atoi(port)), _pass
 Server::~Server(){
     if (_server_fd != -1)
         close(_server_fd);
-    for(std::vector<Client*>::iterator it = _client.begin(); it != _client.end(); it ++)
+    for(std::vector<Client*>::iterrator it = _client.begin(); it != _client.end(); it ++)
         delete *it;
-    for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it ++)
+    for(std::vector<Channel*>::iterrator it = _chan.begin(); it != _chan.end(); it ++)
         delete *it;
 }
+
+// void Server::addClient(std::string name){
+//     Client toto(name);
+//     _client.push_back(toto);
+// }
 
 void Server::addClient(int fd){
     Client* toto = new Client(fd);
@@ -24,21 +29,21 @@ void Server::addClient(int fd){
 }
 
 void Server::addChannel(std::string name, Client* client){
-    Channel* toto = new Channel(name, client);
+    Channel* toto = new Channel(name, Client);
     _chan.push_back(toto);
 }
 
 void Server::linkClienttoChannel(Client* client, Channel* channel){
-    if (!channel->is_in(client->getName()))
+    if (!channel->isIn(client->getName()))
         channel->addClient(client);
-    if (!client->is_Channel(channel->getName()))
+    if (!client->is_channel(channel->getName()))
         client->addChannel(channel);
 }
 
 void Server::unlinkClienttoChannel(Client* client, Channel* channel){
-    if (channel->is_in(client->getName()))
+    if (channel->isIn(client->getName()))
         channel->rmClient(client);
-    if (client->is_Channel(channel->getName()))
+    if (client->is_channel(channel->getName()))
         client->rmChannel(channel);
 }
 
@@ -52,7 +57,7 @@ void Server::addFd(int fd){
 
 bool Server::check_psswd(int fd){
     char buffer[BUFFER_SIZE];
-    std::cout << fd << " test passwd" << std::endl;
+    std::cout << "test passwd" << std::endl;
     while (1){
         int n = recv(fd, buffer, BUFFER_SIZE, 0);
         buffer[n] = '\0';
@@ -70,63 +75,11 @@ bool Server::check_psswd(int fd){
     }
     if (rest == _password){
         std::cout << "good" << std::endl;
-        addClient(fd);
-        addFd(fd);
         return true;
     }
-
     return false;
 }
 
-
-// void Server::GoServ(){
-//     struct sockaddr_in s, c;
-//     socklen_t client_len = sizeof(c);
-//     char buffer[512];
-//     s.sin_family = AF_INET;
-//     s.sin_port = htons(_port);
-//     s.sin_addr.s_addr = INADDR_ANY;
-//     int opt = 1;
-//     if (setsockopt(_server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
-//   		throw std::runtime_error("setsocket failed");
-//     if (bind (_server_fd, (struct sockaddr *)&s, sizeof(s)) == -1)
-//         throw std::runtime_error("Bind failed");
-//     if (listen(_server_fd, 100) == -1)
-//         throw std::runtime_error("listen failed");
-
-//     std::cout << "server good" << std::endl;
-    
-//     while(1){
-//         if (poll(_fds.data(), _fds.size(), -1) == -1)
-//             throw std::runtime_error("poll failed");
-//         if (_fds[0].revents & POLLIN){
-//                 int nfd = accept(_server_fd, (struct sockaddr *)&c, &client_len);
-//                 if (check_psswd(nfd) == true){
-//                     addFd(nfd);
-//                     addClient(nfd);
-//                     std::cout << "new client add " << std::endl;
-//                     std::string gg = "welcome to ft_IRC\n";
-//                     send(nfd, gg.c_str(), gg.size(), 0);
-//                 }
-//                 else{
-//                 std::cout << "wrong password" << std::endl;
-//                 std::string error = "password incorrect boloss\n";
-//                 send(nfd, error.c_str(), error.size(), 0);
-//                 close (nfd);
-//                 }
-//             }
-//         for (size_t i = 1; i < _fds.size(); ++i) {
-//             if (_fds[i].revents & POLLIN) {
-//                 int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
-//                 std::cout << n << " message = " << buffer << std::endl;
-//                 for (size_t j = 1; j < _fds.size(); ++j) {
-//                     if (_fds[j].fd != _fds[i].fd)
-//                         send(_fds[j].fd, buffer, n, 0);
-//                 }
-//             }
-//         }
-//     }
-// }
 
 void Server::GoServ(){
     struct sockaddr_in s, c;
@@ -150,10 +103,21 @@ void Server::GoServ(){
             throw std::runtime_error("poll failed");
         if (_fds[0].revents & POLLIN){
                 int nfd = accept(_server_fd, (struct sockaddr *)&c, &client_len);
-                addFd(nfd);
-                addClient(nfd);
+                if (check_psswd(nfd) == true){
+                    addFd(nfd);
+                    addClient(nfd);
+                    std::cout << "new client add " << std::endl;
+                    std::string gg = "welcome to ft_IRC\n";
+                    send(nfd, gg.c_str(), gg.size(), 0);
+                }
+                else{
+                std::cout << "wrong password" << std::endl;
+                std::string error = "password incorrect boloss\n";
+                send(nfd, error.c_str(), error.size(), 0);
+                close (nfd);
+                }
             }
-        for (size_t i = 1; i < _fds.size(); ++i) {
+        for (size_t i = 1; i < _fds.size(); ++i){
             if (_fds[i].revents & POLLIN) {
                 int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
                 std::cout << n << " message = " << buffer << std::endl;
