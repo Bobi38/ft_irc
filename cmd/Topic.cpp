@@ -12,14 +12,15 @@ Topic& Topic::operator=(const Topic& other){
 
 Topic::~Topic() {}
 
-bool Topic::check(const Server* serv) const{
+bool Topic::check(const Server* serv, const Client* clt) const{
 	(void) serv;
+	(void) clt;
 	return true;
 }
 
-void Topic::exec(Server* serv){
+void Topic::exec(Server* serv, Client* clt){
 	(void) serv;
-
+	(void) clt;
 	std::cout << "je suis un " << _tab[0] << std::endl;
 }
 

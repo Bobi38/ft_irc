@@ -12,8 +12,8 @@ class Topic : public Request
 		Topic& operator=(const Topic& other);
 		~Topic();	
 
-		bool check(const Server* serv) const;
-		void exec(Server* Serv);
+		bool check(const Server* serv, const Client* clt) const;
+		void exec(Server* Serv, Client* clt);
 		static Request* newTopic(const Request& rq);
 };
 

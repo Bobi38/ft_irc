@@ -12,8 +12,8 @@ class Join : public Request
 		Join& operator=(const Join& other);
 		~Join();	
 
-		bool check(const Server* serv) const;
-		void exec(Server* Serv);
+		bool check(const Server* serv, const Client* clt) const;
+		void exec(Server* Serv, Client* clt);
 		static Request* newJoin(const Request& rq);
 };
 

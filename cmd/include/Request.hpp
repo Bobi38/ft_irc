@@ -5,25 +5,22 @@
 # include "Server.hpp"
 # include "Client.hpp"
 
-
 class Request{
 	protected:
-		// Prefix _user;
-		Client _Clt;
+		Prefix _user;
 		std::string _msg;
 		std::string* _tab;
 		int	_tabSize;
 	public:
 		Request(const std::string& str);
-		Request(const std::string& str, const Client& Clt);
 		Request(const Request& other);
 		virtual ~Request();
 
 		// void putNick() const;
 		std::string getNick() const;
 		std::string getCmd() const;
-		virtual bool check(const Server* Serv) const {(void) Serv; return true;};
-		virtual void exec(Server* Serv) {(void) Serv; std::cout << "ne viens pas la " << std::endl;};	
+		virtual bool check(const Server* Serv, const Client* clt) const {(void) clt; (void) Serv; return true;};
+		virtual void exec(Server* Serv, Client* clt) {(void) clt; (void) Serv; std::cout << "ne viens pas la " << std::endl;};	
 };
 
 // int main(int a, char** b)

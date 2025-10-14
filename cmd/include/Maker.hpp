@@ -8,12 +8,12 @@
 
 typedef std::pair<std::string, Request* (*)(const Request&)> Level;
 
-class Makern
+class Maker
 {
 private:
 	Level table[16];
 public:
-	Makern() {
+	Maker() {
 		table[0] = Level("PASS", Test1::newTest1);
 		table[1] = Level("NICK", Test1::newTest1);
 		table[2] = Level("USER", Test1::newTest1);
@@ -29,9 +29,9 @@ public:
 		table[12] = Level("LIST", Test1::newTest1);
 		table[13] = Level("TOPIC", Topic::newTopic);
 		table[14] = Level("TEST1", Test1::newTest1);
-		table[15] = Level("", NULL);
+		table[15] = Level("", Maker::error);
 	};
-	~Makern() {};
+	~Maker() {};
 
 	static Request* error(const Request& rq);
 	Request* select(const std::string& str) const;
