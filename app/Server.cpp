@@ -17,6 +17,11 @@ Server::~Server(){
         delete *it;
     for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it ++)
         delete *it;
+    for(size_t i = 1; i < _fds.size(); i++)
+        close(_fds[i].fd);
+    _fds.clear();
+    _client.clear();
+    _chan.clear();
     if (_server_fd != -1)
         close(_server_fd);
 }
