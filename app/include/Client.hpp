@@ -32,8 +32,11 @@ class Client{
         Client(int fd);
         Client(const std::string& prefix);
         Client(const Client& other);
+        bool valid_co(std::string psswd, char* buff);
         int getFd();
         std::string getName() const;
+        int getfd() const ;
+        bool getco()const;
         void setNick(const std::string& str);
         void setName(const std::string& str);
         void rmChannel(Channel* chan);

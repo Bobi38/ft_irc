@@ -9,6 +9,7 @@
 # include <iomanip>
 # include <ctime>
 # include <stdexcept>
+# include <csignal>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -38,6 +39,8 @@ class Server{
 		Server(const char* password, const char* port);
 		void addClient(int fd);
 		void addChannel(std::string name, Client *client);
+		Client* find_fd(int fd);
+		void dlt_client(Client* clt, int fd);
 		void addFd(int fd);
 		void GoServ();
 		bool check_psswd(int fd);
@@ -51,5 +54,8 @@ class Server{
 			}
 	};
 };
+
+void clean_std(std::string &rest);
+void handle_sigint(int signum);
 
 #endif
