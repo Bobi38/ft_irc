@@ -11,6 +11,7 @@ class Request{
 		std::string _msg;
 		std::string* _tab;
 		int	_tabSize;
+		int _back;
 	public:
 		Request(const std::string& str);
 		Request(const Request& other);
@@ -19,6 +20,7 @@ class Request{
 		// void putNick() const;
 		std::string getNick() const;
 		std::string getCmd() const;
+		std::string operator[](int x) const;
 		virtual bool check(const Server* Serv, const Client* clt) const {(void) clt; (void) Serv; return true;};
 		virtual void exec(Server* Serv, Client* clt) {(void) clt; (void) Serv; std::cout << "ne viens pas la " << std::endl;};	
 };

@@ -19,8 +19,8 @@ bool Join::check(const Server* serv, const Client* clt) const{
 }
 
 void Join::exec(Server* serv, Client* clt){
-	(void) serv;
-	(void) clt;
+	if (_tabSize)
+		return
 	std::cout << "je suis un " << _tab[0] << std::endl;  
 }
 

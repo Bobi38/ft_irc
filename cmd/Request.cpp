@@ -2,7 +2,7 @@
 
 std::string* split(char sep, std::string& str);
 
-Request::Request(const std::string& str_init): _user(Prefix(str_init)){
+Request::Request(const std::string& str_init): _user(Prefix(str_init)), _back(0){
 	if (str_init.empty())
 		return ;
 
@@ -36,7 +36,7 @@ Request::Request(const std::string& str_init): _user(Prefix(str_init)){
 }
 
 Request::Request(const Request& other) 
-	: _user(other._user), _msg(other._msg), _tabSize(other._tabSize)
+	: _user(other._user), _msg(other._msg), _tabSize(other._tabSize), _back(0)
 {
 	if (other._tab && _tabSize > 0) {
 		_tab = new std::string[_tabSize];
@@ -59,4 +59,10 @@ std::string Request::getCmd() const {
 
 std::string Request::getNick() const{
 	return _user.getNick();
+}
+
+std::string Request::operator[](int x)const{
+	if (x < 0 || x > _tabSize)
+		return ("");
+	return _tab[x];
 }
