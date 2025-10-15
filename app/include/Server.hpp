@@ -9,6 +9,7 @@
 # include <iomanip>
 # include <ctime>
 # include <stdexcept>
+# include <csignal>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -55,5 +56,6 @@ class Server{
 };
 
 void clean_std(std::string &rest);
+void handle_sigint(int signum);
 
 #endif

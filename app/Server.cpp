@@ -1,6 +1,8 @@
 #include "include/Server.hpp"
 #include "Maker.hpp"
 
+volatile sig_atomic_t stop_server = 0;
+
 Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password)  {
     if (_port < 0 || _port > 65535)
         throw std::runtime_error("Port is not valid");
@@ -89,6 +91,11 @@ void clean_std(std::string& rest){
             i = 0;
         }
     }
+}
+
+void handle_sigint(int signum) {
+    (void)signum;
+    stop_server = 1;
 }
 
 // void Server::GoServ(){
@@ -180,9 +187,11 @@ void Server::GoServ(){
 
     std::cout << "server good" << std::endl;
     
-    while(1){
-        if (poll(_fds.data(), _fds.size(), -1) == -1)
+    while(stop_server == 0){
+        if (poll(_fds.data(), _fds.size(), -1) == -1){
+            if (errno == EINTR) continue;
             throw std::runtime_error("poll failed");
+        }
         if (_fds[0].revents & POLLIN){
                 int nfd = accept(_server_fd, (struct sockaddr *)&c, &client_len);
                 addFd(nfd);
@@ -213,4 +222,5 @@ void Server::GoServ(){
             }
         }
     }
+    std::cout << "server down correctly " << std::endl;
 }
