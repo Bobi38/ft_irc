@@ -1,6 +1,6 @@
 #include "include/Client.hpp"
 
-Client::Client(int fd): _fd(fd), _co(false) {}
+Client::Client(int fd): _fd(fd), _co(false), _nick(""), _name(""), _host("") {}
 
 Client::Client(const std::string& prefix) {
 	size_t size = prefix.size();
@@ -84,4 +84,48 @@ void Client::rmChannel(Channel* chan){
 
 std::string Client::getName() const{
     return _nick;
+}
+
+bool Client::valid_co(std::string psswd, char* buff){
+	char sendd[BUFFER_SIZE];
+
+	if (_nick == "" && strncmp(buff, "NICK ", 5)){
+		strcpy(sendd ,"we need a nick to connect with command NICK <nickname>\n");
+		send(_fd, sendd, strlen(sendd), 0);
+		return true;
+	}
+	if (_nick != "" && strncmp(buff, "PASS ", 5)){
+		strcpy(sendd ,"we need a nick to connect with command PASS <password>\n ");
+		send(_fd, sendd, strlen(sendd), 0);
+		return true;
+	}
+	if (!strncmp(buff, "NICK ", 5)){
+		std::string rest(buff + 5);
+		clean_std(rest);
+		_nick = rest;
+		return true;
+	}
+	if (!strncmp(buff, "PASS ", 5)){
+		std::string rest(buff + 5);
+		clean_std(rest);
+		if ( rest == psswd){
+			strcpy(sendd, "welcome to server IRC\n");
+			send(_fd, sendd, strlen(sendd), 0);
+			_co = true;
+		}
+		else{
+			strcpy(sendd, "wrong password bye\n ");
+			send(_fd, sendd, strlen(sendd), 0);
+			return false;
+		}
+	}
+	return true;
+}
+
+int Client::getfd()const {
+	return _fd;
+}
+
+bool Client::getco()const {
+	return _co;
 }

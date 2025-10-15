@@ -11,15 +11,16 @@ Server::Server(const char* password, const char* port): _port(atoi(port)), _pass
 }
 
 Server::~Server(){
-    if (_server_fd != -1)
-        close(_server_fd);
     for(std::vector<Client*>::iterator it = _client.begin(); it != _client.end(); it ++)
         delete *it;
     for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it ++)
         delete *it;
+    if (_server_fd != -1)
+        close(_server_fd);
 }
 
 void Server::addClient(int fd){
+        std::cout <<"ici icic ic " <<std::endl;
     Client* toto = new Client(fd);
     _client.push_back(toto);
 }
@@ -44,9 +45,11 @@ void Server::unlinkClienttoChannel(Client* client, Channel* channel){
 }
 
 void Server::addFd(int fd){
+        std::cout <<"lala la la " <<std::endl;
     struct pollfd tmp;
     tmp.fd = fd;
     tmp.events = POLLIN;
+    tmp.revents = 0;
     _fds.push_back(tmp);
 }
 
@@ -79,6 +82,14 @@ bool Server::check_psswd(int fd){
     return false;
 }
 
+void clean_std(std::string& rest){
+    for(size_t i = 0; i < rest.size(); i++){
+        if (!isprint(rest[i])){
+            rest.erase(i, 1);
+            i = 0;
+        }
+    }
+}
 
 // void Server::GoServ(){
 //     struct sockaddr_in s, c;
@@ -129,9 +140,30 @@ bool Server::check_psswd(int fd){
 //     }
 // }
 
+Client* Server::find_fd(int fd){
+    for(size_t i = 0; i < _client.size(); i++){
+        if (_client[i]->getfd() == fd)
+            return _client[i];
+    }
+    return NULL;
+}
+
+void Server::dlt_client(Client* clt, int fd){
+        std::cout <<"ici" <<std::endl;
+    for(std::vector<Client*>::iterator it = _client.begin(); it != _client.end(); it++){
+        if ((*it) == clt){
+            _client.erase(it);
+            break ;
+        }
+    }
+        std::cout <<"la" <<std::endl;
+    close (fd);
+        std::cout <<"lo" <<std::endl;
+    delete clt;
+}
+
 void Server::GoServ(){
 	Maker mm;
-	Client us(":henry");
     struct sockaddr_in s, c;
     socklen_t client_len = sizeof(c);
     char buffer[512];
@@ -156,18 +188,28 @@ void Server::GoServ(){
                 addFd(nfd);
                 addClient(nfd);
             }
-        for (size_t i = 1; i < _fds.size(); ++i) {
+            std::cout <<"1 --- " << _client.size()  <<std::endl;
+        for (size_t i = 1; i < _fds.size(); i++) {
+                std::cout <<"2" <<std::endl;
             if (_fds[i].revents & POLLIN) {
+                memset(buffer, 0, BUFFER_SIZE);
+                std::cout <<"3" <<std::endl;
                 int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
-				Request* rq = mm.select(buffer);
-				if (!rq)
-                	std::cout << n << " message = " << buffer << std::endl;
-				else
-					rq->exec(NULL, &us);
-                for (size_t j = 1; j < _fds.size(); ++j) {
-                    if (_fds[j].fd != _fds[i].fd)
-                        send(_fds[j].fd, buffer, n, 0);
+                std::cout <<"4" <<std::endl;
+                Client* tmp = find_fd(_fds[i].fd);
+                std::cout <<"5" <<std::endl;
+                if (tmp->getco() == false){
+                    if (tmp->valid_co(_password, buffer) == false)
+                        dlt_client(tmp, _fds[i].fd);
+                    break;
                 }
+                else
+                    std::cout << n << " message = " << buffer << std::endl;
+				// Request* rq = mm.select(buffer);
+				// if (!rq)
+                	
+				// else
+				// 	rq->exec(NULL, &us);
             }
         }
     }
