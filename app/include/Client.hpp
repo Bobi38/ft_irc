@@ -47,6 +47,7 @@ class Client{
         void rmChannel(Channel* chan);
         void addChannel(Channel* chan);
         bool is_Channel(std::string channel);
+        void rcvMsg(const std::string& str);
         ~Client();
 };
 

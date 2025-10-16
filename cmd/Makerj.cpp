@@ -1,5 +1,23 @@
 #include "include/Makerj.hpp"
 
+Maker::Maker() {
+	table[0] = Level("PASS", test2);
+	table[1] = Level("NICK", test2);
+	table[2] = Level("USER", test2);
+	table[3] = Level("JOIN", test2);
+	table[4] = Level("PART", test2);
+	table[5] = Level("KICK", test2);
+	table[6] = Level("MODE", test3);
+	table[7] = Level("INVITE", test2);
+	table[8] = Level("PRIVMSG", test2);
+	table[9] = Level("QUIT", test2);
+	table[10] = Level("NAMES", test2);
+	table[11] = Level("OPER", test2);
+	table[12] = Level("LIST", test2);
+	table[13] = Level("TOPIC", test2);
+	table[14] = Level("TEST1", test2);
+	};
+
 void Maker::select(const std::string& str, Server* server, Client* client){
 	bool second = client == _wClt;
 	
@@ -22,19 +40,31 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 	std::cout << "creation request avec cmd =" << rq.getCmd() << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first)
-			return table[i].second(&rq, server, client);
+			return table[i].second(rq, server, client);
 	}
 }
 
+Maker::Maker(const Maker& other) {
+	(void) other;
+}
 
-void test2(Request* rq, Server* server, Client* client){
+Maker* Maker::operator=(const Maker& other){
+	(void) other;
+	return (this);
+}
+	
+Maker::~Maker() {
+}
+
+void test2(Request& rq, Server* server, Client* client){
 	(void) rq;
 	(void) client;
 	std::cout << "test avec INVITE " << server->check_psswd(5) << std::endl;
 }
 
-void test3(Request* rq, Server* server, Client* client){
+void test3(Request& rq, Server* server, Client* client){
 	(void) server;
-	std::cout << "test avec MODE" << client->getName() << std::endl;
-	send(client->getFd(), rq->getMsg().c_str(), rq->getMsg().size(), 0);
+	for (int i = 0; !rq[i].empty(); i++)
+		std::cout << rq[i] << " : test avec MODE" << client->getName() << std::endl;
+	client->rcvMsg(rq.getMsg());
 }

@@ -64,7 +64,7 @@ std::string Request::getNick() const{
 }
 
 std::string Request::operator[](int x)const{
-	if (x < 0 || x > _tabSize)
+	if (x < 0 || x >= _tabSize)
 		return ("");
 	return _tab[x];
 }
