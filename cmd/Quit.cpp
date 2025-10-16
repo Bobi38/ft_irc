@@ -18,12 +18,30 @@ bool Quit::check(const Server* serv, const Client* clt) const{
 	return true;
 }
 
+void Quit::fd_send(Client* clt, std::set<int>& list){
+	for(size_t i = 0; clt->getChan(i); i++){
+		Channel* chan = clt->getChan(i);
+		for(size_t y = 0;chan->getClient(y); y++){
+			int testfd = chan->getClient(y)->getfd();
+			if (clt->getfd() != testfd)
+				list.push_back(testfd);
+		}
+	}
+}
+
+void Quit::send_all(Client* clt){
+	std::set<int> list;
+	fd_send(clt, list);
+	for(size_t i = 0; i < list.size(); i++)
+		send_msg(list[i], rq->message);
+}
+
 void Pass::exec(Server* serv, Client* clt){
 	if (!clt)
 		return;
 	if (rq->message != "")
-	serv->dlt_client(clt, clt->getfd())
-		send  
+		send_all(clt);
+	serv->dlt_client(clt, clt->getfd());
 }
 
 Request* Quit::newQuit(const Request& rq){

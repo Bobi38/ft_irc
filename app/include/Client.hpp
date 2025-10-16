@@ -40,6 +40,7 @@ class Client{
         int getFd();
         std::string getName() const;
         std::string getNick() const;
+        Channel* getChan(size_t i);
         int getfd() const ;
         bool getco()const;
         void setNick(const std::string& str);

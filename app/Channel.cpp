@@ -11,6 +11,12 @@ std::string Channel::getName(){
     return _name;
 }
 
+Client* Channel::getClient(size_t i){
+    if (i >= _member.size())
+        return NULL;
+    return _member[i].second;
+}
+
 bool Channel::is_in(std::string _client_name){
     for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
         if (it->second->getName() == _client_name)

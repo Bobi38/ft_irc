@@ -47,6 +47,7 @@ class Channel{
         void addClient(Client* client);
         void rmClient(Client* Client);
         void send_msg(std::string msg, int fd);
+        Client* getClient(size_t i);
         ~Channel();
 };
 

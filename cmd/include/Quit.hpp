@@ -15,6 +15,8 @@ class Quit : public Request
 		bool check(const Server* serv, const Client* clt) const;
 		void exec(Server* Serv, Client* clt);
 		static Request* newQuit(const Request& rq);
+		void send_all(Client* clt);
+		void fd_send(Client* clt, std::set<int>& list);
 };
 
 #endif

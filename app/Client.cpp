@@ -90,6 +90,11 @@ std::string Client::getNick() const{
     return _nick;
 }
 
+Channel* Client::getChan(size_t i){
+	if (i >= _chan.size())
+		return NULL;
+	return _chan[i];
+}
 
 bool Client::valid_co(std::string psswd, char* buff, Server *serv){
 	Client *toto;
