@@ -1,7 +1,6 @@
 #include "include/Server.hpp"
 #include "Maker.hpp"
 
-volatile sig_atomic_t stop_server = 0;
 
 Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password)  {
     if (_port < 0 || _port > 65535)
@@ -27,7 +26,6 @@ Server::~Server(){
 }
 
 void Server::addClient(int fd){
-        std::cout <<"ici icic ic " <<std::endl;
     Client* toto = new Client(fd);
     _client.push_back(toto);
 }
@@ -52,7 +50,6 @@ void Server::unlinkClienttoChannel(Client* client, Channel* channel){
 }
 
 void Server::addFd(int fd){
-        std::cout <<"lala la la " <<std::endl;
     struct pollfd tmp;
     tmp.fd = fd;
     tmp.events = POLLIN;
@@ -89,18 +86,14 @@ bool Server::check_psswd(int fd){
     return false;
 }
 
-void clean_std(std::string& rest){
-    for(size_t i = 0; i < rest.size(); i++){
-        if (!isprint(rest[i])){
-            rest.erase(i, 1);
-            i = 0;
-        }
+Client* Server::find_client(std::string _nick){
+    if (_nick == "")
+        return NULL;
+    for(size_t i = 0; i < _client.size(); i++){
+        if (_nick == _client[i]->getNick() || _nick == _client[i]->getName())
+            return _client[i];
     }
-}
-
-void handle_sigint(int signum) {
-    (void)signum;
-    stop_server = 1;
+    return NULL;
 }
 
 // void Server::GoServ(){
@@ -161,16 +154,13 @@ Client* Server::find_fd(int fd){
 }
 
 void Server::dlt_client(Client* clt, int fd){
-        std::cout <<"ici" <<std::endl;
     for(std::vector<Client*>::iterator it = _client.begin(); it != _client.end(); it++){
         if ((*it) == clt){
             _client.erase(it);
             break ;
         }
     }
-        std::cout <<"la" <<std::endl;
     close (fd);
-        std::cout <<"lo" <<std::endl;
     delete clt;
 }
 
@@ -202,24 +192,18 @@ void Server::GoServ(){
                 addFd(nfd);
                 addClient(nfd);
             }
-            std::cout <<"1 --- " << _client.size()  <<std::endl;
         for (size_t i = 1; i < _fds.size(); i++) {
-                std::cout <<"2" <<std::endl;
             if (_fds[i].revents & POLLIN) {
                 memset(buffer, 0, BUFFER_SIZE);
-                std::cout <<"3" <<std::endl;
                 int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
-                std::cout <<"4" <<std::endl;
                 Client* tmp = find_fd(_fds[i].fd);
-                std::cout <<"5" <<std::endl;
                 if (tmp->getco() == false){
-                    if (tmp->valid_co(_password, buffer) == false)
+                    if (tmp->valid_co(_password, buffer, this) == false)
                         dlt_client(tmp, _fds[i].fd);
                     break;
                 }
                 else
-                    std::cout << n << " message = " << buffer << std::endl;
-				// Request* rq = mm.select(buffer);
+				Request* rq = mm.select(buffer);
 				// if (!rq)
                 	
 				// else
@@ -229,3 +213,60 @@ void Server::GoServ(){
     }
     std::cout << "server down correctly " << std::endl;
 }
+
+
+// void Server::GoServ(){
+// 	Maker mm;
+//     struct sockaddr_in s, c;
+//     socklen_t client_len = sizeof(c);
+//     char buffer[512];
+//     s.sin_family = AF_INET;
+//     s.sin_port = htons(_port);
+//     s.sin_addr.s_addr = INADDR_ANY;
+//     int opt = 1;
+//     if (setsockopt(_server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
+//   		throw std::runtime_error("setsocket failed");
+//     if (bind (_server_fd, (struct sockaddr *)&s, sizeof(s)) == -1)
+//         throw std::runtime_error("Bind failed");
+//     if (listen(_server_fd, 100) == -1)
+//         throw std::runtime_error("listen failed");
+
+//     std::cout << "server good" << std::endl;
+    
+//     while(stop_server == 0){
+//         if (poll(_fds.data(), _fds.size(), -1) == -1){
+//             if (errno == EINTR) continue;
+//             throw std::runtime_error("poll failed");
+//         }
+//         if (_fds[0].revents & POLLIN){
+//                 int nfd = accept(_server_fd, (struct sockaddr *)&c, &client_len);
+//                 addFd(nfd);
+//                 addClient(nfd);
+//             }
+//             std::cout <<"1 --- " << _client.size()  <<std::endl;
+//         for (size_t i = 1; i < _fds.size(); i++) {
+//                 std::cout <<"2" <<std::endl;
+//             if (_fds[i].revents & POLLIN) {
+//                 memset(buffer, 0, BUFFER_SIZE);
+//                 std::cout <<"3" <<std::endl;
+//                 int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
+//                 std::cout <<"4" <<std::endl;
+//                 Client* tmp = find_fd(_fds[i].fd);
+//                 std::cout <<"5" <<std::endl;
+//                 if (tmp->getco() == false){
+//                     if (tmp->valid_co(_password, buffer) == false)
+//                         dlt_client(tmp, _fds[i].fd);
+//                     break;
+//                 }
+//                 else
+//                     std::cout << n << " message = " << buffer << std::endl;
+// 				// Request* rq = mm.select(buffer);
+// 				// if (!rq)
+                	
+// 				// else
+// 				// 	rq->exec(NULL, &us);
+//             }
+//         }
+//     }
+//     std::cout << "server down correctly " << std::endl;
+// }

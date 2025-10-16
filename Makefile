@@ -3,6 +3,7 @@ INCDIR = include
 OBJDIR = .obj
 SRCDIR = app
 CMDDIR = cmd
+FCTDIR = fct
 
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -I $(SRCDIR)/$(INCDIR) -I $(CMDDIR)/$(INCDIR)
@@ -22,10 +23,14 @@ SRCS_CMD = \
 	$(CMDDIR)/Prefix.cpp \
 	$(CMDDIR)/split.cpp
 
+SRCS_FCT = \
+	$(FCTDIR)/fct.cpp
+
 SRCS = $(SRCS_APP) $(SRCS_CMD)
 
 
 OBJS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS_APP)) \
+		$(patsubst $(FCTDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS_FCT)) \
        $(patsubst $(CMDDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS_CMD))
 
 DEPS = $(OBJS:.o=.d)
@@ -44,7 +49,11 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 $(OBJDIR)/%.o: $(CMDDIR)/%.cpp
 	@mkdir -p $(dir $@)      
 	@$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
-	
+
+$(OBJDIR)/%.o: $(FCTDIR)/%.cpp
+	@mkdir -p $(dir $@)      
+	@$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
+
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 

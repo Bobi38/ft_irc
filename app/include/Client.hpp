@@ -17,6 +17,9 @@
 # include <arpa/inet.h> 
 # include <poll.h>
 # include "Channel.hpp"
+# include "Server.hpp"
+
+class Server;
 
 class Channel;
 
@@ -24,6 +27,7 @@ class Client{
     private:
         int _fd;
         bool _co;
+        bool _psswd;
         std::string _nick;
         std::string _name;
         std::string _host;
@@ -32,9 +36,10 @@ class Client{
         Client(int fd);
         Client(const std::string& prefix);
         Client(const Client& other);
-        bool valid_co(std::string psswd, char* buff);
+        bool valid_co(std::string psswd, char* buff, Server *serv);
         int getFd();
         std::string getName() const;
+        std::string getNick() const;
         int getfd() const ;
         bool getco()const;
         void setNick(const std::string& str);

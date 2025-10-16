@@ -27,6 +27,12 @@ class Channel;
 
 # define BUFFER_SIZE 512 // 512 = max RFC1459 et si ca depasse ?
 
+extern volatile sig_atomic_t stop_server;
+
+void clean_std(std::string &rest);
+void handle_sigint(int signum);
+void send_msg(int fd, std::string msg);
+
 class Server{
 	private:
 		int _port;
@@ -44,6 +50,7 @@ class Server{
 		void addFd(int fd);
 		void GoServ();
 		bool check_psswd(int fd);
+		Client* find_client(std::string _nick);
 		void linkClienttoChannel(Client* client, Channel* channel);
 		void unlinkClienttoChannel(Client* client, Channel* channel);
 		~Server();
@@ -55,7 +62,6 @@ class Server{
 	};
 };
 
-void clean_std(std::string &rest);
-void handle_sigint(int signum);
+
 
 #endif
