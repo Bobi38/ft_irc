@@ -90,6 +90,7 @@ std::string Client::getNick() const{
     return _nick;
 }
 
+
 bool Client::valid_co(std::string psswd, char* buff, Server *serv){
 	Client *toto;
 

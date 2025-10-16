@@ -196,18 +196,19 @@ void Server::GoServ(){
             if (_fds[i].revents & POLLIN) {
                 memset(buffer, 0, BUFFER_SIZE);
                 int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
+                if (n < 0)
+                    throw std::runtime_error("error recv");
                 Client* tmp = find_fd(_fds[i].fd);
                 if (tmp->getco() == false){
                     if (tmp->valid_co(_password, buffer, this) == false)
                         dlt_client(tmp, _fds[i].fd);
                     break;
                 }
-                else
 				Request* rq = mm.select(buffer);
-				// if (!rq)
-                	
-				// else
-				// 	rq->exec(NULL, &us);
+				if (!rq)
+                	send_msg(_fds[i].fd, "wrong cmd\n");
+				else
+					rq->exec(this, tmp);
             }
         }
     }

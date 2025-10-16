@@ -68,5 +68,8 @@ re: fclean all
 me: all
 	./$(NAME) 6667 jj
 
-.PHONY: all clean fclean re me
+titi: all
+	./$(NAME) 6666 pp
+
+.PHONY: all clean fclean re me titi
 

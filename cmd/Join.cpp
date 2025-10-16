@@ -13,8 +13,8 @@ Join& Join::operator=(const Join& other){
 Join::~Join() {}
 
 bool Join::check(const Server* serv, const Client* clt) const{
-	(void) serv;
-	(void) clt;
+	(void)serv;
+	(void)clt;
 	return true;
 }
 
