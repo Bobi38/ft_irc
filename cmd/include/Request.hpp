@@ -8,18 +8,21 @@
 class Request{
 	protected:
 		Prefix _user;
+		Client* _client;
 		std::string _msg;
 		std::string* _tab;
 		int	_tabSize;
 		int _back;
 	public:
-		Request(const std::string& str);
+		Request(const std::string& str, Client* Client);
 		Request(const Request& other);
+		Request() {};
 		virtual ~Request();
 
 		// void putNick() const;
 		std::string getNick() const;
 		std::string getCmd() const;
+		std::string getMsg() const;
 		std::string operator[](int x) const;
 		virtual bool check(const Server* Serv, const Client* clt) const {(void) clt; (void) Serv; return true;};
 		virtual void exec(Server* Serv, Client* clt) {(void) clt; (void) Serv; std::cout << "ne viens pas la " << std::endl;};	

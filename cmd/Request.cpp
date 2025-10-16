@@ -2,7 +2,8 @@
 
 std::string* split(char sep, std::string& str);
 
-Request::Request(const std::string& str_init): _user(Prefix(str_init)), _back(0){
+Request::Request(const std::string& str_init, Client* client)
+	: _user(Prefix(str_init)), _client(client) , _back(0){
 	if (str_init.empty())
 		return ;
 
@@ -22,11 +23,8 @@ Request::Request(const std::string& str_init): _user(Prefix(str_init)), _back(0)
 	if (size - 1 > msg && msg != -1){
 		_msg = str.substr(msg + 1);
 		msg = str.find_last_not_of(' ', msg - 1);
-		_msg.resize(_msg.size() - 2);
 		str.resize(msg + 1);
 	}
-	else
-		str.resize(size - 2);
 	
 	// std::cout << "apres retrait msg str :"<< str << std::endl;
 	_tab = split(' ', str);
@@ -55,6 +53,10 @@ Request::~Request() {
 
 std::string Request::getCmd() const {
 	return _tab[0];
+}
+
+std::string Request::getMsg() const {
+	return _msg;
 }
 
 std::string Request::getNick() const{

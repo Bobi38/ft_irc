@@ -1,5 +1,5 @@
 #include "include/Server.hpp"
-#include "Maker.hpp"
+#include "Makerj.hpp"
 
 
 Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password)  {
@@ -204,11 +204,11 @@ void Server::GoServ(){
                         dlt_client(tmp, _fds[i].fd);
                     break;
                 }
-				Request* rq = mm.select(buffer);
-				if (!rq)
-                	send_msg(_fds[i].fd, "wrong cmd\n");
-				else
-					rq->exec(this, tmp);
+				mm.select(buffer, this, tmp);
+				// if (!rq)
+                // 	send_msg(_fds[i].fd, "wrong cmd\n");
+				// else
+				// 	rq->exec(this, tmp);
             }
         }
     }

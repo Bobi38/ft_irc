@@ -20,6 +20,7 @@ SRCS_CMD = \
 	$(CMDDIR)/Test1.cpp \
 	$(CMDDIR)/Request.cpp \
 	$(CMDDIR)/Maker.cpp \
+	$(CMDDIR)/Makerj.cpp \
 	$(CMDDIR)/Prefix.cpp \
 	$(CMDDIR)/split.cpp
 

@@ -1,37 +1,41 @@
-#ifndef MAKER_HPP
-# define MAKER_HPP
+#ifndef MAKERJ_HPP
+# define MAKERJ_HPP
 # include "Request.hpp"
-# include "Topic.hpp"
-# include "Join.hpp"
-# include "Test1.hpp"
-# include "Server.hpp"
-# include "Client.hpp"
-# include <map>
 
-typedef void (*fct_ptr)(Request&, Client*, Server*);
+void test2(Request* rq, Server* server, Client* client);
 
-void test2(Request& a, Client* b, Server* c){
-    (void) c;
-    if (b)
-        std::cout << b->getName() << std::endl;
-    if (!a[0].empty()){
-        for (int i = 0; !a[i].empty(); i++)
-            std::cout << a[i] << std::endl;
-    }
-};
+void test3(Request* rq, Server* server, Client* client);
+
+typedef std::pair<std::string, void (*)(Request*, Server*, Client*)> Level;
 
 class Maker
 {
 private:
-	std::map<std::string, fct_ptr> dico;
+	Level table[16];
+	Client* _wClt;
+	std::string _buff;
 public:
 	Maker() {
-        dico["TEST2"] = &test2;
+		table[0] = Level("PASS", test2);
+		table[1] = Level("NICK", test2);
+		table[2] = Level("USER", test2);
+		table[3] = Level("JOIN", test2);
+		table[4] = Level("PART", test2);
+		table[5] = Level("KICK", test2);
+		table[6] = Level("MODE", test3);
+		table[7] = Level("INVITE", test2);
+		table[8] = Level("PRIVMSG", test2);
+		table[9] = Level("QUIT", test2);
+		table[10] = Level("NAMES", test2);
+		table[11] = Level("OPER", test2);
+		table[12] = Level("LIST", test2);
+		table[13] = Level("TOPIC", test2);
+		table[14] = Level("TEST1", test2);
 	};
 	~Maker() {};
 
-	static Request* error(const Request& rq);
-	Request* select(const std::string& str) const;
+	// Request* select(const std::string& str, Client* client);
+	void select(const std::string& str, Server* server, Client* client);
 };
 
 #endif
