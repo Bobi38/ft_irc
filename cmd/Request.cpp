@@ -34,6 +34,14 @@ Request::Request(const std::string& str_init, Client* client)
 	_tabSize = 0;
 	while (!_tab[_tabSize].empty())
 		_tabSize++;
+
+	str = _tab[0];
+	if (str[0] == '/'){
+		str = _tab[0].substr(1);
+		for (size_t i = 0; i < str.size(); i++)
+			str[i] = std::toupper(str[i]);
+		_tab[0] = str;
+	}
 }
 
 Request::Request(const Request& other) 

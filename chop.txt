@@ -25,14 +25,14 @@ for target :
 he can temporatly JOIN
 
 
-TOPIC <channel>              # edit topic (1)
+TOPIC <channel>              # edit topic (1) fait a tester
 TOPIC <channel> :<new topic> # def new topic (2)
 TOPIC <channel> :            # clean topic (3)
 
 checking :
-Channel existe ? OK : (403 : ERRNOSUCHCHANNEL)
+Channel existe ? OK : (403 : ERRNOSUCHCHANNEL) fait a tester
 All user can edit topic () (else option)
-if mode +t, user is operator ? ok : (482 -> ERR_CHANOPRIVSNEEDED)
+if mode +t, user is operator ? ok : (482 -> ERR_CHANOPRIVSNEEDED) fait a tester
 
 ok ->
 (1)

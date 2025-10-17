@@ -34,8 +34,7 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 	if (second)
 		temp = _buff + temp;
 
-
-	Request rq(temp, client); // client est inutile il faur le virer de request
+	Request rq(temp, client); // client est inutile il faut le virer de request
 
 	std::cout << "creation request avec cmd =" << rq.getCmd() << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
