@@ -1,7 +1,6 @@
 #include "include/Server.hpp"
 #include "Makerj.hpp"
 
-
 Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password)  {
     if (_port < 0 || _port > 65535)
         throw std::runtime_error("Port is not valid");
@@ -92,6 +91,16 @@ Client* Server::find_client(std::string _nick){
     for(size_t i = 0; i < _client.size(); i++){
         if (_nick == _client[i]->getNick() || _nick == _client[i]->getName())
             return _client[i];
+    }
+    return NULL;
+}
+
+Channel* Server::find_channel(std::string chan){
+    if (chan.empty())
+        return NULL;
+    for(size_t i = 0; i < chan.size(); i++){
+        if (chan == _chan[i]->getName())
+            return _chan[i];
     }
     return NULL;
 }
