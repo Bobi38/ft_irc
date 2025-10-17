@@ -23,6 +23,9 @@
 
 class Client;
 
+typedef std::vector<std::pair<int,Client*> > C_Client;
+typedef C_Client::iterator cci;
+
 enum e_client{
     PRESENT,
     CHANOP,
@@ -47,6 +50,7 @@ class Channel{
         void addClient(Client* client);
         void rmClient(Client* Client);
         void send_msg(std::string msg, int fd);
+        void chan_msg(std::string& msg, Client* sender); //envoie un message a tous les connecte
         Client* getClient(size_t i);
         ~Channel();
 };

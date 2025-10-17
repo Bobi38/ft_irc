@@ -160,7 +160,19 @@ bool Client::getco()const {
 	return _co;
 }
 
+std::string Client::getMe() const{
+	return (":" + _nick + "!" + _name + "@localhost" );
+}
+
 void Client::rcvMsg(const std::string& msg) {
 	std::string msg_temp = msg + "\t\n";
+	send(_fd, msg_temp.c_str(), msg_temp.size(), 0);
+}
+
+void Client::rcvMsg(const std::string& msg, Client* client) {
+	std::string msg_temp = msg;
+	if (client == NULL)
+		return rcvMsg(":server 401 " + getNick()); //(401 : ERR_NOSUCHNICK)
+	msg_temp = ":" +  msg + "\t\n";
 	send(_fd, msg_temp.c_str(), msg_temp.size(), 0);
 }

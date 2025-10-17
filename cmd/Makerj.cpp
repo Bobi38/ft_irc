@@ -9,7 +9,7 @@ Maker::Maker() {
 	table[5] = Level("KICK", test2);
 	table[6] = Level("MODE", test3);
 	table[7] = Level("INVITE", test2);
-	table[8] = Level("PRIVMSG", test2);
+	table[8] = Level("PRVMSG", msgprv);
 	table[9] = Level("QUIT", test2);
 	table[10] = Level("NAMES", test2);
 	table[11] = Level("OPER", test2);

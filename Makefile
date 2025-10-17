@@ -25,7 +25,8 @@ SRCS_CMD = \
 	$(CMDDIR)/split.cpp
 
 SRCS_FCT = \
-	$(FCTDIR)/fct.cpp
+	$(FCTDIR)/fct.cpp \
+	$(FCTDIR)/msg.cpp
 
 SRCS = $(SRCS_APP) $(SRCS_CMD)
 

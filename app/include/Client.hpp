@@ -40,6 +40,7 @@ class Client{
         int getFd();
         std::string getName() const;
         std::string getNick() const;
+        std::string getMe() const;
         Channel* getChan(size_t i);
         int getfd() const ;
         bool getco()const;
@@ -48,7 +49,8 @@ class Client{
         void rmChannel(Channel* chan);
         void addChannel(Channel* chan);
         bool is_Channel(std::string channel);
-        void rcvMsg(const std::string& str);
+        void rcvMsg(const std::string& str, Client* sender); //transmet le message de sender
+        void rcvMsg(const std::string& str); // message de retour 
         ~Client();
 };
 

@@ -3,7 +3,7 @@
 # include "Request.hpp"
 
 void test2(Request& rq, Server* server, Client* client);
-
+void msgprv(Request& rq, Server* server, Client* client);
 void test3(Request& rq, Server* server, Client* client);
 
 typedef std::pair<std::string, void (*)(Request&, Server*, Client*)> Level;
