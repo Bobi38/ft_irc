@@ -43,7 +43,7 @@ void Channel::rmClient(Client* client){
 	}
 }
 
-void Channel::chan_msg(std::string& msg, Client* sender){
+void Channel::chan_msg(const std::string& msg, Client* sender){
 	for(cci it = _member.begin(); it != _member.end(); it++){
 		if (it->first == PRESENT || it->first == CHANOP)
 			return it->second->rcvMsg(msg, sender);

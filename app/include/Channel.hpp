@@ -50,7 +50,7 @@ class Channel{
         void addClient(Client* client);
         void rmClient(Client* Client);
         void send_msg(std::string msg, int fd);
-        void chan_msg(std::string& msg, Client* sender); //envoie un message a tous les connecte
+        void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte
         Client* getClient(size_t i);
         ~Channel();
 };
