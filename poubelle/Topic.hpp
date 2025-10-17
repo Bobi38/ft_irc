@@ -1,6 +1,6 @@
 #ifndef TOPIC_HPP
 # define TOPIC_HPP
-# include "Request.hpp"
+// # include "Request.hpp"
 
 class Topic : public Request
 {

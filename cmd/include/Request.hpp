@@ -5,6 +5,9 @@
 # include "Server.hpp"
 # include "Client.hpp"
 
+class Client;
+class Server;
+
 class Request{
 	protected:
 		Prefix _user;

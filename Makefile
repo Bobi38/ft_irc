@@ -15,18 +15,16 @@ SRCS_APP = \
 	$(SRCDIR)/Client.cpp
 
 SRCS_CMD = \
-	$(CMDDIR)/Join.cpp \
-	$(CMDDIR)/Topic.cpp \
-	$(CMDDIR)/Test1.cpp \
 	$(CMDDIR)/Request.cpp \
-	$(CMDDIR)/Maker.cpp \
 	$(CMDDIR)/Makerj.cpp \
 	$(CMDDIR)/Prefix.cpp \
 	$(CMDDIR)/split.cpp
 
 SRCS_FCT = \
 	$(FCTDIR)/fct.cpp \
+	$(FCTDIR)/Quit.cpp \
 	$(FCTDIR)/msg.cpp
+
 
 SRCS = $(SRCS_APP) $(SRCS_CMD)
 

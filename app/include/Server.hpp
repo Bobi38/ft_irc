@@ -20,6 +20,7 @@
 # include <algorithm>
 # include "Client.hpp"
 # include "Channel.hpp"
+# include <set>
 
 class Client;
 class Channel;
