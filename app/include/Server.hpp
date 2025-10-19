@@ -8,6 +8,7 @@
 # include <fstream>
 # include <iomanip>
 # include <ctime>
+# include <sstream>
 # include <stdexcept>
 # include <csignal>
 # include <unistd.h>

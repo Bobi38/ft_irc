@@ -68,3 +68,10 @@ std::string Request::operator[](int x)const{
 		return ("");
 	return _tab[x];
 }
+
+int Request::size_tab(){
+    size_t i = 0;
+	while (!_tab[i].empty())
+        i++;
+    return i;
+}

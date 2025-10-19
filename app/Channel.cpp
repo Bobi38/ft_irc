@@ -11,6 +11,10 @@ std::string Channel::getName(){
 	return _name;
 }
 
+size_t Channel::getNbMemb(){
+	return _member.size();
+}
+
 Client* Channel::getClient(size_t i){
 	if (i >= _member.size())
 		return NULL;
@@ -30,6 +34,31 @@ void Channel::addClient(Client* client){
 		std::pair<int , Client*> tt (PRESENT, client);
 		_member.push_back(tt);
 	}
+	else {
+		for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+			if (it->second == client && it->first != BAN)
+				it->first = PRESENT;
+		}
+	}
+}
+
+bool Channel::get_i(){
+	return _i_private;
+}
+
+int Channel::getStatutClt(Client* clt){
+	if (!clt)
+		return -1;
+	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+		if (it->second == clt){
+			return it->first;
+		}
+	}
+	return -1;
+}
+
+std::string Channel::getPssd(){
+	return _psswrd;
 }
 
 void Channel::rmClient(Client* client){
@@ -48,6 +77,14 @@ void Channel::chan_msg(const std::string& msg, Client* sender){
 		if (it->first == PRESENT || it->first == CHANOP)
 			return it->second->rcvMsg(msg, sender);
 	}
+}
+
+void Channel::init_psswd(std::string psswd){
+	if (psswd == "")
+		return ;
+	_psswrd = psswd;
+	if (!_i_private)
+		_i_private = true;
 }
 
 Channel::~Channel(){

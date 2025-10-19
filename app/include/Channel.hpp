@@ -46,6 +46,11 @@ class Channel{
     public:
         Channel(std::string name, Client* client);
         std::string getName();
+        size_t getNbMemb();
+        bool get_i();
+        int getStatutClt(Client* clt);
+        std::string getPssd();
+        void init_psswd(std::string psswd);
         bool is_in(std::string _client_name);
         void addClient(Client* client);
         void rmClient(Client* Client);

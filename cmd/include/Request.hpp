@@ -26,6 +26,7 @@ class Request{
 		std::string getNick() const;
 		std::string getCmd() const;
 		std::string getMsg() const;
+		int size_tab();
 		std::string operator[](int x) const;
 		virtual bool check(const Server* Serv, const Client* clt) const {(void) clt; (void) Serv; return true;};
 		virtual void exec(Server* Serv, Client* clt) {(void) clt; (void) Serv; std::cout << "ne viens pas la " << std::endl;};	
