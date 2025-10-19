@@ -8,6 +8,7 @@ void msgprv(Request& rq, Server* server, Client* client);
 void exec_quit(Request& rq, Server* serv, Client* clt);
 void exec_join(Request& rq, Server* server, Client* client);
 void test3(Request& rq, Server* server, Client* client);
+void topic(Request& rq, Server* server, Client* client);
 
 typedef std::pair<std::string, void (*)(Request&, Server*, Client*)> Level;
 

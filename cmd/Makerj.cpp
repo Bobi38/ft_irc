@@ -14,7 +14,7 @@ Maker::Maker() {
 	table[10] = Level("NAMES", test2);
 	table[11] = Level("OPER", test2);
 	table[12] = Level("LIST", test2);
-	table[13] = Level("TOPIC", test2);
+	table[13] = Level("TOPIC", topic);
 	table[14] = Level("TEST1", test2);
 	};
 
@@ -34,8 +34,7 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 	if (second)
 		temp = _buff + temp;
 
-
-	Request rq(temp, client); // client est inutile il faur le virer de request
+	Request rq(temp, client); // client est inutile il faut le virer de request
 
 	std::cout << "creation request avec cmd =" << rq.getCmd() << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {

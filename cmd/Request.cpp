@@ -3,11 +3,11 @@
 std::string* split(char sep, std::string& str);
 
 Request::Request(const std::string& str_init, Client* client)
-	: _user(Prefix(str_init)), _client(client) , _back(0){
+	: _user(Prefix(str_init)), _client(client) , _msgStatus(false), _back(0){
 	if (str_init.empty())
 		return ;
 
-	int size = str_init.size();
+	size_t size = str_init.size();
 	int start = 0;
 
 	if (str_init[0] == ':'){
@@ -19,18 +19,29 @@ Request::Request(const std::string& str_init, Client* client)
 	std::string str = str_init.substr(start);
 
 	// std::cout << "apres retrait user str :"<< str << std::endl;
-	int msg = str.rfind(':');
-	if (size - 1 > msg && msg != -1){
+	size_t msg = str.find(':');
+	if (size - 1 > msg && msg != std::string::npos){
 		_msg = str.substr(msg + 1);
+		_msgStatus = !_msg.empty();
 		msg = str.find_last_not_of(' ', msg - 1);
 		str.resize(msg + 1);
 	}
+	else
+		_msgStatus = true;
 	
 	// std::cout << "apres retrait msg str :"<< str << std::endl;
 	_tab = split(' ', str);
 	_tabSize = 0;
 	while (!_tab[_tabSize].empty())
 		_tabSize++;
+
+	str = _tab[0];
+	if (str[0] == '/'){
+		str = _tab[0].substr(1);
+		for (size_t i = 0; i < str.size(); i++)
+			str[i] = std::toupper(str[i]);
+		_tab[0] = str;
+	}
 }
 
 Request::Request(const Request& other) 
@@ -74,4 +85,7 @@ int Request::size_tab(){
 	while (!_tab[i].empty())
         i++;
     return i;
+}
+int Request::getMsgStatus() const{
+	return _msgStatus;
 }
