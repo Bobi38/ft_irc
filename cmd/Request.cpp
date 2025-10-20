@@ -2,8 +2,8 @@
 
 std::string* split(char sep, std::string& str);
 
-Request::Request(const std::string& str_init, Client* client)
-	: _user(Prefix(str_init)), _client(client){
+Request::Request(const std::string& str_init)
+	: _user(Prefix(str_init)){
 	if (str_init.empty())
 		return ;
 

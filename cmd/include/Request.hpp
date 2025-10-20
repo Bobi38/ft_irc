@@ -20,12 +20,11 @@ enum e_request{
 class Request{
 	protected:
 		Prefix _user;
-		Client* _client;
 		std::string _msg;
 		std::string* _tab;
 		int	_tabSize;
 	public:
-		Request(const std::string& str, Client* Client); // Le client va disparaitre d'ici 
+		Request(const std::string& str); // Le client va disparaitre d'ici 
 		Request(const Request& other);
 		Request() {};
 		virtual ~Request();
