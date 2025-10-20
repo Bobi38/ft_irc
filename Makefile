@@ -24,6 +24,7 @@ SRCS_FCT = \
 	$(FCTDIR)/fct.cpp \
 	$(FCTDIR)/Quit.cpp \
 	$(FCTDIR)/Join.cpp \
+	$(FCTDIR)/Part.cpp \
 	$(FCTDIR)/msg.cpp
 
 

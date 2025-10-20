@@ -85,12 +85,15 @@ void Channel::init_psswd(std::string psswd){
 	_psswrd = psswd;
 	if (!_i_private)
 		_i_private = true;
+}
+
 bool Channel::getMOD(int mod) const{ //fct a verifier
 	(void) _t_topicop;
 	(void) _topic_exist;
 	(void) _limit; //a supprimer
 	return *(&_i_private + (mod - PRIVATE));
 }
+
 
 std::string Channel::getTopic()const{
 	return _topic;

@@ -11,5 +11,5 @@ Commande:
 - QUIT = TITOU
 - NAMES
 - OPER
-- LIST
+- LIST = TITOU
 - TOPIC = NICO

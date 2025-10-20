@@ -20,6 +20,10 @@ void send_msg(int fd, std::string msg){
     send(fd, msg.c_str(), msg.size(), 0);
 }
 
+void send_msg_v2(int fd, std::string msg, Server* serv){
+    send(fd, msg.c_str(), msg.size(), 0);
+}
+
 
 // void bucle_server(Server* serv){
 //    while(1){

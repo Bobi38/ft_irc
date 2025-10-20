@@ -1,9 +1,9 @@
 #include "Makerj.hpp"
 
 bool init_chan_key(Request& rq,  std::vector<std::string>& chan, std::vector<std::string>& key){
-    if (rq.size_tab() < 1 || rq.size_tab() > 2)
+    if (rq.size_tab() < 1 || rq.size_tab() > 2){
         return false;
-
+    }
     std::stringstream ss_chan(rq[1]);
     std::string item;
     while (std::getline(ss_chan, item, ',')) {
