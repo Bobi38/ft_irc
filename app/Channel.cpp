@@ -45,17 +45,17 @@ bool Channel::is_in(std::string _client_name){
 	return false;
 }
 
-void Channel::addClient(Client* client){
+void Channel::addClient(Client* client, int statut){
 	if (!client->is_Channel(client->getName())){
-		std::pair<int , Client*> tt (PRESENT, client);
+		std::pair<int , Client*> tt (statut, client);
 		_member.push_back(tt);
+		return ;
 	}
-	else {
-		for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
-			if (it->second == client && it->first != BAN)
-				it->first = PRESENT;
+	for(cci it = _member.begin(); it != _member.end(); it++)
+		if (it->second == client && it->first != BAN){
+			it->first = statut;
+			return ;
 		}
-	}
 }
 
 bool Channel::get_i(){
@@ -138,6 +138,18 @@ void Channel::setTopic(std::string topic, Client* user){
 	_topic_exist = true;
 
 	chan_msg("TOPIC " + _name + " :" + _topic, user);
+}
+
+
+void	Channel::invit(Client* User, Client* Invit){
+	int statut = getStatutClt(User);
+	if (statut != PRESENT && statut != CHANOP)
+		return User->rcvMsg(":server 443 " + _name + " :out of channel");//(443 -> ERR_USERONCHANNEL)
+	statut = getStatutClt(Invit);
+	if (statut >= PRESENT || statut <= BAN)
+		return User->rcvMsg(":server 443 " + _name + " :no invit" );//(443 -> ERR_USERONCHANNEL)
+	
+	addClient(Invit, INVITE);
 }
 
 Channel::~Channel(){

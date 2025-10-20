@@ -1,6 +1,24 @@
 #include "Makerj.hpp"
 #include "Channel.hpp"
 
+
+void invit(Request& rq, Server* server, Client* sender){
+	std::string user = rq[1];
+	std::string chan = rq[2];
+
+	if (user.empty() || chan.empty() || !rq[3].empty())
+		return sender->rcvMsg(":server 301 "); // attention retour
+
+	Client* User =  server->find_client(user);
+	if (!User)
+		sender->rcvMsg(":server 301 :no " + user); //(401 : ERR_NOSUCHNICK)
+	Channel* Chan = server->find_channel(chan);
+	if (!Chan)
+		sender->rcvMsg(":server 403 :no " + chan); //(403 : ERRNOSUCHCHANNEL)
+	
+	Chan->invit(sender, User);
+}
+
 void msgprv(Request& rq, Server* server, Client* sender){
 	if (rq[1].empty())
 		return sender->rcvMsg(":server 301 "); // attention retour
