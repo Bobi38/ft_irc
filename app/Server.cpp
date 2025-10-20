@@ -36,7 +36,7 @@ void Server::addChannel(std::string name, Client* client){
 
 void Server::linkClienttoChannel(Client* client, Channel* channel){
     if (!channel->is_in(client->getName()))
-        channel->addClient(client);
+        channel->addClient(client, PRESENT);
     if (!client->is_Channel(channel->getName()))
         client->addChannel(channel);
 }

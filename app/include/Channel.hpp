@@ -57,7 +57,7 @@ class Channel{
         std::string getPssd();
         void init_psswd(std::string psswd);
         bool is_in(std::string _client_name);
-        void addClient(Client* client);
+        void addClient(Client* client, int statut);
         void rmClient(Client* Client);
         Client* return_client(std::string _client_name);
         void change_statut(Client* clt, int new_st);
@@ -67,6 +67,7 @@ class Channel{
         void setTopic(std::string topic, Client* sender);
         // void send_msg(std::string msg, int fd);
 		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte
+        void invit(Client* User, Client* Invit);
 		Client* getClient(size_t i);
         void print_all_clt();
         ~Channel();

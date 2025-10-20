@@ -8,7 +8,7 @@ Maker::Maker() {
 	table[4] = Level("PART", exec_part);
 	table[5] = Level("KICK", exec_kick);
 	table[6] = Level("MODE", test3);
-	table[7] = Level("INVITE", test2);
+	table[7] = Level("INVITE", invit);
 	table[8] = Level("PRVMSG", msgprv);
 	table[9] = Level("QUIT", exec_quit);
 	table[10] = Level("NAMES", test2);
@@ -34,7 +34,7 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 	if (second)
 		temp = _buff + temp;
 
-	Request rq(temp, client); // client est inutile il faut le virer de request
+	Request rq(temp);
 
 	std::cout << "creation request avec cmd =" << rq.getCmd() << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
