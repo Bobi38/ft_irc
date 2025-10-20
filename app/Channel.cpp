@@ -1,4 +1,5 @@
 #include "./include/Channel.hpp"
+#include "Request.hpp"
 
 Channel::Channel(std::string name, Client* client): _name(name), _limit(-1), _i_invonly(false), _b_ban(false), _t_topicop(false), _topic_exist(false) {
 	if (client){
@@ -102,7 +103,7 @@ void Channel::init_psswd(std::string psswd){
 	if (psswd == "")
 		return ;
 	_psswrd = psswd;
-	if (!_i_invonly)
+	if (!_i_invonly) // je crois qu on peux faire sauter cette ligne
 		_i_invonly = true;
 }
 
@@ -118,18 +119,25 @@ std::string Channel::getTopic()const{
 	return _topic;
 }
 
-void Channel::setMOD(int mod){ //fct a verifier
+void Channel::setMOD(int mod, Client* user){ //fct a verifier
+	if (getStatutClt(user) != CHANOP)
+		return user->rcvMsg(":server 482 " + _name + " :only CHANOP");
 	bool set = mod > 0;
 	if (mod < 0)
 		mod = -mod;
 	*(&_i_invonly + (mod - PRIVATE)) = set;
 }
 
-void Channel::setTopic(std::string topic){
-	_topic = topic;
-	if (topic.empty())
-		return setMOD(-TOPIC_EXIST);
-	setMOD(TOPIC_EXIST);
+void Channel::setTopic(std::string topic, Client* user){
+	if (_t_topicop && getStatutClt(user) != CHANOP)
+		return user->rcvMsg(":server 482 " + _name + " :only CHANOP");
+	if (topic == Request::EMPTY_MSG)
+		_topic = "";
+	else
+		_topic = topic;
+	_topic_exist = true;
+
+	chan_msg("TOPIC " + _name + " :" + _topic, user);
 }
 
 Channel::~Channel(){

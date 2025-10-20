@@ -9,9 +9,12 @@ class Client;
 class Server;
 
 enum e_request{
+	CMD = -1,
 	NO_MESSAGE,
 	EMPTY_MESSAGE,
-	MESSAGE_OK
+	MESSAGE_OK,
+	MSG = 99,
+
 };
 
 class Request{
@@ -21,8 +24,6 @@ class Request{
 		std::string _msg;
 		std::string* _tab;
 		int	_tabSize;
-		int _msgStatus; // exist , vide  ? (reponse enum)
-		int _back; // j en ai pas besoin et toi ?
 	public:
 		Request(const std::string& str, Client* Client); // Le client va disparaitre d'ici 
 		Request(const Request& other);
@@ -33,10 +34,13 @@ class Request{
 		std::string getCmd() const;
 		std::string getMsg() const;
 		int size_tab();
-		int getMsgStatus() const;
+		// int getMsgStatus() const;
 		std::string operator[](int x) const;
-		virtual bool check(const Server* Serv, const Client* clt) const {(void) clt; (void) Serv; return true;};
-		virtual void exec(Server* Serv, Client* clt) {(void) clt; (void) Serv; std::cout << "ne viens pas la " << std::endl;};	
+		operator std::string();
+		virtual bool check(const Server* Serv, const Client* clt) const {(void) clt; (void) Serv; return true;}; // a suuprimer
+		virtual void exec(Server* Serv, Client* clt) {(void) clt; (void) Serv; std::cout << "ne viens pas la " << std::endl;};	// a suuprimer
+
+		static std::string EMPTY_MSG;
 };
 
 // int main(int a, char** b)

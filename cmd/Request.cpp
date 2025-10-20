@@ -3,7 +3,7 @@
 std::string* split(char sep, std::string& str);
 
 Request::Request(const std::string& str_init, Client* client)
-	: _user(Prefix(str_init)), _client(client) , _msgStatus(false), _back(0){
+	: _user(Prefix(str_init)), _client(client){
 	if (str_init.empty())
 		return ;
 
@@ -22,12 +22,11 @@ Request::Request(const std::string& str_init, Client* client)
 	size_t msg = str.find(':');
 	if (size - 1 > msg && msg != std::string::npos){
 		_msg = str.substr(msg + 1);
-		_msgStatus = !_msg.empty();
+		if (_msg.empty())
+			_msg = EMPTY_MSG;
 		msg = str.find_last_not_of(' ', msg - 1);
 		str.resize(msg + 1);
 	}
-	else
-		_msgStatus = true;
 	
 	// std::cout << "apres retrait msg str :"<< str << std::endl;
 	_tab = split(' ', str);
@@ -45,7 +44,7 @@ Request::Request(const std::string& str_init, Client* client)
 }
 
 Request::Request(const Request& other) 
-	: _user(other._user), _msg(other._msg), _tabSize(other._tabSize), _back(0)
+	: _user(other._user), _msg(other._msg), _tabSize(other._tabSize)
 {
 	if (other._tab && _tabSize > 0) {
 		_tab = new std::string[_tabSize];
@@ -74,7 +73,15 @@ std::string Request::getNick() const{
 	return _user.getNick();
 }
 
+Request::operator std::string(){
+	return _msg;
+}
+
 std::string Request::operator[](int x)const{
+	if (x == MSG)
+		return _msg;
+	if (x == -1)
+		return _user.getPrefix();
 	if (x < 0 || x >= _tabSize)
 		return ("");
 	return _tab[x];
@@ -86,6 +93,9 @@ int Request::size_tab(){
         i++;
     return i;
 }
-int Request::getMsgStatus() const{
-	return _msgStatus;
-}
+
+std::string Request::EMPTY_MSG = "\f\t\r\n\v";
+
+// int Request::getMsgStatus() const{
+// 	return _msgStatus;
+// }
