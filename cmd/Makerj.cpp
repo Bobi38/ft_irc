@@ -5,7 +5,7 @@ Maker::Maker() {
 	table[1] = Level("NICK", test2);
 	table[2] = Level("USER", test2);
 	table[3] = Level("JOIN", test2);
-	table[4] = Level("PART", test2);
+	table[4] = Level("PART", exec_part);
 	table[5] = Level("KICK", test2);
 	table[6] = Level("MODE", test3);
 	table[7] = Level("INVITE", test2);
