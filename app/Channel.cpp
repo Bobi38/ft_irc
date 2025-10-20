@@ -143,3 +143,11 @@ void Channel::setTopic(std::string topic, Client* user){
 Channel::~Channel(){
 	_member.clear();
 }
+
+void Channel::print_all_clt(){
+	std::cout << getName() << " ";
+    for(size_t i = 0; i < _member.size(); i++){
+		std::cout << _member[i].second->getName() << " - " << _member[i].first << " // ";
+	}
+	std::cout << std::endl;
+}

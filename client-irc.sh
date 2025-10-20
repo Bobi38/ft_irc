@@ -6,7 +6,7 @@ echo "PASS pp"
 sleep 0.5
 echo "NICK pp"
 sleep 0.5
-echo "USER pp 0 * :pp_"
+echo "NAME uu"
 sleep 1
-cat
+echo "JOIN #uu"
 ) | telnet localhost 6666

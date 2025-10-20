@@ -98,9 +98,10 @@ Client* Server::find_client(std::string _nick){
 Channel* Server::find_channel(std::string chan){
     if (chan.empty())
         return NULL;
-    for(size_t i = 0; i < chan.size(); i++){
-        if (chan == _chan[i]->getName())
+    for(size_t i = 0; i < _chan.size(); i++){
+        if (chan == _chan[i]->getName()){
             return _chan[i];
+        }
     }
     return NULL;
 }

@@ -68,7 +68,9 @@ class Channel{
         // void send_msg(std::string msg, int fd);
 		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte
 		Client* getClient(size_t i);
+        void print_all_clt();
         ~Channel();
+
 };
 
 #endif

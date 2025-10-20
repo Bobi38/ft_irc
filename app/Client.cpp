@@ -180,3 +180,11 @@ void Client::rcvMsg(const std::string& msg, Client* client) {
 	msg_temp = client->getMe() + " RCVMSG :" + msg + "\t\n";
 	send(_fd, msg_temp.c_str(), msg_temp.size(), 0);
 }
+
+void Client::print_all_chan(){
+	std::cout << getName() << " ";
+    for(size_t i = 0; i < _chan.size(); i++){
+		std::cout << _chan[i]->getName() << " // ";
+	}
+	std::cout << std::endl;
+}
