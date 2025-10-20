@@ -42,7 +42,8 @@ class Channel{
         std::string _psswrd;
         std::string _topic;
         int _limit;
-        bool _i_private;
+        bool _i_invonly;
+        bool _b_ban;
         bool _t_topicop;
         bool _topic_exist;
         std::vector<std::pair<int,Client*> > _member;
@@ -51,12 +52,15 @@ class Channel{
         std::string getName();
         size_t getNbMemb();
         bool get_i();
+        bool get_b();
         int getStatutClt(Client* clt);
         std::string getPssd();
         void init_psswd(std::string psswd);
         bool is_in(std::string _client_name);
         void addClient(Client* client);
         void rmClient(Client* Client);
+        Client* return_client(std::string _client_name);
+        void change_statut(Client* clt, int new_st);
 		bool getMOD(int mod) const;
 		std::string getTopic() const;
 		void setMOD(int mod); //par mod = -TOPIC_EXIST for unactiv et mod = TOPIC_EXIST pour activ

@@ -1,6 +1,6 @@
 #include "./include/Channel.hpp"
 
-Channel::Channel(std::string name, Client* client): _name(name), _limit(-1), _i_private(false), _t_topicop(false), _topic_exist(false) {
+Channel::Channel(std::string name, Client* client): _name(name), _limit(-1), _i_invonly(false), _b_ban(false), _t_topicop(false), _topic_exist(false) {
 	if (client){
 		std::pair<int , Client*> tt (CHANOP, client);
 		_member.push_back(tt);
@@ -15,10 +15,25 @@ size_t Channel::getNbMemb(){
 	return _member.size();
 }
 
-Client* Channel::getClient(size_t i){
+bool Channel::getClient(size_t i){
 	if (i >= _member.size())
 		return NULL;
 	return _member[i].second;
+}
+
+Client* Channel::return_client(std::string _client_name){
+	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+		if (it->second->getName() == _client_name)
+			return it->second;
+	}
+	return NULL;
+}
+
+void Channel::change_statut(Client* clt, int new_st){
+	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+		if (it->second == client)
+			it->first = new_st;
+	}
 }
 
 bool Channel::is_in(std::string _client_name){
@@ -43,7 +58,11 @@ void Channel::addClient(Client* client){
 }
 
 bool Channel::get_i(){
-	return _i_private;
+	return _i_invonly;
+}
+
+bool Channel::get_b(){
+	return _b_ban;
 }
 
 int Channel::getStatutClt(Client* clt){
@@ -83,15 +102,15 @@ void Channel::init_psswd(std::string psswd){
 	if (psswd == "")
 		return ;
 	_psswrd = psswd;
-	if (!_i_private)
-		_i_private = true;
+	if (!_i_invonly)
+		_i_invonly = true;
 }
 
 bool Channel::getMOD(int mod) const{ //fct a verifier
 	(void) _t_topicop;
 	(void) _topic_exist;
 	(void) _limit; //a supprimer
-	return *(&_i_private + (mod - PRIVATE));
+	return *(&_i_invonly + (mod - PRIVATE));
 }
 
 
@@ -103,7 +122,7 @@ void Channel::setMOD(int mod){ //fct a verifier
 	bool set = mod > 0;
 	if (mod < 0)
 		mod = -mod;
-	*(&_i_private + (mod - PRIVATE)) = set;
+	*(&_i_invonly + (mod - PRIVATE)) = set;
 }
 
 void Channel::setTopic(std::string topic){

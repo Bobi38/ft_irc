@@ -4,7 +4,8 @@ Commande:
 - USER
 - JOIN = TITOU
 - PART = TITOU
-- KICK
+- KICK = TITOU
+- BAN = 
 - MODE
 - INVITE
 - PRVMSG = NICO

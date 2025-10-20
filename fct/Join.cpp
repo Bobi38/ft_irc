@@ -26,7 +26,7 @@ bool init_chan_key(Request& rq,  std::vector<std::string>& chan, std::vector<std
 void init_chan(Server* server, Channel* chan, std::string psswd, Client* clt){
     if (chan->getStatutClt(clt) == PRESENT)
         return; // faut il code erreur ???
-    if (chan->getStatutClt(clt) == BAN)
+    if (chan->getStatutClt(clt) == BAN && chan->get_b() == true)
         return; // rajouter code erreur
     if (chan->get_i() == true && (chan->getStatutClt(clt) != INVITE))
         return ;
