@@ -164,6 +164,10 @@ std::string Client::getMe() const{
 	return (":" + _nick + "!" + _name + "@localhost" );
 }
 
+Client::operator bool() const{
+	return _co;
+}
+
 void Client::rcvMsg(const std::string& msg) {
 	std::string msg_temp = msg + "\t\n";
 	send(_fd, msg_temp.c_str(), msg_temp.size(), 0);

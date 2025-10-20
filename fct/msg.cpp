@@ -33,17 +33,15 @@ void topic(Request& rq, Server* server, Client* sender){
 	if (!Chan)
 		return sender->rcvMsg(":server 403 :no " + chan); //(403 : ERRNOSUCHCHANNEL)
 
-	if (!rq.getMsgStatus()){
+	if (rq[MSG].empty() && rq[2].empty()){
 		if (!Chan->getMOD(TOPIC_EXIST))
 			return sender->rcvMsg(":server 331 " + chan + " No topic is set"); //(403 : ERRNOSUCHCHANNEL)
 		else
 			return sender->rcvMsg(":server 332 " + chan + " :" + Chan->getTopic());
 	}	
-
-	if (Chan->getMOD(TOPICOP) && 1 == 0){//sender operateur
-		return sender->rcvMsg(":server 482 " + chan + " ERR_CHANOPRIVSNEEDED"); // (482 -> ERR_CHANOPRIVSNEEDED)
-
-	Chan->setTopic(rq.getMsg());
-	Chan->chan_msg("TOPIC " + chan + " :" + rq.getMsg(), sender);
-	}
+	
+	if (rq[2].empty())
+		Chan->setTopic(rq[MSG], sender);
+	else
+		Chan->setTopic(rq[2], sender);
 }

@@ -49,6 +49,7 @@ class Client{
         void rmChannel(Channel* chan);
         void addChannel(Channel* chan);
         bool is_Channel(std::string channel);
+        operator bool() const;
         void rcvMsg(const std::string& str, Client* sender); //transmet le message de sender
         void rcvMsg(const std::string& str); // message de retour 
         ~Client();

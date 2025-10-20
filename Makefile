@@ -26,6 +26,7 @@ SRCS_FCT = \
 	$(FCTDIR)/Join.cpp \
 	$(FCTDIR)/Part.cpp \
 	$(FCTDIR)/msg.cpp
+# 	$(FCTDIR)/Join.cpp \
 
 
 SRCS = $(SRCS_APP) $(SRCS_CMD)

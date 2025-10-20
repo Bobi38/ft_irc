@@ -208,7 +208,7 @@ void Server::GoServ(){
                 if (n < 0)
                     throw std::runtime_error("error recv");
                 Client* tmp = find_fd(_fds[i].fd);
-                if (tmp->getco() == false){
+                if (!(*tmp)){
                     if (tmp->valid_co(_password, buffer, this) == false)
                         dlt_client(tmp, _fds[i].fd);
                     break;
