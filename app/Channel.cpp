@@ -16,7 +16,7 @@ size_t Channel::getNbMemb(){
 	return _member.size();
 }
 
-bool Channel::getClient(size_t i){
+Client* Channel::getClient(size_t i){
 	if (i >= _member.size())
 		return NULL;
 	return _member[i].second;
@@ -32,7 +32,7 @@ Client* Channel::return_client(std::string _client_name){
 
 void Channel::change_statut(Client* clt, int new_st){
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
-		if (it->second == client)
+		if (it->second == clt)
 			it->first = new_st;
 	}
 }

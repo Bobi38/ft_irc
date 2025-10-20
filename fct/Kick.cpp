@@ -13,7 +13,7 @@ void exec_kick(Request& rq, Server* server, Client* client){
         return ;
     if (TChan->getStatutClt(TClt) != PRESENT)
         return ;
-    if (TChan->getStatutClt(client) != OPER)
+    if (TChan->getStatutClt(client) != CHANOP)
         return ;
     TClt->rmChannel(TChan);
     TChan->change_statut(TClt, BAN);
