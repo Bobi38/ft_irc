@@ -50,6 +50,8 @@ class Client{
         void addChannel(Channel* chan);
         bool is_Channel(std::string channel);
         void print_all_chan();
+        void setpssd();
+        void setco();
         operator bool() const;
         void rcvMsg(const std::string& str, Client* sender); //transmet le message de sender
         void rcvMsg(const std::string& str); // message de retour 

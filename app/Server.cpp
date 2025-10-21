@@ -106,6 +106,10 @@ Channel* Server::find_channel(std::string chan){
     return NULL;
 }
 
+std::string Server::getPSSD(){
+    return _password;
+}
+
 // void Server::GoServ(){
 //     struct sockaddr_in s, c;
 //     socklen_t client_len = sizeof(c);

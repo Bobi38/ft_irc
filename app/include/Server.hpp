@@ -46,6 +46,7 @@ class Server{
 		Client* find_fd(int fd);
 		void dlt_client(Client* clt, int fd);
 		void addFd(int fd);
+		std::string getPSSD();
 		void GoServ();
 		bool check_psswd(int fd);
 		Client* find_client(std::string _nick);

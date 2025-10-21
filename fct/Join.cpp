@@ -1,7 +1,6 @@
 #include "Makerj.hpp"
 
-bool init_chan_key(Request& rq,  std::vector<std::string>& chan, std::vector<std::string>& key){
-    std::cout << "9" << std::endl;
+bool init_chan_key(Request& rq,  std::vector<std::string>& chan, std::vector<std::string>& key){ 
     if (rq.size_tab() < 1 || rq.size_tab() > 2){
         return false;
     }
@@ -25,31 +24,24 @@ bool init_chan_key(Request& rq,  std::vector<std::string>& chan, std::vector<std
 }
 
 void init_chan(Server* server, Channel* chan, std::string psswd, Client* clt){
-    std::cout << "1" << std::endl;
     if (chan->getStatutClt(clt) == PRESENT)
         return; // faut il code erreur ???
-    std::cout << "2" << std::endl;
     if (chan->getStatutClt(clt) == BAN && chan->get_b() == true)
         return; // rajouter code erreur
-    std::cout << "3" << std::endl;
     if (chan->get_i() == true && (chan->getStatutClt(clt) != INVITE))
         return ;
-    std::cout << "4" << std::endl;
     if (!chan->getPssd().empty() && (psswd != chan->getPssd()))
         return ; // wrong code erreur
     server->linkClienttoChannel(clt, chan);
 }
 
 void exec_join(Request& rq, Server* server, Client* client){
-    std::cout << " je suis join" << std::endl;
-    std::cout << " jclt = " << client->getName() << std::endl;
     std::vector<std::string> chan;
     std::vector<std::string> key;
     Channel *TChan;
 
     if (init_chan_key(rq, chan, key) == false)
         return ;
-    std::cout << "10" << std::endl;
 
     for(size_t i = 0; i < chan.size(); i++){
         if (chan[i][0] != '#' && chan[i][0] != '&'){
@@ -66,6 +58,7 @@ void exec_join(Request& rq, Server* server, Client* client){
         }
         else
             init_chan(server, TChan, key[i], client);
+        
     }
     TChan->print_all_clt();
     client->print_all_chan();

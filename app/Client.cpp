@@ -90,6 +90,16 @@ std::string Client::getNick() const{
     return _nick;
 }
 
+void Client::setpssd() {
+	if (_psswd == false)
+		_psswd = true;
+}
+
+void Client::setco() {
+	if (_co == false)
+		_co = true;
+}
+
 Channel* Client::getChan(size_t i){
 	if (i >= _chan.size())
 		return NULL;
