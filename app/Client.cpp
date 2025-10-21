@@ -1,6 +1,6 @@
 #include "include/Client.hpp"
 
-Client::Client(int fd): _fd(fd), _co(false), _psswd(false), _nick(""), _name(""), _host("") {}
+Client::Client(int fd): _fd(fd), _co(false), _psswd(false), _nick(""), _name(""), _host("127.0.0.1") {}
 
 Client::Client(const std::string& prefix) {
 	size_t size = prefix.size();
@@ -57,7 +57,6 @@ void Client::setNick(const std::string& str){
 
 void Client::setName(const std::string& str){
     _name = str;
-	_host = "localhost";
 	_co = true;
 }
 
@@ -101,7 +100,8 @@ bool Client::valid_co(std::string psswd, char* buff, Server *serv){
 
 
 	if (_nick == "" && _name == "" && strncmp(buff, "PASS ", 5) && _psswd == false){
-		send_msg(_fd, "we need a nick to connect with command PASS <password>\n");
+		send_msg(_fd, "we need a password to connect with command PASS <password>\n");
+		std::cout << " tentative connection mdp bloque\n";
 		return true;
 	}
 	if (!strncmp(buff, "PASS ", 5) && _psswd == false){
@@ -132,7 +132,7 @@ bool Client::valid_co(std::string psswd, char* buff, Server *serv){
 		return true;
 	}
 	if (_nick != "" && _name == "" && strncmp(buff, "NAME ", 5)){
-		send_msg(_fd, "we need a nick to connect with command NICK <nickname>\n");
+		send_msg(_fd, "we need a name to connect with command NAME <nickname>\n");
 		return true;
 	}
 	if (!strncmp(buff, "NAME ", 5)){
@@ -161,7 +161,7 @@ bool Client::getco()const {
 }
 
 std::string Client::getMe() const{
-	return (":" + _nick + "!" + _name + "@localhost" );
+	return (":" + _nick + "!" + _name + "@" + _host );
 }
 
 Client::operator bool() const{

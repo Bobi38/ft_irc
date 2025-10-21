@@ -38,7 +38,7 @@ Request::Request(const std::string& str_init)
 	if (str[0] == '/'){
 		str = _tab[0].substr(1);
 		for (size_t i = 0; i < str.size(); i++)
-			str[i] = std::toupper(str[i]);
+			str[i] = std::tolower(str[i]);
 		_tab[0] = str;
 	}
 }

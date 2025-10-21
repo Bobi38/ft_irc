@@ -66,16 +66,48 @@ bool Channel::get_b(){
 	return _b_ban;
 }
 
+// int Channel::getStatutClt(Client* clt){
+// 	if (!clt)
+// 		return -1;
+// 	std::cout << "cic\n" << _member.size() << " ici\n";
+// 	cci iti = _member.begin();
+// 	std::cout << "cic\n";
+// 	cci itij = _member.end();
+// 	iti = itij;
+// 	for(cci it = _member.begin(); it != _member.end(); it++){
+// 		if (it->second == clt){
+// 			return it->first;
+// 		}
+// 	}
+// 	return -1;
+// }
+
+
+
 int Channel::getStatutClt(Client* clt){
-	if (!clt)
+
+	// std::cout << "Debut Channel::getStatutClt " << std::endl;
+	if (!clt) {
+		// std::cout << "Client NULL!" << std::endl;
 		return -1;
-	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+	}
+	
+	// std::cout << "Taille de _member: " << _member.size() << std::endl;
+	// std::cout << "Recherche du client: " << clt->getName() << std::endl;
+	
+	for(cci it = _member.begin(); it != _member.end(); it++){
+		// std::cout << "Comparaison avec: " << it->second->getName() << std::endl;
 		if (it->second == clt){
+			// std::cout << "Client trouvé! Statut: " << it->first << std::endl;
 			return it->first;
 		}
 	}
+	
+	// std::cout << "Client non trouvé dans le canal!" << std::endl;
 	return -1;
 }
+
+
 
 std::string Channel::getPssd(){
 	return _psswrd;
@@ -95,7 +127,7 @@ void Channel::rmClient(Client* client){
 void Channel::chan_msg(const std::string& msg, Client* sender){
 	for(cci it = _member.begin(); it != _member.end(); it++){
 		if (it->first == PRESENT || it->first == CHANOP)
-			return it->second->rcvMsg(msg, sender);
+			it->second->rcvMsg(msg, sender);
 	}
 }
 
@@ -142,14 +174,25 @@ void Channel::setTopic(std::string topic, Client* user){
 
 
 void	Channel::invit(Client* User, Client* Invit){
+	// std::cout << " intvit 1 " << User->getNick() << std::endl;
+
 	int statut = getStatutClt(User);
+	// std::cout << " intvit 2 " << User->getNick() << std::endl;
+	
 	if (statut != PRESENT && statut != CHANOP)
 		return User->rcvMsg(":server 443 " + _name + " :out of channel");//(443 -> ERR_USERONCHANNEL)
+	// std::cout << " intvit 4 " << Invit->getNick() << std::endl;
+	
 	statut = getStatutClt(Invit);
-	if (statut >= PRESENT || statut <= BAN)
+	if (statut != -1)
 		return User->rcvMsg(":server 443 " + _name + " :no invit" );//(443 -> ERR_USERONCHANNEL)
+	// std::cout << " intvit 3 " << Invit->getNick() << std::endl;
 	
 	addClient(Invit, INVITE);
+	// std::cout << " intvit 5 " << Invit->getNick() << std::endl;
+	
+	Invit->rcvMsg(User->getMe() + " INVITE " + Invit->getNick() + " :" + _name);
+	// std::cout << " intvit 6 " << Invit->getNick() << std::endl;
 }
 
 Channel::~Channel(){
