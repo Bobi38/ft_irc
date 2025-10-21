@@ -13,7 +13,7 @@ Maker::Maker() {
 	table[9] = Level("QUIT", exec_quit);
 	table[10] = Level("NAMES", test2);
 	table[11] = Level("OPER", test2);
-	table[12] = Level("LIST", test2);
+	table[12] = Level("LIST", exec_list);
 	table[13] = Level("TOPIC", topic);
 	table[14] = Level("TEST1", test2);
 	};

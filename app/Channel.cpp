@@ -163,3 +163,13 @@ void Channel::print_all_clt(){
 	}
 	std::cout << std::endl;
 }
+
+int Channel::getNbMemb() const{
+	int cpt = 0;
+
+	for(size_t i = 0; i < _member.size(); i++){
+		if (_member[i].first == CHANOP ||  _member[i].first == PRESENT)
+			cpt++;
+	}
+	return cpt;
+}

@@ -9,8 +9,6 @@ bool init_chan_key(Request& rq,  std::vector<std::string>& chan, std::vector<std
     std::stringstream ss_chan(rq[1]);
     std::string item;
     while (std::getline(ss_chan, item, ',')) {
-        if (item[0] != '#' && item[0] != '&')
-            return false;
         chan.push_back(item);
     }
    
@@ -54,6 +52,10 @@ void exec_join(Request& rq, Server* server, Client* client){
     std::cout << "10" << std::endl;
 
     for(size_t i = 0; i < chan.size(); i++){
+        if (chan[i][0] != '#' && chan[i][0] != '&'){
+            // send_msg_client_Chan(client->getfd(), "wrong name chan");
+            continue;
+        }
         TChan = server->find_channel(chan[i]);
         if (!TChan && chan[i] != ""){
             server->addChannel(chan[i], client);

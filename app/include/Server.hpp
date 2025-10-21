@@ -31,10 +31,6 @@ class Channel;
 
 extern volatile sig_atomic_t stop_server;
 
-void clean_std(std::string &rest);
-void handle_sigint(int signum);
-void send_msg(int fd, std::string msg);
-
 class Server{
 	private:
 		int _port;
@@ -65,6 +61,9 @@ class Server{
 	};
 };
 
-
+void clean_std(std::string &rest);
+void handle_sigint(int signum);
+void send_msg(int fd, std::string msg);
+void send_msg_client_Chan(Client* clt, std::string msg, int code, Channel* chan);
 
 #endif
