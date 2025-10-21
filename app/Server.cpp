@@ -226,6 +226,16 @@ void Server::GoServ(){
 }
 
 
+Channel* Server::getSChan(size_t i){
+	if (i >= _chan.size())
+		return NULL;
+	return _chan[i];
+}
+
+size_t Server::sizeChan(){
+    return _chan.size();
+}
+
 // void Server::GoServ(){
 // 	Maker mm;
 //     struct sockaddr_in s, c;

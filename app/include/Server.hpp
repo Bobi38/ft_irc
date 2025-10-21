@@ -50,6 +50,8 @@ class Server{
 		bool check_psswd(int fd);
 		Client* find_client(std::string _nick);
 		Channel* find_channel(std::string chan);
+		Channel* getSChan(size_t i);
+		size_t sizeChan();
 		void linkClienttoChannel(Client* client, Channel* channel);
 		void unlinkClienttoChannel(Client* client, Channel* channel);
 		~Server();
