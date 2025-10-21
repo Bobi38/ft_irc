@@ -28,6 +28,7 @@ class Channel;
 
 
 # define BUFFER_SIZE 512 // 512 = max RFC1459 et si ca depasse ?
+# define SERVER_NAME "server_irc"
 
 extern volatile sig_atomic_t stop_server;
 

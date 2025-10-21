@@ -11,19 +11,31 @@ void exec_nick(Request& rq, Server* server, Client* client){
 }
 
 void exec_pass(Request& rq, Server* server, Client* client){
-    if (client->getName() != "" || client->getNick() != "")
-        return ; // error 462
-    if (rq[0].c_str() == server->getPSSD()){
+    if (client->getName() != "" || client->getNick() != ""){
+        client->rcvMsg("462 " + client->getNick() + " :You may not reregister");
+        return;
+    }
+    if (rq.size_tab() < 2) {
+        client->rcvMsg("461 PASS :Not enough parameters");
+        return;
+    }
+    if (rq[0] == server->getPSSD()){
         client->setpssd();
     }
-    else
+    else{
+        client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
         server->dlt_client(client, client->getfd());
+    }
 }
 
 
 void exec_user(Request& rq, Server* server, Client* client){
-    (void)rq;
     (void)server;
+
+    if (rq.size_tab() < 5) {
+        client->rcvMsg("461 USER :Not enough parameters\r\n");
+        return;
+    }
     client->setco();
 }
 

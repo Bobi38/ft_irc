@@ -191,6 +191,14 @@ void Client::rcvMsg(const std::string& msg, Client* client) {
 	send(_fd, msg_temp.c_str(), msg_temp.size(), 0);
 }
 
+void Client::setRealName(std::string realname){
+	_realname = realname;
+}
+
+std::string Client::getRealName(){
+	return _realname;
+}
+
 void Client::print_all_chan(){
 	std::cout << getName() << " ";
     for(size_t i = 0; i < _chan.size(); i++){

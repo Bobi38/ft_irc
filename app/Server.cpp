@@ -213,11 +213,6 @@ void Server::GoServ(){
                 if (n < 0)
                     throw std::runtime_error("error recv");
                 Client* tmp = find_fd(_fds[i].fd);
-                if (!(*tmp)){
-                    if (tmp->valid_co(_password, buffer, this) == false)
-                        dlt_client(tmp, _fds[i].fd);
-                    break;
-                }
 				mm.select(buffer, this, tmp);
 				// if (!rq)
                 // 	send_msg(_fds[i].fd, "wrong cmd\n");

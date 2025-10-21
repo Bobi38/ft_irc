@@ -2,6 +2,8 @@
 #include "Channel.hpp"
 
 void exec_kick(Request& rq, Server* server, Client* client){
+    if (client->getco() == false)
+        return ;
     Channel* TChan;
     Client* TClt;
 

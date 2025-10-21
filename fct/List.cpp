@@ -2,6 +2,8 @@
 #include "Channel.hpp"
 
 void exec_list(Request& rq, Server* server, Client* client){
+    if (client->getco() == false)
+        return ;
     (void)rq;
     std::string msg;
     for (size_t i = 0; i < server->sizeChan(); ++i) {
