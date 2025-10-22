@@ -75,3 +75,38 @@ MODE <channel> <+/-modes> [params]  # set MODE
 475	ERR_BADCHANNELKEY	Mauvaise clé (lors du JOIN avec +k)
 
 key max= 23 char,  no " ", ":", "'", ">32"
+
+
+
+--------- JOIN MSS RETOUR ------------
+   :nick!user@host JOIN #canal
+```
+
+2. **RPL_TOPIC (332)** - Le sujet du canal (si défini) :
+```
+   :serveur 332 nick #canal :Sujet du canal
+```
+
+3. **RPL_TOPICWHOTIME (333)** - Qui a défini le sujet et quand (optionnel mais recommandé) :
+```
+   :serveur 333 nick #canal setter_nick 1234567890
+```
+
+4. **RPL_NAMREPLY (353)** - La liste des utilisateurs présents :
+```
+   :serveur 353 nick = #canal :@op +voice user1 user2
+```
+   (le `=` indique un canal public, `@` pour les ops, `+` pour les voices)
+
+5. **RPL_ENDOFNAMES (366)** - Fin de la liste des noms :
+```
+   :serveur 366 nick #canal :End of /NAMES list.
+```
+
+**Ordre typique :**
+```
+:nick!user@host JOIN #canal
+:serveur 332 nick #canal :Bienvenue sur le canal
+:serveur 333 nick #canal admin 1729612345
+:serveur 353 nick = #canal :@admin nick user2
+:serveur 366 nick #canal :End of /NAMES list.

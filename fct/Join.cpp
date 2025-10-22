@@ -1,7 +1,7 @@
 #include "Makerj.hpp"
 
 bool init_chan_key(Request& rq,  std::vector<std::string>& chan, std::vector<std::string>& key){ 
-    if (rq.size_tab() < 1 || rq.size_tab() > 2){
+    if (rq.size_tab() < 2 || rq.size_tab() > 3){
         return false;
     }
  
@@ -23,26 +23,31 @@ bool init_chan_key(Request& rq,  std::vector<std::string>& chan, std::vector<std
         return true;
 }
 
-void init_chan(Server* server, Channel* chan, std::string psswd, Client* clt){
-    if (chan->nb_user() >= 10){
-        client->rcvMsg("471 " +TChan->getName() + " :Cannot join channel (+l)");
-        return;
+bool init_chan(Server* server, Channel* chan, std::string psswd, Client* clt){
+    if (clt->nbChan() >= 10){
+        clt->rcvMsg("405 " +chan->getName() + " :You have joined too many channels");
+        return false;  
+    }
+    if (chan->getNbMemb() >= 10){
+        clt->rcvMsg("471 " +chan->getName() + " :Cannot join channel (+l)");
+        return false;
     }
     if (chan->getStatutClt(clt) == PRESENT)
-        return; // faut il code erreur ???
+        return false; // faut il code erreur ???
     if (chan->getStatutClt(clt) == BAN && chan->get_b() == true){
-        client->rcvMsg("474 " +TChan->getName() + " :Cannot join channel (+b)");
-        return;
+        clt->rcvMsg("474 " +chan->getName() + " :Cannot join channel (+b)");
+        return false;
     }
     if (chan->get_i() == true && (chan->getStatutClt(clt) != INVITE)){
-        client->rcvMsg("473 " +TChan->getName() + " :Cannot join channel (+i)");
-        return;
+        clt->rcvMsg("473 " +chan->getName() + " :Cannot join channel (+i)");
+        return false;
     }
     if (!chan->getPssd().empty() && (psswd != chan->getPssd())){
-        client->rcvMsg("475 " +TChan->getName() + " :Cannot join channel (+k)");
-        return;
+        clt->rcvMsg("475 " +chan->getName() + " :Cannot join channel (+k)");
+        return false;
     }
     server->linkClienttoChannel(clt, chan);
+    return true;
 }
 
 void exec_join(Request& rq, Server* server, Client* client){
@@ -59,7 +64,7 @@ void exec_join(Request& rq, Server* server, Client* client){
 
     for(size_t i = 0; i < chan.size(); i++){
         if (chan[i][0] != '#' && chan[i][0] != '&'){
-            // send_msg_client_Chan(client->getfd(), "wrong name chan");
+            client->rcvMsg("403 " + chan[i] + " :No such channel");
             continue;
         }
         TChan = server->find_channel(chan[i]);
@@ -71,7 +76,9 @@ void exec_join(Request& rq, Server* server, Client* client){
                 TChan->init_psswd(key[i]);
         }
         else
-            init_chan(server, TChan, key[i], client);
+            if (init_chan(server, TChan, key[i], client) == false)
+                continue ;
+        client->rcvMsg(client->getMe() + " JOIN " + chan[i] );
         
     }
     TChan->print_all_clt();

@@ -98,6 +98,10 @@ void Client::setpssd() {
 void Client::setco() {
 	if (_co == false)
 		_co = true;
+	this->rcvMsg(":server_irc 001 " + _nick + " :Welcome to the IRC Network " + this->getMe());
+	this->rcvMsg(":serveur 002 " + _nick + " :Your host is serveur");
+	this->rcvMsg(":serveur 376 " + _nick + " :End of /MOTD command.");
+
 }
 
 Channel* Client::getChan(size_t i){
@@ -179,7 +183,7 @@ Client::operator bool() const{
 }
 
 void Client::rcvMsg(const std::string& msg) {
-	std::string msg_temp = msg + "\t\n";
+	std::string msg_temp = msg + "\r\n";
 	send(_fd, msg_temp.c_str(), msg_temp.size(), 0);
 }
 
@@ -191,13 +195,13 @@ void Client::rcvMsg(const std::string& msg, Client* client) {
 	send(_fd, msg_temp.c_str(), msg_temp.size(), 0);
 }
 
-void Client::setRealName(std::string realname){
-	_realname = realname;
-}
+// void Client::setRealName(std::string realname){
+// 	_realname = realname;
+// }
 
-std::string Client::getRealName(){
-	return _realname;
-}
+// std::string Client::getRealName(){
+// 	return _realname;
+// }
 
 void Client::print_all_chan(){
 	std::cout << getName() << " ";
@@ -205,4 +209,8 @@ void Client::print_all_chan(){
 		std::cout << _chan[i]->getName() << " // ";
 	}
 	std::cout << std::endl;
+}
+
+size_t Client::nbChan(){
+	return _chan.size();
 }

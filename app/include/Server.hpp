@@ -36,6 +36,7 @@ class Server{
 	private:
 		int _port;
 		std::string _password;
+		time_t _ping;
 		int _server_fd;
 		std::vector<Client*> _client;
 		std::vector<struct pollfd> _fds;
@@ -54,6 +55,7 @@ class Server{
 		Channel* find_channel(std::string chan);
 		Channel* getSChan(size_t i);
 		size_t sizeChan();
+		void send_ping();
 		void linkClienttoChannel(Client* client, Channel* channel);
 		void unlinkClienttoChannel(Client* client, Channel* channel);
 		~Server();

@@ -32,6 +32,8 @@ tmux select-layout -t $SESSION_NAME tiled
 
 sleep 1
 tmux send-keys -t $SESSION_NAME:0.0 "PASS jj" C-m
+[o] PASS
+[1]
 tmux send-keys -t $SESSION_NAME:0.0 "NICK Alain" C-m
 tmux send-keys -t $SESSION_NAME:0.0 "NAME Altrad" C-m
 tmux send-keys -t $SESSION_NAME:0.1 "PASS jj" C-m

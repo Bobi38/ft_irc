@@ -16,6 +16,8 @@ Maker::Maker() {
 	table[12] = Level("LIST", exec_list);
 	table[13] = Level("TOPIC", topic);
 	table[14] = Level("TEST1", test2);
+	table[15] = Level("CAP", exec_CAP);
+	table[16] = Level("PING", exec_ping);
 	};
 
 void Maker::select(const std::string& str, Server* server, Client* client){
@@ -36,7 +38,9 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 
 	Request rq(temp);
 
-	std::cout << "creation request avec cmd =" << rq.getCmd() << std::endl;
+	std::cout << "creation request avec cmd =" << rq.getCmd() << " " << rq.size_tab() << std::endl;
+	// for(int i = 0 ; i < rq.size_tab(); i++)
+	// 	std::cout << i << "= " << rq[i] << "->" << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first)
 			return table[i].second(rq, server, client);

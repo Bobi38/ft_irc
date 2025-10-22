@@ -30,7 +30,8 @@ class Client{
         bool _psswd;
         std::string _nick;
         std::string _name;
-        std::string _realname;
+        // std::string _realname;
+        std::string _host;
         std::vector<Channel*>_chan;
     public:
         Client(int fd);
@@ -57,6 +58,7 @@ class Client{
         operator bool() const;
         void rcvMsg(const std::string& str, Client* sender); //transmet le message de sender
         void rcvMsg(const std::string& str); // message de retour 
+        size_t nbChan();
         ~Client();
 };
 

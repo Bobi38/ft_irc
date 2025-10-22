@@ -1,7 +1,7 @@
 #include "include/Server.hpp"
 #include "Makerj.hpp"
 
-Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password)  {
+Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password), _ping(time(NULL))  {
     if (_port < 0 || _port > 65535)
         throw std::runtime_error("Port is not valid");
     _server_fd = socket (AF_INET, SOCK_STREAM, 0);
@@ -178,6 +178,13 @@ void Server::dlt_client(Client* clt, int fd){
     delete clt;
 }
 
+void Server::send_ping(){
+    for(size_t i = 0; i < _client.size(); i++){
+        _client[i]->rcvMsg("PING :server_irc");
+    }
+
+}
+
 void Server::GoServ(){
 	Maker mm;
     struct sockaddr_in s, c;
@@ -201,6 +208,8 @@ void Server::GoServ(){
             if (errno == EINTR) continue;
             throw std::runtime_error("poll failed");
         }
+
+
         if (_fds[0].revents & POLLIN){
                 int nfd = accept(_server_fd, (struct sockaddr *)&c, &client_len);
                 addFd(nfd);
@@ -214,11 +223,13 @@ void Server::GoServ(){
                     throw std::runtime_error("error recv");
                 Client* tmp = find_fd(_fds[i].fd);
 				mm.select(buffer, this, tmp);
-				// if (!rq)
-                // 	send_msg(_fds[i].fd, "wrong cmd\n");
-				// else
-				// 	rq->exec(this, tmp);
             }
+        }
+        time_t now = time(NULL);
+        if ((now - _ping) > 60){
+            std::cout << " in ping" << std::endl;
+            this->send_ping();
+            _ping = time(NULL);
         }
     }
     std::cout << "server down correctly " << std::endl;
