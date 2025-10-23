@@ -72,12 +72,11 @@ void exec_user(Request& rq, Server* server, Client* client){
 void exec_ping(Request& rq, Server* server, Client* client){
     (void)server;
     (void)rq;
-    client->rcvMsg("PONG :" + rq[1]);
+    client->rcvMsg(":4242 PONG 4242 :" + rq[1]);
 }
 
 void exec_CAP(Request& rq, Server* server, Client* client){
     (void)server;
-    (void)rq;
     std::cout << "je suis dans CAP" << std::endl;
     if (rq.size_tab() == 8){
         client->rcvMsg(":4242 CAP * LS :");

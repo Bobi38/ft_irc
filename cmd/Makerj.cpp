@@ -5,7 +5,7 @@ Maker::Maker(): _wClt(NULL) {
 	table[1] = Level("NICK", exec_nick);
 	table[2] = Level("USER", exec_user);
 	table[3] = Level("JOIN", exec_join);
-	table[4] = Level("PART", exec_part);
+	table[15] = Level("PART", exec_part);
 	table[5] = Level("KICK", exec_kick);
 	table[6] = Level("MODE", mode);
 	table[7] = Level("INVITE", invit);
@@ -16,9 +16,8 @@ Maker::Maker(): _wClt(NULL) {
 	table[12] = Level("LIST", exec_list);
 	table[13] = Level("TOPIC", topic);
 	table[14] = Level("TEST1", test2);
-	table[15] = Level("CAP", exec_CAP);
+	table[4] = Level("CAP", exec_CAP);
 	table[16] = Level("PING", exec_ping);
-	table[17] = Level("", test2);
 	};
 
 void Maker::select(const std::string& str, Server* server, Client* client){
@@ -48,7 +47,7 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 		std::cout << i << "= " << rq[i] << "->" << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first){
-			if (!*client && i >= 3){
+			if (!*client && i >= 5){
 				std::cout << "Client interdit " << rq.getCmd()  << std::endl;
 				return ; // retour si client non _co
 			}

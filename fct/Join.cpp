@@ -32,8 +32,8 @@ bool init_chan(Server* server, Channel* chan, std::string psswd, Client* clt){
         clt->rcvMsg("471 " +chan->getName() + " :Cannot join channel (+l)");
         return false;
     }
-    // if (chan->getStatutClt(clt) == PRESENT)
-    //     return false;
+    if (chan->getStatutClt(clt) == PRESENT)
+        return false;
     if (chan->getStatutClt(clt) == BAN && chan->get_b() == true){
         clt->rcvMsg("474 " +chan->getName() + " :Cannot join channel (+b)");
         return false;
@@ -97,7 +97,6 @@ void exec_join(Request& rq, Server* server, Client* client){
         if (TChan->getTopic() != "")
             client->rcvMsg(":server_irc 332 " + client->getNick() + " " + chan[i] + " :" + TChan->getTopic());
         init_namel(namel, TChan);
-        std::cout << "5" << std::endl;
         client->rcvMsg(":server_irc 353 " + client->getNick() + " = " + chan[i] + " :" + namel);
         client->rcvMsg(":server_irc 366 " + client->getNick() + " " + chan[i] + " :End of /NAMES list");
     }
