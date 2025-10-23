@@ -147,8 +147,10 @@ void Server::dlt_client(Client* clt, int fd){
 }
 
 void Server::send_ping(){
+    std::cout << "JE SUIS LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
     for(size_t i = 0; i < _client.size(); i++){
-        _client[i]->rcvMsg("PING :server_irc");
+        std::cout << "msg envoye a =" << _client[i]->getNick() << std::endl;
+        _client[i]->rcvMsg("PING 4242");
     }
 
 }
@@ -172,12 +174,16 @@ void Server::GoServ(){
     std::cout << "server good" << std::endl;
     
     while(stop_server == 0){
-        if (poll(_fds.data(), _fds.size(), -1) == -1){
+        time_t now = time(NULL);
+        if (now - _ping > 60){
+            std::cout << "6-----------------------6" << std::endl;
+            this->send_ping();
+            _ping = now;
+        }
+        if (poll(_fds.data(), _fds.size(), 500) == -1){
             if (errno == EINTR) continue;
             throw std::runtime_error("poll failed");
         }
-
-
         if (_fds[0].revents & POLLIN){
                 int nfd = accept(_server_fd, (struct sockaddr *)&c, &client_len);
                 addFd(nfd);
@@ -194,6 +200,7 @@ void Server::GoServ(){
             }
         }
     }
+
     std::cout << "server down correctly " << std::endl;
 }
 

@@ -42,15 +42,15 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 
 	Request rq(temp);
 
-	std::cout << "creation request avec cmd =" << rq.getCmd() << " " << rq.size_tab() << std::endl;
+	std::cout << "creation request avec cmd =" << rq.getCmd() << " " << rq.size_tab() << " " << rq.getMsg() << std::endl;
 	for(int i = 0 ; i < rq.size_tab(); i++)
 		std::cout << i << "= " << rq[i] << "->" << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first){
-			if (client->getco() && i >= 3){
-				std::cout << "Client interdit " << rq.getCmd()  << std::endl;
-				return ; // retour si client non _co
-			}
+			// if (!client->getco() && i >= 4){
+			// 	std::cout << "Client interdit " << rq.getCmd()  << std::endl;
+			// 	return ; // retour si client non _co
+			// }
 		std::cout << "creation request avec cmd =" << rq.getCmd() << std::endl;
 		return table[i].second(rq, server, client);
 		}
