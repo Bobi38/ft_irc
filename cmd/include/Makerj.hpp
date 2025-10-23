@@ -11,6 +11,7 @@ void exec_part(Request& rq, Server* server, Client* client);
 void exec_kick(Request& rq, Server* server, Client* client);
 void test3(Request& rq, Server* server, Client* client);
 void invit(Request& rq, Server* server, Client* client);
+void mode(Request& rq, Server* server, Client* client);
 void topic(Request& rq, Server* server, Client* client);
 
 

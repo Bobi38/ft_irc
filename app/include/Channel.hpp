@@ -27,13 +27,21 @@ typedef std::vector<std::pair<int,Client*> > C_Client;
 typedef C_Client::iterator cci;
 
 enum e_client{
-    PRESENT,
+	PRESENT,
     CHANOP,
+	NO_PRESENT,
     INVITE,
     BAN,
     PRIVATE,
     TOPICOP,
-    TOPIC_EXIST
+    TOPIC_EXIST,
+	MOINS,
+	PLUS,
+    INVITE_ONLY,
+	TOPIC,
+	KEY,
+	LIMIT,
+	OPERATOR
 };
 
 class Channel{
@@ -46,6 +54,7 @@ class Channel{
         bool _b_ban;
         bool _t_topicop;
         bool _topic_exist;
+        bool _mode[6];
         std::vector<std::pair<int,Client*> > _member;
     public:
         Channel(std::string name, Client* client);
@@ -69,9 +78,12 @@ class Channel{
 		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte
         void invit(Client* User, Client* Invit);
 		Client* getClient(size_t i);
+		void putMode(Client* clt);
+		bool getMODE(int mod) const;
+		void setMODE(int mode, std::string arg, Client* sender);
+        void chan_msg(const std::string& msg);
         void print_all_clt();
         ~Channel();
-
 };
 
 #endif

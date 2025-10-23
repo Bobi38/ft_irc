@@ -3,7 +3,7 @@
 std::string* split(char sep, std::string& str);
 
 Request::Request(const std::string& str_init)
-	: _user(Prefix(str_init)){
+	: _user(Prefix(str_init)), _msg("") {
 	if (str_init.empty())
 		return ;
 
@@ -38,7 +38,7 @@ Request::Request(const std::string& str_init)
 	if (str[0] == '/'){
 		str = _tab[0].substr(1);
 		for (size_t i = 0; i < str.size(); i++)
-			str[i] = std::tolower(str[i]);
+			str[i] = std::toupper(str[i]);
 		_tab[0] = str;
 	}
 }

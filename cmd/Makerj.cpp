@@ -7,7 +7,7 @@ Maker::Maker(): _wClt(NULL) {
 	table[3] = Level("JOIN", exec_join);
 	table[4] = Level("PART", exec_part);
 	table[5] = Level("KICK", exec_kick);
-	table[6] = Level("MODE", test3);
+	table[6] = Level("MODE", mode);
 	table[7] = Level("INVITE", invit);
 	table[8] = Level("PRVMSG", prvmsg);
 	table[9] = Level("QUIT", exec_quit);
@@ -40,11 +40,13 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 		temp = _buff + temp;
 
 	Request rq(temp);
-	std::cout << "creation request avec cmd =" << rq.getCmd() << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first){
-			// if (*client && i >= 3)
-			// 	return ; // retour si client non _co
+			if (!*client && i >= 3){
+				std::cout << "Client interdit " << rq.getCmd()  << std::endl;
+				return ; // retour si client non _co
+			}
+		std::cout << "creation request avec cmd =" << rq.getCmd() << std::endl;
 		return table[i].second(rq, server, client);
 		}
 	}
