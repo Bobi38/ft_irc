@@ -3,7 +3,7 @@
 std::string* split(char sep, std::string& str);
 
 Request::Request(const std::string& str_init)
-	: _user(Prefix(str_init)){
+	: _user(Prefix(str_init)), _msg("") {
 	if (str_init.empty())
 		return ;
 

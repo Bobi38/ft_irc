@@ -75,3 +75,16 @@ MODE <channel> <+/-modes> [params]  # set MODE
 475	ERR_BADCHANNELKEY	Mauvaise clé (lors du JOIN avec +k)
 
 key max= 23 char,  no " ", ":", "'", ">32"
+
+3. **Réponse manquante ou incorrecte au JOIN** : Quand un client fait `/join #e`, le serveur doit répondre avec :
+   - Un message `JOIN` confirmant l'entrée
+   - Le code numérique `RPL_TOPIC` (332) si le canal a un topic
+   - Le code `RPL_NAMREPLY` (353) avec la liste des utilisateurs
+   - Le code `RPL_ENDOFNAMES` (366)
+
+## Exemple de réponse correcte à un JOIN
+```
+:nick!user@host JOIN #e
+:server 332 nick #e :Topic du canal
+:server 353 nick = #e :nick @op
+:server 366 nick #e :End of NAMES list
