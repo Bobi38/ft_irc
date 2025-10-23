@@ -47,7 +47,7 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 		std::cout << i << "= " << rq[i] << "->" << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first){
-			if (!*client && i >= 5){
+			if (client->getco() && i >= 3){
 				std::cout << "Client interdit " << rq.getCmd()  << std::endl;
 				return ; // retour si client non _co
 			}

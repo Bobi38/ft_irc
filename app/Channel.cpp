@@ -104,8 +104,15 @@ void Channel::rmClient(Client* client){
 
 void Channel::chan_msg(const std::string& msg, Client* sender){
 	for(cci it = _member.begin(); it != _member.end(); it++){
-		if (it->first == PRESENT || it->first == CHANOP)
+		if (sender != it->second &&(it->first == PRESENT || it->first == CHANOP))
 			it->second->rcvMsg(msg, sender);
+	}
+}
+
+void Channel::chan_msg(const std::string& msg){
+	for(cci it = _member.begin(); it != _member.end(); it++){
+		if (it->first == PRESENT || it->first == CHANOP)
+			it->second->rcvMsg(msg);
 	}
 }
 
