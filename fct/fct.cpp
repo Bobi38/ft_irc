@@ -21,8 +21,11 @@ void send_msg(int fd, std::string msg){
 }
 
 
-// void send_msg_v2(int fd, std::string msg, Server* serv){
-//     send(fd, msg.c_str(), msg.size(), 0);
+// void send_msg_client_Chan(Client* clt, std::string msg, int code, Channel* chan){
+//     std::string code_str = to_string(code);
+//     std::string mess = ":server_irc " + code_str + " " + clt->getNick() + " " + chan->getName() + " " + msg + "\r\n";
+    
+//     send(clt->getfd(), mess.c_str(), mess.size(), 0);
 // }
 
 

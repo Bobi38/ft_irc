@@ -1,9 +1,9 @@
 #include "include/Makerj.hpp"
 
 Maker::Maker(): _wClt(NULL) {
-	table[0] = Level("PASS", test2);
-	table[1] = Level("NICK", test2);
-	table[2] = Level("USER", test2);
+	table[0] = Level("PASS", exec_pass);
+	table[1] = Level("NICK", exec_nick);
+	table[2] = Level("USER", exec_user);
 	table[3] = Level("JOIN", exec_join);
 	table[4] = Level("PART", exec_part);
 	table[5] = Level("KICK", exec_kick);
@@ -13,10 +13,12 @@ Maker::Maker(): _wClt(NULL) {
 	table[9] = Level("QUIT", exec_quit);
 	table[10] = Level("NAMES", test2);
 	table[11] = Level("OPER", test2);
-	table[12] = Level("LIST", test2);
+	table[12] = Level("LIST", exec_list);
 	table[13] = Level("TOPIC", topic);
 	table[14] = Level("TEST1", test2);
-	table[15] = Level("", test2);
+	table[15] = Level("CAP", exec_CAP);
+	table[16] = Level("PING", exec_ping);
+	table[17] = Level("", test2);
 	};
 
 void Maker::select(const std::string& str, Server* server, Client* client){
@@ -40,6 +42,10 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 		temp = _buff + temp;
 
 	Request rq(temp);
+
+	std::cout << "creation request avec cmd =" << rq.getCmd() << " " << rq.size_tab() << std::endl;
+	for(int i = 0 ; i < rq.size_tab(); i++)
+		std::cout << i << "= " << rq[i] << "->" << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first){
 			if (!*client && i >= 3){

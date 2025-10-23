@@ -16,18 +16,28 @@ bool init_chan(Request& rq,  std::vector<std::string>& chan){
 }
 
 void exec_part(Request& rq, Server* server, Client* client){
+    if (client->getco() == false)
+        return ;
+    if (rq.size_tab() < 3) {
+        client->rcvMsg("461 USER :Not enough parameters");
+        return;
+    }
     std::vector<std::string> chan;
     Channel* TChan;
 
     if (init_chan(rq, chan) == false)
         return;
     for(size_t i = 0; i < chan.size(); i++){
+        TChan = server->find_channel(chan[i]);
+        if (!TChan){
+            client->rcvMsg("403 " +TChan->getName() + " :No such channel");
+            continue;
+        }
         if (client->is_Channel(chan[i])){
-            TChan = server->find_channel(chan[i]);
             server->unlinkClienttoChannel(client, TChan);
         }
         else
-            send_msg(client->getfd(), "Error 403: No such Channel");
+            client->rcvMsg("442 " +TChan->getName() + " : You're not on that channel");
         TChan = NULL;
     }
 }

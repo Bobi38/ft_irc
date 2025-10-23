@@ -22,6 +22,12 @@ Client* Channel::getClient(size_t i){
 	return _member[i].second;
 }
 
+std::pair<int,Client*> Channel::getPairC(size_t i){
+	if (i >= _member.size())
+		return std::pair<int,Client*>(0, NULL);
+	return _member[i];
+}
+
 Client* Channel::return_client(std::string _client_name){
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
 		if (it->second->getName() == _client_name)
@@ -258,4 +264,18 @@ void Channel::print_all_clt(){
 		std::cout << _member[i].second->getName() << " - " << _member[i].first << " // ";
 	}
 	std::cout << std::endl;
+}
+
+int Channel::getNbMemb() const{
+	int cpt = 0;
+
+	for(size_t i = 0; i < _member.size(); i++){
+		if (_member[i].first == CHANOP ||  _member[i].first == PRESENT)
+			cpt++;
+	}
+	return cpt;
+}
+
+std::string Channel::getTopic(){
+	return _topic;
 }

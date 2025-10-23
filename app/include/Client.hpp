@@ -30,6 +30,7 @@ class Client{
         bool _psswd;
         std::string _nick;
         std::string _name;
+        // std::string _realname;
         std::string _host;
         std::vector<Channel*>_chan;
     public:
@@ -50,9 +51,14 @@ class Client{
         void addChannel(Channel* chan);
         bool is_Channel(std::string channel);
         void print_all_chan();
+        void setpssd();
+        void setco();
+        void setRealName(std::string realname);
+        std::string getRealName();
         operator bool() const;
         void rcvMsg(const std::string& str, Client* sender); //transmet le message de sender
         void rcvMsg(const std::string& str); // message de retour 
+        size_t nbChan();
         ~Client();
 };
 

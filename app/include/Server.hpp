@@ -28,17 +28,15 @@ class Channel;
 
 
 # define BUFFER_SIZE 512 // 512 = max RFC1459 et si ca depasse ?
+# define SERVER_NAME "server_irc"
 
 extern volatile sig_atomic_t stop_server;
-
-void clean_std(std::string &rest);
-void handle_sigint(int signum);
-void send_msg(int fd, std::string msg);
 
 class Server{
 	private:
 		int _port;
 		std::string _password;
+		time_t _ping;
 		int _server_fd;
 		std::vector<Client*> _client;
 		std::vector<struct pollfd> _fds;
@@ -50,10 +48,14 @@ class Server{
 		Client* find_fd(int fd);
 		void dlt_client(Client* clt, int fd);
 		void addFd(int fd);
+		std::string getPSSD();
 		void GoServ();
 		bool check_psswd(int fd);
 		Client* find_client(std::string _nick);
 		Channel* find_channel(std::string chan);
+		Channel* getSChan(size_t i);
+		size_t sizeChan();
+		void send_ping();
 		void linkClienttoChannel(Client* client, Channel* channel);
 		void unlinkClienttoChannel(Client* client, Channel* channel);
 		~Server();
@@ -65,6 +67,9 @@ class Server{
 	};
 };
 
-
+void clean_std(std::string &rest);
+void handle_sigint(int signum);
+void send_msg(int fd, std::string msg);
+void send_msg_client_Chan(Client* clt, std::string msg, int code, Channel* chan);
 
 #endif
