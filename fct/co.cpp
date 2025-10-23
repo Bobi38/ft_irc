@@ -22,15 +22,11 @@ void exec_n(std::string name, Server* server, Client* client){
 void exec_pass(Request& rq, Server* server, Client* client){
 
     if (rq.size_tab() == 6){
-        std::cout << "je suis dans pass 6" << std::endl;
         std::string pss(rq[1]);
         size_t i = pss.find_first_of("\r\n", 0);
         pss.erase(i);
-        std::cout << "pss= " << pss << "--" << server->getPSSD() << std::endl;
-        if (pss == server->getPSSD()){
+        if (pss == server->getPSSD())
             client->setpssd();
-            std::cout << "good password" << std::endl;
-        }
         else{
             client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
             server->dlt_client(client, client->getfd());
@@ -45,7 +41,6 @@ void exec_pass(Request& rq, Server* server, Client* client){
         return ;
     }
     std::string ps(rq[1]);
-    std::cout << "je suis dans PASS " << ps << " et " << rq[1] << std::endl;
     if (client->getName() != "" || client->getNick() != ""){
         client->rcvMsg("462 " + client->getNick() + " :You may not reregister");
         return;
@@ -54,10 +49,8 @@ void exec_pass(Request& rq, Server* server, Client* client){
         client->rcvMsg("461 PASS :Not enough parameters");
         return;
     }
-    if (ps == server->getPSSD()){
+    if (ps == server->getPSSD())
         client->setpssd();
-        std::cout << "good password" << std::endl;
-    }
     else{
         client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
         server->dlt_client(client, client->getfd());

@@ -50,11 +50,24 @@ bool init_chan(Server* server, Channel* chan, std::string psswd, Client* clt){
     return true;
 }
 
+void init_naml(std::string& namel, Channel* chan){
+    for(size_t i = 0; i < static_cast<size_t>(chan->getNbMemb()); i++){
+        if (chan->getClient(i).first == CHANOP)
+            namel = namel + "@" + chan->getClient(i).second->getNick() + " ";
+        if (chan->getClient(i).first == PRESENT)
+            namel = namel + chan->getClient(i).second->getNick() + " ";
+        else
+            continue;
+    }
+    namel.erase(namel.end());
+}
+
 void exec_join(Request& rq, Server* server, Client* client){
     if (client->getco() == false)
         return ;
     std::vector<std::string> chan;
     std::vector<std::string> key;
+    std::string namel;
     Channel *TChan;
 
     if (init_chan_key(rq, chan, key) == false){
@@ -79,7 +92,11 @@ void exec_join(Request& rq, Server* server, Client* client){
             if (init_chan(server, TChan, key[i], client) == false)
                 continue ;
         client->rcvMsg(client->getMe() + " JOIN " + chan[i] );
-        
+        if (chan[i]->getTopic() != "")
+            client->rcvMsg(":server_irc 332 " + client->getNick() + " " + chan[i] + " :" + chan[i] ->getTopic());
+        init_namel(namel, chan[i]);
+        client->rcvMsg(":server_irc 353 " + client->getNick() + " = " + chan[i] + " :" + namel);
+        client->rcvMsg(":server_irc 366 " + client->getNick() + " " + chan[i] + " :End of /NAMES list");
     }
     TChan->print_all_clt();
     client->print_all_chan();

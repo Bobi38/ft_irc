@@ -173,3 +173,7 @@ int Channel::getNbMemb() const{
 	}
 	return cpt;
 }
+
+std::string Channel::getTopic(){
+	return _topic;
+}

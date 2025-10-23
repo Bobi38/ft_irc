@@ -65,6 +65,7 @@ class Channel{
 		std::string getTopic() const;
 		void setMOD(int mod, Client* sender); //par mod = -TOPIC_EXIST for unactiv et mod = TOPIC_EXIST pour activ
         void setTopic(std::string topic, Client* sender);
+        std::string getTopic();
         // void send_msg(std::string msg, int fd);
 		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte
         void invit(Client* User, Client* Invit);
