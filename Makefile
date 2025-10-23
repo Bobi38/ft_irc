@@ -6,7 +6,7 @@ CMDDIR = cmd
 FCTDIR = fct
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -I $(SRCDIR)/$(INCDIR) -I $(CMDDIR)/$(INCDIR)
+CXXFLAGS = -Wall -Wextra -Werror -g3 -std=c++98 -I $(SRCDIR)/$(INCDIR) -I $(CMDDIR)/$(INCDIR)
 DEPFLAGS = -MM -MP
 
 SRCS_APP = \

@@ -45,7 +45,9 @@ Client::Client(const std::string& prefix) {
 Client::Client(const Client& other) : _fd(other._fd), \
 		_nick(other._nick), _name(other._name), _host(other._host) {}
 
-Client::~Client() {}
+Client::~Client() {
+	_chan.clear();
+}
 
 int Client::getFd(){
     return _fd;

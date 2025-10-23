@@ -1,6 +1,6 @@
 #include "include/Makerj.hpp"
 
-Maker::Maker() {
+Maker::Maker(): _wClt(NULL) {
 	table[0] = Level("PASS", exec_pass);
 	table[1] = Level("NICK", exec_nick);
 	table[2] = Level("USER", exec_user);
@@ -18,6 +18,7 @@ Maker::Maker() {
 	table[14] = Level("TEST1", test2);
 	table[15] = Level("CAP", exec_CAP);
 	table[16] = Level("PING", exec_ping);
+	table[17] = Level("", test2);
 	};
 
 void Maker::select(const std::string& str, Server* server, Client* client){
@@ -39,8 +40,8 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 	Request rq(temp);
 
 	std::cout << "creation request avec cmd =" << rq.getCmd() << " " << rq.size_tab() << std::endl;
-	// for(int i = 0 ; i < rq.size_tab(); i++)
-	// 	std::cout << i << "= " << rq[i] << "->" << std::endl;
+	for(int i = 0 ; i < rq.size_tab(); i++)
+		std::cout << i << "= " << rq[i] << "->" << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first)
 			return table[i].second(rq, server, client);

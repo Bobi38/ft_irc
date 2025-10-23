@@ -4,8 +4,10 @@ std::string* split(char sep, std::string& str);
 
 Request::Request(const std::string& str_init)
 	: _user(Prefix(str_init)){
-	if (str_init.empty())
+	if (str_init.empty()){
+		_tab = new std::string[1];
 		return ;
+	}
 
 	size_t size = str_init.size();
 	int start = 0;

@@ -9,8 +9,8 @@ void exec_list(Request& rq, Server* server, Client* client){
     for (size_t i = 0; i < server->sizeChan(); ++i) {
         Channel* chan = server->getSChan(i);
         msg = "322 " + client->getNick() + " " + chan->getName() + " " + " :" + chan->getTopic();
-        send_msg(client->getfd(), msg);
+        client->rcvMsg(msg);
     }
     msg = "323 " + client->getNick() + " :End of /LIST";
-    send_msg(client->getfd(), msg);
+    client->rcvMsg(msg);
 }

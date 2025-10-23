@@ -11,10 +11,10 @@ void invit(Request& rq, Server* server, Client* sender){
 
 	Client* User =  server->find_client(user);
 	if (!User)
-		sender->rcvMsg(":server 301 :no " + user); //(401 : ERR_NOSUCHNICK)
+		return sender->rcvMsg(":server 301 :no " + user); //(401 : ERR_NOSUCHNICK)
 	Channel* Chan = server->find_channel(chan);
 	if (!Chan)
-		sender->rcvMsg(":server 403 :no " + chan); //(403 : ERRNOSUCHCHANNEL)
+		return sender->rcvMsg(":server 403 :no " + chan); //(403 : ERRNOSUCHCHANNEL)
 	
 	Chan->invit(sender, User);
 }

@@ -72,13 +72,33 @@ void exec_user(Request& rq, Server* server, Client* client){
 void exec_ping(Request& rq, Server* server, Client* client){
     (void)server;
     (void)rq;
-    client->rcvMsg("PONG :server_irc");
+    client->rcvMsg("PONG :" + rq[1]);
 }
 
 void exec_CAP(Request& rq, Server* server, Client* client){
     (void)server;
     (void)rq;
     std::cout << "je suis dans CAP" << std::endl;
+    if (rq.size_tab() == 8){
+        client->rcvMsg(":4242 CAP * LS :");
+        std::string pss(rq[3]);
+        size_t i = pss.find_first_of("\r\n", 0);
+        pss.erase(i);
+        if (pss == server->getPSSD())
+            client->setpssd();
+        else{
+            client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
+            server->dlt_client(client, client->getfd());
+            return ;
+        }
+        std::string nick(rq[4]);
+        i = nick.find_first_of("\r\n", 0);
+        nick.erase(i);
+        exec_n(nick, server, client);
+        client->setName(rq[5]);
+        client->setco();
+        return ;
+    }
     if (rq.size_tab() == 3)
         client->rcvMsg(":4242 CAP * LS :");
 }

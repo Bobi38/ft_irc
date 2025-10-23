@@ -71,6 +71,7 @@ class Channel{
         void invit(Client* User, Client* Invit);
         int getNbMemb() const;
 		Client* getClient(size_t i);
+        std::pair<int,Client*> getPairC(size_t i);
         void print_all_clt();
         ~Channel();
 

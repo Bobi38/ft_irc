@@ -32,8 +32,8 @@ bool init_chan(Server* server, Channel* chan, std::string psswd, Client* clt){
         clt->rcvMsg("471 " +chan->getName() + " :Cannot join channel (+l)");
         return false;
     }
-    if (chan->getStatutClt(clt) == PRESENT)
-        return false; // faut il code erreur ???
+    // if (chan->getStatutClt(clt) == PRESENT)
+    //     return false;
     if (chan->getStatutClt(clt) == BAN && chan->get_b() == true){
         clt->rcvMsg("474 " +chan->getName() + " :Cannot join channel (+b)");
         return false;
@@ -50,26 +50,27 @@ bool init_chan(Server* server, Channel* chan, std::string psswd, Client* clt){
     return true;
 }
 
-void init_naml(std::string& namel, Channel* chan){
+void init_namel(std::string& namel, Channel* chan){
     for(size_t i = 0; i < static_cast<size_t>(chan->getNbMemb()); i++){
-        if (chan->getClient(i).first == CHANOP)
-            namel = namel + "@" + chan->getClient(i).second->getNick() + " ";
-        if (chan->getClient(i).first == PRESENT)
-            namel = namel + chan->getClient(i).second->getNick() + " ";
+        if (chan->getPairC(i).first == CHANOP)
+            namel = namel + "@" + chan->getPairC(i).second->getNick() + " ";
+        if (chan->getPairC(i).first == PRESENT)
+            namel = namel + chan->getPairC(i).second->getNick() + " ";
         else
             continue;
     }
-    namel.erase(namel.end());
+    namel.erase(namel.end() - 1);
 }
 
 void exec_join(Request& rq, Server* server, Client* client){
     if (client->getco() == false)
         return ;
+    std::cout << "3" << std::endl;
     std::vector<std::string> chan;
     std::vector<std::string> key;
     std::string namel;
     Channel *TChan;
-
+    std::cout << "1" << std::endl;
     if (init_chan_key(rq, chan, key) == false){
         client->rcvMsg("461 USER :Not enough parameters\r\n");
         return;
@@ -91,10 +92,12 @@ void exec_join(Request& rq, Server* server, Client* client){
         else
             if (init_chan(server, TChan, key[i], client) == false)
                 continue ;
+        std::cout << "2" << std::endl;
         client->rcvMsg(client->getMe() + " JOIN " + chan[i] );
-        if (chan[i]->getTopic() != "")
-            client->rcvMsg(":server_irc 332 " + client->getNick() + " " + chan[i] + " :" + chan[i] ->getTopic());
-        init_namel(namel, chan[i]);
+        if (TChan->getTopic() != "")
+            client->rcvMsg(":server_irc 332 " + client->getNick() + " " + chan[i] + " :" + TChan->getTopic());
+        init_namel(namel, TChan);
+        std::cout << "5" << std::endl;
         client->rcvMsg(":server_irc 353 " + client->getNick() + " = " + chan[i] + " :" + namel);
         client->rcvMsg(":server_irc 366 " + client->getNick() + " " + chan[i] + " :End of /NAMES list");
     }

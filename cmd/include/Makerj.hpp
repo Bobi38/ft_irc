@@ -25,7 +25,7 @@ typedef std::pair<std::string, void (*)(Request&, Server*, Client*)> Level;
 class Maker
 {
 private:
-	Level table[16];
+	Level table[18];
 	Client* _wClt;
 	std::string _buff;
 public:
