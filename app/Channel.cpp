@@ -52,9 +52,11 @@ bool Channel::is_in(std::string _client_name){
 }
 
 void Channel::addClient(Client* client, int statut){
+	bool is = true;
 	if (!client->is_Channel(client->getName())){
 		std::pair<int , Client*> tt (statut, client);
 		_member.push_back(tt);
+		is = false;
 		return ;
 	}
 	for(cci it = _member.begin(); it != _member.end(); it++)
@@ -62,6 +64,8 @@ void Channel::addClient(Client* client, int statut){
 			it->first = statut;
 			return ;
 		}
+	if (is == false)
+		chan_msg(client->getMe() + " JOIN " + _name);
 }
 
 bool Channel::get_i(){
@@ -120,6 +124,11 @@ bool Channel::getMOD(int mod) const{ //fct a verifier
 	return *(&_i_invonly + (mod - PRIVATE));
 }
 
+std::string Channel::str_mode = "-+itklo";
+
+bool Channel::getMODE(int mod) const{
+	return _mode[mod - MOINS];
+}
 
 std::string Channel::getTopic()const{
 	return _topic;
@@ -152,7 +161,7 @@ void	Channel::invit(Client* User, Client* Invit){
 	if (statut != PRESENT && statut != CHANOP)
 		return User->rcvMsg(":server 443 " + _name + " :out of channel");//(443 -> ERR_USERONCHANNEL)
 	statut = getStatutClt(Invit);
-	if (statut >= PRESENT || statut <= BAN)
+	if (statut >= PRESENT && statut <= BAN)
 		return User->rcvMsg(":server 443 " + _name + " :no invit" );//(443 -> ERR_USERONCHANNEL)
 	
 	addClient(Invit, INVITE);

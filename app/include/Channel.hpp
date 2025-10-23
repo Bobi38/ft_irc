@@ -27,6 +27,7 @@ typedef std::vector<std::pair<int,Client*> > C_Client;
 typedef C_Client::iterator cci;
 
 enum e_client{
+    BAD = -1,
 	PRESENT,
     CHANOP,
 	NO_PRESENT,
@@ -82,6 +83,7 @@ class Channel{
 		Client* getClient(size_t i);
 		void putMode(Client* clt);
 		bool getMODE(int mod) const;
+		static std::string str_mode;
 		void setMODE(int mode, std::string arg, Client* sender);
         void chan_msg(const std::string& msg);
         std::pair<int,Client*> getPairC(size_t i);
