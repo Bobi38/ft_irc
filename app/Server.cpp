@@ -196,7 +196,14 @@ void Server::GoServ(){
                 if (n < 0)
                     throw std::runtime_error("error recv");
                 Client* tmp = find_fd(_fds[i].fd);
-				mm.select(buffer, this, tmp);
+                std::string next(buffer);
+                size_t pos;
+                while((pos = next.find("\r\n")) != std::string::npos){
+                    std::string ine = next.substr(0, pos);
+                    next.erase(0, pos + 2);
+                    mm.select(ine, this, tmp);
+                }
+
             }
         }
     }

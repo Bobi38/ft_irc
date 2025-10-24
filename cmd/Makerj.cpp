@@ -25,19 +25,17 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 	std::cout << str << std::endl;
 	bool second = (client == _wClt);
 
-	int size = str.size();
-	if (!size)
-		return ; // pas sur que ca arrive
-	if (size == 1 || (size < 2 && str[size - 2] != '\r' && str[size - 1] != '\n')){
-		std::cout << "demi message " << _buff << std::endl;
-		_buff = (second ? _buff + str : str);
-		std::cout << "demi message bis " << _buff << std::endl;
-		_wClt = client;
-		return ; // ne rien faire - en attente suite
-	}
+	// int size = str.size();
+	// if (size < 2 || str[size - 2] != '\r' || str[size - 1] != '\n'){
+	// 	std::cout << "demi message " << _buff << std::endl;
+	// 	_buff = (second ? _buff + str : str);
+	// 	std::cout << "demi message bis " << _buff << std::endl;
+	// 	_wClt = client;
+	// 	return ;
+	// }
 
 	std::string temp = str;
-	temp.resize(size - 2);
+	// temp.resize(size - 2);
 
 	if (second)
 		temp = _buff + temp;
