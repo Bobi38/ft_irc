@@ -17,10 +17,12 @@ Maker::Maker(): _wClt(NULL) {
 	table[13] = Level("TOPIC", topic);
 	table[14] = Level("TEST1", test2);
 	table[4] = Level("CAP", exec_CAP);
-	table[16] = Level("PING", exec_ping);
+	table[16] = Level("PRIVMSG", prvmsg);
+
 	};
 
 void Maker::select(const std::string& str, Server* server, Client* client){
+	std::cout << str << std::endl;
 	bool second = (client == _wClt);
 
 	int size = str.size();
@@ -42,12 +44,12 @@ void Maker::select(const std::string& str, Server* server, Client* client){
 
 	Request rq(temp);
 
-	std::cout << "creation request avec cmd =" << rq.getCmd() << " " << rq.size_tab() << std::endl;
-	for(int i = 0 ; i < rq.size_tab(); i++)
-		std::cout << i << "= " << rq[i] << "->" << std::endl;
+	// std::cout << "creation request avec cmd =" << rq.getCmd() << " " << rq.size_tab() << std::endl;
+	// for(int i = 0 ; i < rq.size_tab(); i++)
+	// 	std::cout << i << "= " << rq[i] << "->" << std::endl;
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first){
-			if (client->getco() && i >= 3){
+			if (client->getco() == false && i > 4){
 				std::cout << "Client interdit " << rq.getCmd()  << std::endl;
 				return ; // retour si client non _co
 			}

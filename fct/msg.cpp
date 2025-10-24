@@ -20,7 +20,7 @@
 // 	return BAD;
 // }
 
-// typedef std::pair<char, int> llist;
+// typedef std::pair<int, int> llist;
 // typedef std::pair<llist, std::string > blist; 
 // typedef std::vector<blist> vlist;
 // typedef vlist::iterator vi;
@@ -28,7 +28,7 @@
 // void mode(Request& rq, Server* server, Client* sender){
 // 	int head = 1;
 // 	int arg = 2;
-// 	char sign;
+// 	int sign;
 // 	int mode;
 // 	std::string str = rq[head];
 // 	Channel* Chan;
@@ -50,15 +50,15 @@
 
 	
 	
-// 	std::string mod = "-+itklo"; // it sans arg * kl pas d arg si - * o tjrs arg 
-// 	int size = mod.size();
+// 	// std::string mod = "-+itklo"; // it sans arg * kl pas d arg si - * o tjrs arg 
+// 	int size = Channel::str_mode.size();
 // 	while (str.empty()){ //parsing
-// 		sign = str[0];
-// 		if (sign != '+' || sign != '-')
+// 		sign = isInStr(str[0], Channel::str_mode, size);
+// 		if (sign != PLUS || sign != MOINS)
 // 			return sender->rcvMsg(":server 461	ERR_NEEDMOREPARAMS"); // first param != + ou -
 // 		int letter = 1;
 // 		for (; str[letter] != std::string::npos; letter++){
-// 			mode = isInStr(str[letter], mod, size);
+// 			mode = isInStr(str[letter], Channel::str_mode, size);
 // 			if (mode == BAD)
 // 				return sender->rcvMsg(":server 461	ERR_NEEDMOREPARAMS"); //mode n existe pas
 // 			llist little;
@@ -81,7 +81,7 @@
 // 				for (vi it=list.begin(); it != list.end(); it++)
 // 					if (it->first.second == mode)
 // 						return sender->rcvMsg(":server 461	ERR_NEEDMOREPARAMS :too " + str[letter]); // mode doublon
-// 			if (sign == '+' && mode >= KEY && mode <= LIMIT){
+// 			if (sign == PLUS && mode >= KEY && mode <= LIMIT){
 // 				if (rq[arg].empty())
 // 					return sender->rcvMsg (":server 461	ERR_NEEDMOREPARAMS"); // l ou k  sans arg
 // 				big.second = rq[arg++];
@@ -94,27 +94,28 @@
 // 		head = arg + 1;
 // 		str = rq[head];
 // 	}
+	
 // 	for (vi it = list.begin(); it != list.end(); it++){
 // 		sign = it->first.first;
 // 		mode = it->first.second;
 // 		str = it->second;
 // 		if (mode == OPERATOR){
 // 			Client = server->find_client(str);
-// 			if (sign == '+')
+// 			if (sign == PLUS)
 // 				Chan->addClient(Client, OPERATOR);
 // 			else
 // 				Chan->addClient(Client, PRESENT);
+// 			Chan->chan_msg(":server MODE " + Chan->getName() + " " + Channel::str_mode[sign] + Channel::str_mode[mode] + str);
 // 		}
-// 		// if (mode <= MOINS)
-// 		// 	Chan->unsetMODEN(mode, sender);
-// 		// else 
-// 		// 	Chan->setMODEN(mode, it->second, sender);
+// 		else if sign == PLUS && mode >=  ) {
+
+
+// 		}
 // 	}
 // }   // retour mode +o user:serveur MODE #salon +o user1
 void mode(Request& rq, Server* server, Client* sender){
-	(void) rq;
+	return sender->rcvMsg(":server 324 " + rq[2] + " +t");
 	(void) server;
-	(void) sender;
 }
 
 void invit(Request& rq, Server* server, Client* sender){
@@ -146,7 +147,7 @@ void prvmsg(Request& rq, Server* server, Client* sender){
 			if (!Chan)
 				sender->rcvMsg(":server 403 :no " + dest); //(403 : ERRNOSUCHCHANNEL)
 			else
-				Chan->chan_msg(rq.getMsg(), sender);
+				Chan->chan_msg(rq.getMsg(), sender, Chan);
 		}
 		else {
 			Client* clrcv = server->find_client(dest);

@@ -96,7 +96,7 @@ int Request::size_tab(){
     return i;
 }
 
-std::string Request::EMPTY_MSG = "\f\t\r\n\v";
+std::string Request::EMPTY_MSG = "\f\tj\r\n\v";
 
 // int Request::getMsgStatus() const{
 // 	return _msgStatus;

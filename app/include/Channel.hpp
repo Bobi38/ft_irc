@@ -77,7 +77,8 @@ class Channel{
         void setTopic(std::string topic, Client* sender);
         std::string getTopic();
         // void send_msg(std::string msg, int fd);
-		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte
+		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte		
+        void chan_msg(const std::string& msg, Client* sender, Channel*); //envoie un message a tous les connecte
         void invit(Client* User, Client* Invit);
         int getNbMemb() const;
 		Client* getClient(size_t i);

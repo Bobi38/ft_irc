@@ -57,13 +57,11 @@ void Channel::addClient(Client* client, int statut){
 		std::pair<int , Client*> tt (statut, client);
 		_member.push_back(tt);
 		is = false;
-		return ;
 	}
-	for(cci it = _member.begin(); it != _member.end(); it++)
-		if (it->second == client && it->first != BAN){
-			it->first = statut;
-			return ;
-		}
+	else
+		for(cci it = _member.begin(); it != _member.end(); it++)
+			if (it->second == client && it->first != BAN)
+				it->first = statut;
 	if (is == false)
 		chan_msg(client->getMe() + " JOIN " + _name);
 }
@@ -104,13 +102,24 @@ void Channel::rmClient(Client* client){
 
 void Channel::chan_msg(const std::string& msg, Client* sender){
 	for(cci it = _member.begin(); it != _member.end(); it++){
-		if (sender != it->second &&(it->first == PRESENT || it->first == CHANOP))
+		if (sender != it->second && (it->first == PRESENT || it->first == CHANOP))
 			it->second->rcvMsg(msg, sender);
 	}
 }
 
-void Channel::chan_msg(const std::string& msg){
+void Channel::chan_msg(const std::string& msg, Client* sender, Channel* Chan){
+	if (Chan != this)
+		return ;
 	for(cci it = _member.begin(); it != _member.end(); it++){
+		if (sender != it->second && (it->first == PRESENT || it->first == CHANOP))
+			it->second->rcvMsg(sender->getMe() + " PRIVMSG " + _name + " :" + msg);
+	}
+}
+
+void Channel::chan_msg(const std::string& msg){
+	// std::cout << "gros    lllllloooossssseeeeeerrrr   !!!!!!";
+	for(cci it = _member.begin(); it != _member.end(); it++){
+		// std::cout << it->second->getName();
 		if (it->first == PRESENT || it->first == CHANOP)
 			it->second->rcvMsg(msg);
 	}
