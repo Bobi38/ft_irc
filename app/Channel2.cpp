@@ -2,7 +2,7 @@
 #include "Request.hpp"
 
 void Channel::setTopic(std::string topic, Client* user){
-	if (_t_topicop && getStatutClt(user) != CHANOP)
+	if (_mode[TOPIC - MOINS] == true && getStatutClt(user) != CHANOP)
 		return user->rcvMsg(":server 482 " + _name + " :only CHANOP");
 	if (topic == Request::EMPTY_MSG)
 		_topic = "";
@@ -10,7 +10,7 @@ void Channel::setTopic(std::string topic, Client* user){
 		_topic = topic;
 	_topic_exist = true;
 
-	chan_msg("TOPIC " + _name + " :" + _topic, user);
+	chan_msg("TOPIC " + _name + " :" + _topic, user, this);
 }
 
 std::string Channel::getTopic(){
@@ -48,10 +48,7 @@ void Channel::chan_msg(const std::string& msg, Client* sender, Channel* Chan){
 }
 
 void Channel::chan_msg(const std::string& msg){
-	// std::cout << "gros	lllllloooossssseeeeeerrrr   !!!!!!";
-	for(cci it = _member.begin(); it != _member.end(); it++){
-		// std::cout << it->second->getName();
+	for(cci it = _member.begin(); it != _member.end(); it++)
 		if (it->first == PRESENT || it->first == CHANOP)
 			it->second->rcvMsg(msg);
-	}
 }

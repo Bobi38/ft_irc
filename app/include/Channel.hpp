@@ -52,19 +52,13 @@ class Channel{
         std::string _psswrd;
         std::string _topic;
         int _limit;
-        bool _i_invonly;
-        bool _b_ban;
-        bool _t_topicop;
         bool _topic_exist;
-        // std::map<bool, int> _mode;
         bool _mode[6];
         std::vector<std::pair<int,Client*> > _member;
     public:
         Channel(std::string name, Client* client);
         std::string getName();
         size_t getNbMemb();
-        bool get_i();
-        bool get_b();
         int getStatutClt(Client* clt);
         std::string getPssd();
         void init_psswd(std::string psswd);
@@ -73,21 +67,15 @@ class Channel{
         void rmClient(Client* Client);
         Client* return_client(std::string _client_name);
         void change_statut(Client* clt, int new_st);
-		bool getMOD(int mod) const;
-		std::string getTopic() const;
-		// void setMOD(int mod, Client* sender); //par mod = -TOPIC_EXIST for unactiv et mod = TOPIC_EXIST pour activ
         void setTopic(std::string topic, Client* sender);
         std::string getTopic();
-        // void send_msg(std::string msg, int fd);
 		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte		
         void chan_msg(const std::string& msg, Client* sender, Channel*); //envoie un message a tous les connecte
         void invit(Client* User, Client* Invit);
         int getNbMemb() const;
 		Client* getClient(size_t i);
-		void putMode(Client* clt);
 		bool getMODE(int mod) const;
 		static std::string str_mode;
-		// void setMODE(int mode, std::string arg, Client* sender);
         void chan_msg(const std::string& msg);
         bool setMOD(int mod, Client* user);
         std::pair<int,Client*> getPairC(size_t i);

@@ -35,15 +35,3 @@ std::string* split(char sep, std::string& str){
 	}
 	return tab;
 }
-
-// int main(){
-// 	std::string a = " u   er g  he we w w w yw55yw5 ywyw5y  yw54y w54y y	 ";
-// 	std::string* b = split(' ', a);
-// 	if (!b)
-// 		return 1;
-// 	for (int i = 0; !b[i].empty(); i++)
-// 		std::cout << b[i] << std::endl;
-// 	delete[] b;
-// 	return 0;
-// }
-

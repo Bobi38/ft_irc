@@ -26,7 +26,7 @@ Client* Channel::getClient(size_t i){
 int Channel::getStatutClt(Client* clt){
 	if (!clt)
 		return -1;
-	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+	for(cci it = _member.begin(); it != _member.end(); it++){
 		if (it->second == clt){
 			return it->first;
 		}
@@ -41,7 +41,7 @@ std::string Channel::getPssd(){
 std::string Channel::str_mode = "-+itklo";
 
 bool Channel::getMODE(int mod) const{
-	std::cout << "je renvoie " << mod << (_mode[mod - MOINS] ? "TRUE" : "FALSE") << std::endl;
+	// std::cout << "je renvoie " << mod <<" "<< (_mode[mod - MOINS] ? "TRUE" : "FALSE") << std::endl;
 	return _mode[mod - MOINS];
 }
 

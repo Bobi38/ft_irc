@@ -20,7 +20,6 @@ Request::Request(const std::string& str_init)
 		start = str_init.find_first_not_of(' ', start);
 	std::string str = str_init.substr(start);
 
-	// std::cout << "apres retrait user str :"<< str << std::endl;
 	size_t msg = str.find(':');
 	if (size - 1 > msg && msg != std::string::npos){
 		_msg = str.substr(msg + 1);
@@ -30,7 +29,6 @@ Request::Request(const std::string& str_init)
 		str.resize(msg + 1);
 	}
 	
-	// std::cout << "apres retrait msg str :"<< str << std::endl;
 	_tab = split(' ', str);
 	_tabSize = 0;
 	while (!_tab[_tabSize].empty())
@@ -97,7 +95,3 @@ int Request::size_tab(){
 }
 
 std::string Request::EMPTY_MSG = "\f\tj\r\n\v";
-
-// int Request::getMsgStatus() const{
-// 	return _msgStatus;
-// }

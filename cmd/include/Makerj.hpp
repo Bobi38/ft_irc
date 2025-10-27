@@ -19,7 +19,6 @@ void exec_CAP(Request& rq, Server* server, Client* client);
 void exec_Mode(Request& rq, Server* server, Client* client);
 void test3(Request& rq, Server* server, Client* client);
 void invit(Request& rq, Server* server, Client* client);
-void mode(Request& rq, Server* server, Client* client);
 void topic(Request& rq, Server* server, Client* client);
 
 
@@ -29,7 +28,6 @@ class Maker
 {
 private:
 	Level table[18];
-	Client* _wClt;
 	std::string _buff;
 public:
 	Maker();
