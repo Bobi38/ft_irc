@@ -168,12 +168,16 @@ bool Channel::setMOD(int mod, Client* user){
 		user->rcvMsg(":server 482 " + _name + " :You're not channel operator");
 		return false;
 	}
+	std::cout << "1" << std::endl;
 	bool set = mod > 0;
 	if (mod < 0)
 		mod = -mod;
-	if (set == _mode[mod - MOINS])
+	std::cout << "2" << std::endl;
+	if (set == _mode[LIMIT - MOINS])
 		return true;
+	std::cout << "3" << std::endl;
 	_mode[mod - MOINS] = !_mode[mod - MOINS];
+	std::cout << "4" << std::endl;
 	return true;
 }
 
@@ -233,6 +237,17 @@ int Channel::getNbMemb() const{
 			cpt++;
 	}
 	return cpt;
+}
+
+void Channel::init_limit(std::string limit){
+	for(size_t i = 0; i < limit.size(); i++){
+		if (!isdigit(limit[i]))
+			return ;
+	}
+	int lim = atoi(limit.c_str());
+	_limit = lim;
+	return ;
+	
 }
 
 std::string Channel::getTopic(){
