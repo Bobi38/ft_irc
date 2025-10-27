@@ -29,9 +29,10 @@ void Server::addClient(int fd){
     _client.push_back(toto);
 }
 
-void Server::addChannel(std::string name, Client* client){
+Channel* Server::addChannel(std::string name, Client* client){
     Channel* toto = new Channel(name, client);
     _chan.push_back(toto);
+    return toto;
 }
 
 void Server::linkClienttoChannel(Client* client, Channel* channel){
@@ -42,9 +43,9 @@ void Server::linkClienttoChannel(Client* client, Channel* channel){
 }
 
 void Server::unlinkClienttoChannel(Client* client, Channel* channel){
-    if (channel->is_in(client->getName()))
+    if (!channel->is_in(client->getName()))
         channel->rmClient(client);
-    if (client->is_Channel(channel->getName()))
+    if (!client->is_Channel(channel->getName()))
         client->rmChannel(channel);
 }
 

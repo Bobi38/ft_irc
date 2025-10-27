@@ -168,16 +168,12 @@ bool Channel::setMOD(int mod, Client* user){
 		user->rcvMsg(":server 482 " + _name + " :You're not channel operator");
 		return false;
 	}
-	std::cout << "1" << std::endl;
 	bool set = mod > 0;
 	if (mod < 0)
 		mod = -mod;
-	std::cout << "2" << std::endl;
 	if (set == _mode[LIMIT - MOINS])
 		return true;
-	std::cout << "3" << std::endl;
 	_mode[mod - MOINS] = !_mode[mod - MOINS];
-	std::cout << "4" << std::endl;
 	return true;
 }
 

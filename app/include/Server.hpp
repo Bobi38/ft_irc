@@ -44,7 +44,7 @@ class Server{
 	public:
 		Server(const char* password, const char* port);
 		void addClient(int fd);
-		void addChannel(std::string name, Client *client);
+		Channel* addChannel(std::string name, Client *client);
 		Client* find_fd(int fd);
 		void dlt_client(Client* clt, int fd);
 		void addFd(int fd);
