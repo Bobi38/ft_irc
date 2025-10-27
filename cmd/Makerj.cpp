@@ -7,7 +7,7 @@ Maker::Maker(): _wClt(NULL) {
 	table[3] = Level("JOIN", exec_join);
 	table[15] = Level("PART", exec_part);
 	table[5] = Level("KICK", exec_kick);
-	table[6] = Level("MODE", mode);
+	table[6] = Level("MODE", exec_Mode);
 	table[7] = Level("INVITE", invit);
 	table[8] = Level("PRVMSG", prvmsg);
 	table[9] = Level("QUIT", exec_quit);

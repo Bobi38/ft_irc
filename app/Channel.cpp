@@ -6,6 +6,8 @@ Channel::Channel(std::string name, Client* client): _name(name), _limit(-1), _i_
 		std::pair<int , Client*> tt (CHANOP, client);
 		_member.push_back(tt);
 	}
+	for (int i = 0; i < 6; ++i)
+        _mode[i] = false;
 }
 
 std::string Channel::getName(){
@@ -126,11 +128,11 @@ void Channel::chan_msg(const std::string& msg){
 }
 
 void Channel::init_psswd(std::string psswd){
-	if (psswd == "")
-		return ;
+	// if (psswd == "")
+	// 	return ;
 	_psswrd = psswd;
-	if (!_i_invonly) // je crois qu on peux faire sauter cette ligne
-		_i_invonly = true;
+	// if (!_i_invonly) // je crois qu on peux faire sauter cette ligne
+	// 	_i_invonly = true;
 }
 
 bool Channel::getMOD(int mod) const{ //fct a verifier
@@ -150,13 +152,27 @@ std::string Channel::getTopic()const{
 	return _topic;
 }
 
-void Channel::setMOD(int mod, Client* user){ //fct a verifier
-	if (getStatutClt(user) != CHANOP)
-		return user->rcvMsg(":server 482 " + _name + " :only CHANOP");
+// void Channel::setMOD(int mod, Client* user){ //fct a verifier
+// 	if (getStatutClt(user) != CHANOP)
+// 		return user->rcvMsg(":server 482 " + _name + " :only CHANOP");
+// 	bool set = mod > 0;
+// 	if (mod < 0)
+// 		mod = -mod;
+// 	*(&_i_invonly + (mod - PRIVATE)) = set;
+// }
+
+bool Channel::setMOD(int mod, Client* user){
+	if (getStatutClt(user) != CHANOP){ 
+		user->rcvMsg(":server 482 " + _name + " :You're not channel operator");
+		return false;
+	}
 	bool set = mod > 0;
 	if (mod < 0)
 		mod = -mod;
-	*(&_i_invonly + (mod - PRIVATE)) = set;
+	if (set == _mode[mod - MOINS])
+		return true;
+	_mode[mod - MOINS] = !_mode[mod - MOINS];
+	return true;
 }
 
 void Channel::setTopic(std::string topic, Client* user){
@@ -185,6 +201,18 @@ void	Channel::invit(Client* User, Client* Invit){
 
 Channel::~Channel(){
 	_member.clear();
+}
+
+void Channel::new_op(std::string clt, Client* sender, int flag){
+	Client* cc;
+	cc = return_client(clt);
+	if (getStatutClt(sender) != CHANOP) 
+		return sender->rcvMsg(":server 482 " + _name + " :You're not channel operator");
+	if (!cc)
+		return sender->rcvMsg(":server 401 " + sender->getNick() + " " + clt + " :No such nick/channel");
+	if (flag == PLUS)
+		return change_statut(cc, CHANOP);
+	return change_statut(cc, PRESENT);
 }
 
 void Channel::print_all_clt(){

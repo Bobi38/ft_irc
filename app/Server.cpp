@@ -174,12 +174,12 @@ void Server::GoServ(){
     std::cout << "server good" << std::endl;
     
     while(stop_server == 0){
-        time_t now = time(NULL);
-        if (now - _ping > 60){
-            std::cout << "6-----------------------6" << std::endl;
-            this->send_ping();
-            _ping = now;
-        }
+        // time_t now = time(NULL);
+        // if (now - _ping > 60){
+        //     std::cout << "6-----------------------6" << std::endl;
+        //     this->send_ping();
+        //     _ping = now;
+        // }
         if (poll(_fds.data(), _fds.size(), 500) == -1){
             if (errno == EINTR) continue;
             throw std::runtime_error("poll failed");

@@ -2,6 +2,7 @@
 # define MAKERJ_HPP
 # include <sstream>
 # include "Request.hpp"
+# include <map>
 
 void test2(Request& rq, Server* server, Client* client);
 void prvmsg(Request& rq, Server* server, Client* client);
@@ -15,6 +16,7 @@ void exec_nick(Request& rq, Server* server, Client* client);
 void exec_user(Request& rq, Server* server, Client* client);
 void exec_ping(Request& rq, Server* server, Client* client);
 void exec_CAP(Request& rq, Server* server, Client* client);
+void exec_Mode(Request& rq, Server* server, Client* client);
 void test3(Request& rq, Server* server, Client* client);
 void invit(Request& rq, Server* server, Client* client);
 void mode(Request& rq, Server* server, Client* client);

@@ -45,6 +45,14 @@ enum e_client{
 	OPERATOR
 };
 
+// enum e_mod {
+//     INVITE_ONLY = 1,
+//     PASSWORD = 2;
+//     NO_BAN = 3;
+//     TOPIC_SET = 4;
+//     LIMITE_SET = 5;
+// }
+
 class Channel{
     private:
         std::string _name;
@@ -55,6 +63,7 @@ class Channel{
         bool _b_ban;
         bool _t_topicop;
         bool _topic_exist;
+        // std::map<bool, int> _mode;
         bool _mode[6];
         std::vector<std::pair<int,Client*> > _member;
     public:
@@ -73,7 +82,7 @@ class Channel{
         void change_statut(Client* clt, int new_st);
 		bool getMOD(int mod) const;
 		std::string getTopic() const;
-		void setMOD(int mod, Client* sender); //par mod = -TOPIC_EXIST for unactiv et mod = TOPIC_EXIST pour activ
+		// void setMOD(int mod, Client* sender); //par mod = -TOPIC_EXIST for unactiv et mod = TOPIC_EXIST pour activ
         void setTopic(std::string topic, Client* sender);
         std::string getTopic();
         // void send_msg(std::string msg, int fd);
@@ -85,10 +94,12 @@ class Channel{
 		void putMode(Client* clt);
 		bool getMODE(int mod) const;
 		static std::string str_mode;
-		void setMODE(int mode, std::string arg, Client* sender);
+		// void setMODE(int mode, std::string arg, Client* sender);
         void chan_msg(const std::string& msg);
+        bool setMOD(int mod, Client* user);
         std::pair<int,Client*> getPairC(size_t i);
         void print_all_clt();
+        void new_op(std::string clt, Client* sender, int flag);
         ~Channel();
 };
 

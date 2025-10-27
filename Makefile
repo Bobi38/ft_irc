@@ -28,6 +28,7 @@ SRCS_FCT = \
 	$(FCTDIR)/Kick.cpp \
 	$(FCTDIR)/co.cpp \
 	$(FCTDIR)/List.cpp \
+	$(FCTDIR)/Mode.cpp \
 	$(FCTDIR)/msg.cpp
 # 	$(FCTDIR)/Join.cpp \
 
@@ -75,7 +76,7 @@ me: all
 	./$(NAME) 6667 jj
 
 titi: all
-	./$(NAME) 6666 pp
+	valgrind ./$(NAME) 6666 pp
 
 .PHONY: all clean fclean re me titi
 

@@ -42,7 +42,7 @@ bool init_chan(Server* server, Channel* chan, std::string psswd, Client* clt){
         clt->rcvMsg("473 " +chan->getName() + " :Cannot join channel (+i)");
         return false;
     }
-    if (!chan->getPssd().empty() && (psswd != chan->getPssd())){
+    if ((chan->getMODE(KEY)) && (psswd != chan->getPssd())){
         clt->rcvMsg("475 " +chan->getName() + " :Cannot join channel (+k)");
         return false;
     }
