@@ -47,7 +47,7 @@ void Channel::change_statut(Client* clt, int new_st){
 
 bool Channel::is_in(std::string _client_name){
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
-		if (it->second->getName() == _client_name)
+		if (it->second->getNick() == _client_name)
 			return true;
 	}
 	return false;
@@ -112,6 +112,8 @@ void Channel::chan_msg(const std::string& msg, Client* sender){
 void Channel::chan_msg(const std::string& msg, Client* sender, Channel* Chan){
 	if (Chan != this)
 		return ;
+	if (is_in(sender->getNick())==false)
+		return sender->rcvMsg(":server 442 " + sender->getNick() +  _name + " :You're not on that channel");
 	for(cci it = _member.begin(); it != _member.end(); it++){
 		if (sender != it->second && (it->first == PRESENT || it->first == CHANOP))
 			it->second->rcvMsg(sender->getMe() + " PRIVMSG " + _name + " :" + msg);
