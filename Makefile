@@ -11,6 +11,8 @@ DEPFLAGS = -MM -MP
 
 SRCS_APP = \
 	$(SRCDIR)/Channel.cpp \
+	$(SRCDIR)/Channel2.cpp \
+	$(SRCDIR)/ChannelGet.cpp \
 	$(SRCDIR)/Server.cpp \
 	$(SRCDIR)/Client.cpp
 

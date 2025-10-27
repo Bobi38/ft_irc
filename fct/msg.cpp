@@ -170,7 +170,7 @@ void topic(Request& rq, Server* server, Client* sender){
 		return sender->rcvMsg(":server 403 :" + chan); //(403 : ERRNOSUCHCHANNEL)
 
 	if (rq[MSG].empty() && rq[2].empty()){
-		if (Chan->getMOD(TOPIC_EXIST))
+		if (Chan->getMODE(TOPIC_EXIST))
 			return sender->rcvMsg(":server 331 " + chan + " No topic is set"); //(403 : ERRNOSUCHCHANNEL)
 		else
 			return sender->rcvMsg(":server 332 " + chan + " :" + Chan->getTopic());

@@ -85,3 +85,17 @@ void Channel::init_limit(std::string limit){
 	_limit = lim;
 	return ;	
 }
+
+bool Channel::setMOD(int mod, Client* user){
+       if (getStatutClt(user) != CHANOP){ 
+               user->rcvMsg(":server 482 " + _name + " :You're not channel operator");
+               return false;
+       }
+       bool set = mod > 0;
+       if (mod < 0)
+               mod = -mod;
+       if (set == _mode[LIMIT - MOINS])
+               return true;
+       _mode[mod - MOINS] = !_mode[mod - MOINS];
+       return true;
+}
