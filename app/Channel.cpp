@@ -94,8 +94,8 @@ bool Channel::setMOD(int mod, Client* user){
        bool set = mod > 0;
        if (mod < 0)
                mod = -mod;
-       if (set == _mode[LIMIT - MOINS])
+       if (set == _mode[mod - MOINS])
                return true;
-       _mode[mod - MOINS] = !_mode[mod - MOINS];
+       _mode[mod - MOINS] = set;
        return true;
 }

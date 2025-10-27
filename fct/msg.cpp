@@ -2,122 +2,6 @@
 #include "Channel.hpp"
 #include <vector>
 
-// enum e_mode{
-// 	BAD = -1,
-// 	MOINS,
-// 	PLUS,
-// 	INVITE_ONLY,
-// 	TOPIC,
-// 	KEY,
-// 	LIMIT,
-// 	OPERATOR
-// }; //= "-+itklo"
-
-// int isInStr(char c, std::string& str, int size){
-// 	for(int i = 0; i < size; i++)
-// 		if (str[i] == c)
-// 			return i;
-// 	return BAD;
-// }
-
-// typedef std::pair<int, int> llist;
-// typedef std::pair<llist, std::string > blist; 
-// typedef std::vector<blist> vlist;
-// typedef vlist::iterator vi;
-
-// void mode(Request& rq, Server* server, Client* sender){
-// 	int head = 1;
-// 	int arg = 2;
-// 	int sign;
-// 	int mode;
-// 	std::string str = rq[head];
-// 	Channel* Chan;
-// 	Client* Client;
-// 	vlist list;
-// 	if (str[0] == '#' || str[0] == '&'){ // check first param != + ou -
-// 		Chan = server->find_channel(str);
-// 		if (Chan && rq[2].empty())
-// 			return Chan->putMode(sender);
-// 		else
-// 			return sender->rcvMsg(":server 403 :no " + str); //(403 : ERRNOSUCHCHANNEL)
-// 	}
-		
-// 	Chan = server->find_channel(str);
-// 	if (Chan && rq[2].empty())
-// 		return sender->rcvMsg(":server 403 :no " + str); //(403 : ERRNOSUCHCHANNEL)
-// 	if (rq[2].empty())
-// 		return Chan->putMode(sender);
-
-	
-	
-// 	// std::string mod = "-+itklo"; // it sans arg * kl pas d arg si - * o tjrs arg 
-// 	int size = Channel::str_mode.size();
-// 	while (str.empty()){ //parsing
-// 		sign = isInStr(str[0], Channel::str_mode, size);
-// 		if (sign != PLUS || sign != MOINS)
-// 			return sender->rcvMsg(":server 461	ERR_NEEDMOREPARAMS"); // first param != + ou -
-// 		int letter = 1;
-// 		for (; str[letter] != std::string::npos; letter++){
-// 			mode = isInStr(str[letter], Channel::str_mode, size);
-// 			if (mode == BAD)
-// 				return sender->rcvMsg(":server 461	ERR_NEEDMOREPARAMS"); //mode n existe pas
-// 			llist little;
-// 			little.first = sign;
-// 			little.second = mode;
-// 			blist big;
-// 			big.first = little;
-// 			if (mode == OPERATOR){ //gestion doublon client
-// 				if (rq[arg].empty())
-// 					return sender->rcvMsg (":server 461	ERR_NEEDMOREPARAMS"); // o  sans arg
-// 				Client = server->find_client(rq[arg]);
-// 				if (!Client)
-// 					return sender->rcvMsg (":server 401	" + rq[arg] + " :No such nick/channel");
-// 				for (vi it=list.begin(); it != list.end(); it++)
-// 					if (it->second == rq[arg])
-// 						return sender->rcvMsg(":server 461	ERR_NEEDMOREPARAMS :too " + str[letter]); // mode doublon
-// 				big.second = rq[arg++];
-// 			}
-// 			else
-// 				for (vi it=list.begin(); it != list.end(); it++)
-// 					if (it->first.second == mode)
-// 						return sender->rcvMsg(":server 461	ERR_NEEDMOREPARAMS :too " + str[letter]); // mode doublon
-// 			if (sign == PLUS && mode >= KEY && mode <= LIMIT){
-// 				if (rq[arg].empty())
-// 					return sender->rcvMsg (":server 461	ERR_NEEDMOREPARAMS"); // l ou k  sans arg
-// 				big.second = rq[arg++];
-// 			}
-// 			else
-// 				big.second = "";
-			
-// 			list.push_back(big);
-// 		}
-// 		head = arg + 1;
-// 		str = rq[head];
-// 	}
-	
-// 	for (vi it = list.begin(); it != list.end(); it++){
-// 		sign = it->first.first;
-// 		mode = it->first.second;
-// 		str = it->second;
-// 		if (mode == OPERATOR){
-// 			Client = server->find_client(str);
-// 			if (sign == PLUS)
-// 				Chan->addClient(Client, OPERATOR);
-// 			else
-// 				Chan->addClient(Client, PRESENT);
-// 			Chan->chan_msg(":server MODE " + Chan->getName() + " " + Channel::str_mode[sign] + Channel::str_mode[mode] + str);
-// 		}
-// 		else if sign == PLUS && mode >=  ) {
-
-
-// 		}
-// 	}
-// }   // retour mode +o user:serveur MODE #salon +o user1
-void mode(Request& rq, Server* server, Client* sender){
-	return sender->rcvMsg(":server 324 " + rq[2] + " +t");
-	(void) server;
-}
-
 void invit(Request& rq, Server* server, Client* sender){
 	std::string user = rq[1];
 	std::string chan = rq[2];
@@ -170,7 +54,7 @@ void topic(Request& rq, Server* server, Client* sender){
 		return sender->rcvMsg(":server 403 :" + chan); //(403 : ERRNOSUCHCHANNEL)
 
 	if (rq[MSG].empty() && rq[2].empty()){
-		if (Chan->getMODE(TOPIC_EXIST))
+		if (Chan->getMODE(TOPIC_EXIST) == false)
 			return sender->rcvMsg(":server 331 " + chan + " No topic is set"); //(403 : ERRNOSUCHCHANNEL)
 		else
 			return sender->rcvMsg(":server 332 " + chan + " :" + Chan->getTopic());

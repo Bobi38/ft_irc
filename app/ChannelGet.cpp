@@ -41,6 +41,7 @@ std::string Channel::getPssd(){
 std::string Channel::str_mode = "-+itklo";
 
 bool Channel::getMODE(int mod) const{
+	std::cout << "je renvoie " << mod << (_mode[mod - MOINS] ? "TRUE" : "FALSE") << std::endl;
 	return _mode[mod - MOINS];
 }
 
