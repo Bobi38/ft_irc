@@ -25,17 +25,17 @@ static void init_map(Request& rq,  std::vector<std::string> &flag){
 bool switch_mode(char c, Client* clt, Channel* Chan, int flag){
     switch(c){
         case 'i':
-            return Chan->setMODE(LIMIT * flag, clt);
+            return Chan->setMOD(INVITE_ONLY * flag, clt);
         case 'k':
-            return Chan->setMODE(KEY * flag, clt);
+            return Chan->setMOD(KEY * flag, clt);
         case 'l':
-            return Chan->setMODE(LIMIT * flag, clt);
+            return Chan->setMOD(LIMIT * flag, clt);
         case 't':
-            return Chan->setMODE(TOPIC * flag, clt);
+            return Chan->setMOD(TOPIC * flag, clt);
         case 'o':
             return true;
         default:
-            clt->rcvMsg(":server 472 " + chan->getName() + " " + c + " :is unknown mode char to me");
+            clt->rcvMsg(":server 472 " + Chan->getName() + " " + c + " :is unknown mode char to me");
             return false;
     }
 }
@@ -52,35 +52,36 @@ void exec_Mode(Request& rq, Server* server, Client* client){
     init_map(rq, flag);
     for(size_t i = 0; i < flag.size(); i++){
         int sign;
-        if (flag[0] == '-')
+        if (flag[i][0] == '-')
             sign = MOINS;
-        if (flag[0] == '+')
+        if (flag[i][0] == '+')
             sign = PLUS;
         else 
             continue ;
-        for(size_t y = 1; y < flag[i].size(); y++)
+        for(size_t y = 1; y < flag[i].size(); y++){
             if (!switch_mode(flag[i][y], client, Chan, sign))
                 continue ;
             if (flag[i][y] == 'k' && sign == PLUS){
-                if (i + 1 >= flag.size() || flag[i + 1][0] != @){
-                    clt->rcvMsg(":server 461 " + clt->getNick() + " MODE :Not enough parameters")
+                if ((i + 1 >= flag.size()) || flag[i + 1][0] != '@'){
+                    client->rcvMsg(":server 461 " + client->getNick() + " MODE :Not enough parameters");
                     continue ;
                 }
-                chan->init_psswd(flag[i + 1]);
+                Chan->init_psswd(flag[i + 1]);
             }
             if (flag[i][y] == 'l' && sign == PLUS){
-                if (i + 1 >= flag.size() || flag[i + 1][0] != @){
-                    clt->rcvMsg(":server 461 " + clt->getNick() + " MODE :Not enough parameters")
+                if ((i + 1 >= flag.size()) || flag[i + 1][0] != '@'){
+                    client->rcvMsg(":server 461 " + client->getNick() + " MODE :Not enough parameters");
                     continue ;
                 }
-                chan->init_limit(flag[i + 1]);
+                Chan->init_limit(flag[i + 1]);
             }
             if (flag[i][y] == 'o'){
-                if (i + 1 >= flag.size() || flag[i + 1][0] != @){
-                    clt->rcvMsg(":server 461 " + clt->getNick() + " MODE :Not enough parameters")
+                if ((i + 1 >= flag.size()) || flag[i + 1][0] != '@'){
+                    client->rcvMsg(":server 461 " + client->getNick() + " MODE :Not enough parameters");
                     continue ;
                 }
-                chan->new_op(flag[i + 1], client, flag);
+                Chan->new_op(flag[i + 1], client, sign);
             }
+        }
     }
 }

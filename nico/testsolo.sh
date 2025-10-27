@@ -35,7 +35,8 @@ tmux send-keys -t $SESSION_NAME:0.0 "PASS pp
 NICK tvoisin
 USER tvoisiny t y" C-m
 tmux send-keys -t $SESSION_NAME:0.0 "JOIN #oo" C-m
-tmux send-keys -t $SESSION_NAME:0.0 "MODE #oo -rre+r fdfd +dsd-dzds+DSds" C-m
+tmux send-keys -t $SESSION_NAME:0.0 "MODE #oo +l 45" C-m
+
 # tmux send-keys -t $SESSION_NAME:0.0 "NAME Altrad" C-m
 # tmux send-keys -t $SESSION_NAME:0.1 "PASS jj" C-m
 # tmux send-keys -t $SESSION_NAME:0.1 "NICK Bernard" C-m
@@ -49,8 +50,8 @@ tmux send-keys -t $SESSION_NAME:0.0 "MODE #oo -rre+r fdfd +dsd-dzds+DSds" C-m
 # tmux send-keys -t $SESSION_NAME:0.1 "PRVMSG Bianca :Salut Bianca" C-m
 # tmux send-keys -t $SESSION_NAME:0.1 "PRVMSG mathis :Salut Bianca" C-m
 
-# tmux send-keys -t $SESSION_NAME:0.1 "JOIN #t1" C-m
-# tmux send-keys -t $SESSION_NAME:0.2 "JOIN #t1" C-m
+# tmux send-keys -t $SESSION_NAME:0.1 "JOIN t1" C-m
+# tmux send-keys -t $SESSION_NAME:0.2 "JOIN t1" C-m
 
 
 # Attacher à la session

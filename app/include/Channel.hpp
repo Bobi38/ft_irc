@@ -45,13 +45,6 @@ enum e_client{
 	OPERATOR
 };
 
-// enum e_mod {
-//     INVITE_ONLY = 1,
-//     PASSWORD = 2;
-//     NO_BAN = 3;
-//     TOPIC_SET = 4;
-//     LIMITE_SET = 5;
-// }
 
 class Channel{
     private:
@@ -100,6 +93,7 @@ class Channel{
         std::pair<int,Client*> getPairC(size_t i);
         void print_all_clt();
         void new_op(std::string clt, Client* sender, int flag);
+        void init_limit(std::string limit);
         ~Channel();
 };
 
