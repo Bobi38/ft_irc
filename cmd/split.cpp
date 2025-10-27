@@ -37,7 +37,7 @@ std::string* split(char sep, std::string& str){
 }
 
 // int main(){
-// 	std::string a = " u   er g  he we w w w yw55yw5 ywyw5y  yw54y w54y y     ";
+// 	std::string a = " u   er g  he we w w w yw55yw5 ywyw5y  yw54y w54y y	 ";
 // 	std::string* b = split(' ', a);
 // 	if (!b)
 // 		return 1;

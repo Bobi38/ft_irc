@@ -2,104 +2,104 @@
 #include "Channel.hpp"
 
 void exec_nick(Request& rq, Server* server, Client* client){
-    Client* toto;
-    toto = server->find_client(rq[1].c_str());
-    if (!toto)
-        client->setNick(rq[1].c_str());
-    else
-        client->rcvMsg("error 433 nick already use");
+	Client* toto;
+	toto = server->find_client(rq[1].c_str());
+	if (!toto)
+		client->setNick(rq[1].c_str());
+	else
+		client->rcvMsg("error 433 nick already use");
 }
 
 void exec_n(std::string name, Server* server, Client* client){
-    Client* toto;
-    toto = server->find_client(name);
-    if (!toto)
-        client->setNick(name);
-    else
-        client->rcvMsg("error 433 nick already use");
+	Client* toto;
+	toto = server->find_client(name);
+	if (!toto)
+		client->setNick(name);
+	else
+		client->rcvMsg("error 433 nick already use");
 }
 
 void exec_pass(Request& rq, Server* server, Client* client){
 
-    if (rq.size_tab() == 6){
-        std::string pss(rq[1]);
-        size_t i = pss.find_first_of("\r\n", 0);
-        pss.erase(i);
-        if (pss == server->getPSSD())
-            client->setpssd();
-        else{
-            client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
-            server->dlt_client(client, client->getfd());
-            return ;
-        }
-        std::string nick(rq[2]);
-        i = nick.find_first_of("\r\n", 0);
-        nick.erase(i);
-        exec_n(nick, server, client);
-        client->setName(rq[3]);
-        client->setco();
-        return ;
-    }
-    std::string ps(rq[1]);
-    if (client->getName() != "" || client->getNick() != ""){
-        client->rcvMsg("462 " + client->getNick() + " :You may not reregister");
-        return;
-    }
-    if (rq.size_tab() < 2) {
-        client->rcvMsg("461 PASS :Not enough parameters");
-        return;
-    }
-    if (ps == server->getPSSD())
-        client->setpssd();
-    else{
-        client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
-        server->dlt_client(client, client->getfd());
-    }
+	if (rq.size_tab() == 6){
+		std::string pss(rq[1]);
+		size_t i = pss.find_first_of("\r\n", 0);
+		pss.erase(i);
+		if (pss == server->getPSSD())
+			client->setpssd();
+		else{
+			client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
+			server->dlt_client(client, client->getfd());
+			return ;
+		}
+		std::string nick(rq[2]);
+		i = nick.find_first_of("\r\n", 0);
+		nick.erase(i);
+		exec_n(nick, server, client);
+		client->setName(rq[3]);
+		client->setco();
+		return ;
+	}
+	std::string ps(rq[1]);
+	if (client->getName() != "" || client->getNick() != ""){
+		client->rcvMsg("462 " + client->getNick() + " :You may not reregister");
+		return;
+	}
+	if (rq.size_tab() < 2) {
+		client->rcvMsg("461 PASS :Not enough parameters");
+		return;
+	}
+	if (ps == server->getPSSD())
+		client->setpssd();
+	else{
+		client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
+		server->dlt_client(client, client->getfd());
+	}
 }
 
 
 void exec_user(Request& rq, Server* server, Client* client){
-    (void)server;
+	(void)server;
 
-    // if (rq.size_tab() < 5) {
-    //     client->rcvMsg("461 USER :Not enough parameters\r\n");
-    //     return;
-    // }
-    client->setName(rq[1]);
-    client->setco();
+	// if (rq.size_tab() < 5) {
+	//	 client->rcvMsg("461 USER :Not enough parameters\r\n");
+	//	 return;
+	// }
+	client->setName(rq[1]);
+	client->setco();
 }
 
 void exec_ping(Request& rq, Server* server, Client* client){
-    (void)server;
-    (void)rq;
-    client->rcvMsg("PONG " + rq[1]);
+	(void)server;
+	(void)rq;
+	client->rcvMsg("PONG " + rq[1]);
 }
 
 void exec_CAP(Request& rq, Server* server, Client* client){
-    (void)server;
-    std::cout << "je suis dans CAP" << std::endl;
-    if (rq.size_tab() == 8){
-        client->rcvMsg(":4242 CAP * LS :");
-        std::string pss(rq[3]);
-        size_t i = pss.find_first_of("\r\n", 0);
-        pss.erase(i);
-        if (pss == server->getPSSD())
-            client->setpssd();
-        else{
-            client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
-            server->dlt_client(client, client->getfd());
-            return ;
-        }
-        std::string nick(rq[4]);
-        i = nick.find_first_of("\r\n", 0);
-        nick.erase(i);
-        exec_n(nick, server, client);
-        client->setName(rq[5]);
-        client->setco();
-        return ;
-    }
-    if (rq.size_tab() == 3)
-        client->rcvMsg(":4242 CAP * LS :");
+	(void)server;
+	std::cout << "je suis dans CAP" << std::endl;
+	if (rq.size_tab() == 8){
+		client->rcvMsg(":4242 CAP * LS :");
+		std::string pss(rq[3]);
+		size_t i = pss.find_first_of("\r\n", 0);
+		pss.erase(i);
+		if (pss == server->getPSSD())
+			client->setpssd();
+		else{
+			client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
+			server->dlt_client(client, client->getfd());
+			return ;
+		}
+		std::string nick(rq[4]);
+		i = nick.find_first_of("\r\n", 0);
+		nick.erase(i);
+		exec_n(nick, server, client);
+		client->setName(rq[5]);
+		client->setco();
+		return ;
+	}
+	if (rq.size_tab() == 3)
+		client->rcvMsg(":4242 CAP * LS :");
 }
 
 

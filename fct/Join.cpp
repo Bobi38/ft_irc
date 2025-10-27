@@ -31,6 +31,7 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 	Channel* pchan = server->find_channel(chan);
 	if (!pchan){
 		pchan = server->addChannel(chan, clt);
+		clt->addChannel(pchan);
 		if (!psswd.empty())
 			pchan->init_psswd(psswd);
 		return pchan;
@@ -50,7 +51,7 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 		clt->rcvMsg("474 " + pchan->getName() + " :Cannot join channel (+b)");
 		return NULL;
 	}
-	if (pchan->get_i() == true && (pchan->getStatutClt(clt) != INVITE)){
+	if (pchan->getMODE(INVITE_ONLY) == true && (pchan->getStatutClt(clt) != INVITE)){
 		clt->rcvMsg("473 " + pchan->getName() + " :Cannot join channel (+i)");
 		return NULL;
 	}
@@ -58,6 +59,7 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 		clt->rcvMsg("475 " + pchan->getName() + " :Cannot join channel (+k)");
 		return NULL;
 	}
+	clt->addChannel(pchan);
 	pchan->addClient(clt, PRESENT);
 	return pchan;
 }
