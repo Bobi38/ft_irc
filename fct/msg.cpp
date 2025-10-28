@@ -69,3 +69,17 @@ void topic(Request& rq, Server* server, Client* sender){
 		Chan->setTopic(rq[2], sender);
 	}
 }
+
+void who(Request& rq, Server* server, Client* sender){
+	std::cout << "\t\tWHO" << std::endl;
+	std::string chan = rq[1];
+	if (chan.empty())
+		return sender->rcvMsg(":server 301 "); // attention retour
+	std::cout << "first test on WHO" << std::endl;
+	Channel* Chan= server->find_channel(chan);
+	if (!Chan)
+		sender->rcvMsg(":server 315 :" + sender->getNick() +" " + chan + " :End of WHO list"); //(403 : ERRNOSUCHCHANNEL)
+	sender->rcvMsg(":server 315 :" + sender->getNick() +" " + chan + " :End of WHO list"); //(403 : ERRNOSUCHCHANNEL)	
+
+	
+}

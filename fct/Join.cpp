@@ -31,37 +31,35 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 	Channel* pchan = server->find_channel(chan);
 	if (!pchan){
 		pchan = server->addChannel(chan, clt);
-		clt->addChannel(pchan);
 		if (!psswd.empty())
 			pchan->init_psswd(psswd);
+		clt->rcvMsg(clt->getMe() + " JOIN " + chan);
 		return pchan;
 	}
-
+	int statut = pchan->getStatutClt(clt);
 	if (clt->nbChan() >= 10){
 		clt->rcvMsg("405 " + pchan->getName() + " :You have joined too many channels");
-		return NULL;
 	}
-	if (pchan->getNbMemb() >= 10){
+	else if (pchan->getNbMemb() >= 10){
 		clt->rcvMsg("471 " + pchan->getName() + " :Cannot join channel (+l)");
-		return NULL;
 	}
-	if (pchan->getStatutClt(clt) == PRESENT)
+	else if (pchan->getStatutClt(clt) == PRESENT)
 		return NULL;
-	if (pchan->getStatutClt(clt) == BAN){
+
+	else if (statut == BAN){
 		clt->rcvMsg("474 " + pchan->getName() + " :Cannot join channel (+b)");
-		return NULL;
 	}
-	if (pchan->getMODE(INVITE_ONLY) == true && (pchan->getStatutClt(clt) != INVITE)){
+	else if (pchan->getMODE(INVITE_ONLY) == true && (statut != INVITE)){
 		clt->rcvMsg("473 " + pchan->getName() + " :Cannot join channel (+i)");
-		return NULL;
 	}
-	if (pchan->getMODE(KEY) == true && (psswd != pchan->getPssd())){
+	else if (pchan->getMODE(KEY) == true && (psswd != pchan->getPssd())){
 		clt->rcvMsg("475 " + pchan->getName() + " :Cannot join channel (+k)");
-		return NULL;
 	}
-	clt->addChannel(pchan);
-	pchan->addClient(clt, PRESENT);
-	return pchan;
+	else{ 
+		pchan->addClient(clt, PRESENT);
+		return pchan;
+	}
+	return NULL;
 }
 
 std::string init_namel(Channel* chan){
@@ -93,7 +91,7 @@ void exec_join(Request& rq, Server* server, Client* client){
 		Channel* TChan = init_chan(server, chan[i], key[i], client);
 		if (!TChan)
 			continue ;
-
+		client->addChannel(TChan);
 		if (TChan->getTopic() != "")
 			client->rcvMsg(":server_irc 332 " + client->getNick() + " " + chan[i] + " :" + TChan->getTopic());
 		

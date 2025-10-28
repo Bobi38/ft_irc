@@ -19,6 +19,7 @@ void exec_CAP(Request& rq, Server* server, Client* client);
 void exec_Mode(Request& rq, Server* server, Client* client);
 void test3(Request& rq, Server* server, Client* client);
 void invit(Request& rq, Server* server, Client* client);
+void who(Request& rq, Server* server, Client* client);
 void topic(Request& rq, Server* server, Client* client);
 
 
@@ -35,7 +36,7 @@ public:
 	Maker* operator=(const Maker& other);
 	~Maker();
 
-	void select(const std::string& str, Server* server, Client* client);
+	void select(std::string& str, Server* server, Client* client);
 };
 
 #endif

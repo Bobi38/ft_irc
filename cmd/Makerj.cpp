@@ -18,24 +18,20 @@ Maker::Maker(){
 	table[14] = Level("TEST1", test2);
 	table[15] = Level("PART", exec_part);
 	table[16] = Level("PRIVMSG", prvmsg);
-
+	table[17] = Level("WHO", who);
 	};
 
-void Maker::select(const std::string& str, Server* server, Client* client){
-	// bool second = (client == _wClt);
+void Maker::select(std::string& str, Server* server, Client* client){
+	std::cout << str << std::endl;
 
 	std::string temp = str;
-
-	// if (second)
-		temp = _buff + temp;
-
 	Request rq(temp);
 
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first){
 			if (client->getco() == false && i > 4){
-				std::cout << "Client interdit " << rq.getCmd()  << std::endl;
-				return ; // retour si client non _co
+				std::cout << ":server_irc 305 : Forbiden Client" << rq.getCmd()  << std::endl;
+				return ;
 			}
 		std::cout << "creation request avec cmd =" << rq.getCmd() << std::endl;
 		return table[i].second(rq, server, client);
