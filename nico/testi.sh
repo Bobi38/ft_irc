@@ -45,6 +45,13 @@ tmux send-keys -t $SESSION_NAME:0.1 "JOIN #t1" C-m
 tmux send-keys -t $SESSION_NAME:0.2 "JOIN #t1" C-m
 # tmux send-keys -t $SESSION_NAME:0.1 "MODE #t1 +k popo" C-m
 tmux send-keys -t $SESSION_NAME:0.1 "KICK #t1 Bianca" C-m
+tmux send-keys -t $SESSION_NAME:0.1 "MODE #t1 +i" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t1" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.1 "MODE #t1 -i" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t1" C-m
 # tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t1" C-m
 
 

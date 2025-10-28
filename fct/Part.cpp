@@ -34,6 +34,7 @@ void exec_part(Request& rq, Server* server, Client* client){
             continue;
         }
         if (client->is_Channel(chan[i])){
+            TChan->chan_msg(client->getMe() + " PART " + chan[i] + " :" + rq.getMsg());
             server->unlinkClienttoChannel(client, TChan);
         }
         else
