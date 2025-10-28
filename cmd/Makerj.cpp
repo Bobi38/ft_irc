@@ -22,12 +22,11 @@ Maker::Maker(){
 	};
 
 void Maker::select(const std::string& str, Server* server, Client* client){
-	std::cout << str << std::endl;
-	bool second = (client == _wClt);
+	// bool second = (client == _wClt);
 
 	std::string temp = str;
 
-	if (second)
+	// if (second)
 		temp = _buff + temp;
 
 	Request rq(temp);

@@ -23,6 +23,7 @@ static void init_map(Request& rq,  std::vector<std::string> &flag){
 }
 
 bool switch_mode(char c, Client* clt, Channel* Chan, int flag){
+    std::cout << "c =" << c << " " << flag << std::endl;
 	switch(c){
 		case 'i':
 			return Chan->setMOD(INVITE_ONLY * flag, clt);
@@ -61,14 +62,14 @@ void exec_Mode(Request& rq, Server* server, Client* client){
 		for(size_t y = 1; y < flag[i].size(); y++){
 			if (!switch_mode(flag[i][y], client, Chan, sign))
 				continue ;
-			if (flag[i][y] == 'k' && sign == PLUS){
+			if (flag[i][y] == 'k' && sign == 1){
 				if ((i + 1 >= flag.size()) || flag[i + 1][0] != '@'){
 					client->rcvMsg(":server 461 " + client->getNick() + " MODE :Not enough parameters");
 					continue ;
 				}
 				Chan->init_psswd(flag[i + 1]);
 			}
-			if (flag[i][y] == 'l' && sign == PLUS){
+			if (flag[i][y] == 'l' && sign == 1){
 				if ((i + 1 >= flag.size()) || flag[i + 1][0] != '@'){
 					client->rcvMsg(":server 461 " + client->getNick() + " MODE :Not enough parameters");
 					continue ;

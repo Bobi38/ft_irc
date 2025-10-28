@@ -13,11 +13,12 @@ void exec_kick(Request& rq, Server* server, Client* client){
 		return ;
 	}
 	TClt = TChan->return_client(rq[2]);
+	// std::cout << TClt->getNick() << std::endl;
 	if (!TClt || (TChan->getStatutClt(TClt) != PRESENT && TChan->getStatutClt(TClt) != CHANOP)){
-		client->rcvMsg("442 " + rq[2] + " :You're not on that channel");
+		client->rcvMsg("4423 " + rq[2] + " :You're not on that channel");
 		return ;
 	}
-	if (TChan->is_in(client->getName()) == false){
+	if (TChan->is_in(client->getNick()) == false){
 		client->rcvMsg("442 " + client->getNick() + " :You're not on that channel");
 		return ;	   
 	}

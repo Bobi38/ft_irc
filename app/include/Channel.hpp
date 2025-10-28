@@ -58,7 +58,6 @@ class Channel{
     public:
         Channel(std::string name, Client* client);
         std::string getName();
-        size_t getNbMemb();
         int getStatutClt(Client* clt);
         std::string getPssd();
         void init_psswd(std::string psswd);
@@ -72,7 +71,7 @@ class Channel{
 		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte		
         void chan_msg(const std::string& msg, Client* sender, Channel*); //envoie un message a tous les connecte
         void invit(Client* User, Client* Invit);
-        int getNbMemb() const;
+        int getNbMemb();
 		Client* getClient(size_t i);
 		bool getMODE(int mod) const;
 		static std::string str_mode;

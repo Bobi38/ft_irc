@@ -18,7 +18,7 @@ bool init_chan(Request& rq,  std::vector<std::string>& chan){
 void exec_part(Request& rq, Server* server, Client* client){
     if (client->getco() == false)
         return ;
-    if (rq.size_tab() < 3) {
+    if (rq.size_tab() < 2) {
         client->rcvMsg("461 USER :Not enough parameters");
         return;
     }

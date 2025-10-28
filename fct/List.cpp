@@ -11,6 +11,7 @@ void exec_list(Request& rq, Server* server, Client* client){
 		std::ostringstream oss;
 		oss << chan->getNbMemb();
 		std::string str = oss.str();
+		std::cout << chan->getNbMemb() << std::endl;
 		msg = "322 " + client->getNick() + " " + chan->getName() + " " + str + " :" + chan->getTopic();
 		client->rcvMsg(msg);
 	}

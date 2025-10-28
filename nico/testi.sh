@@ -34,22 +34,19 @@ sleep 1
 tmux send-keys -t $SESSION_NAME:0.0 "PASS jj
 NICK tvoisin
 USER tvoisiny t y" C-m
-# tmux send-keys -t $SESSION_NAME:0.0 "NICK Alain" C-m
-# tmux send-keys -t $SESSION_NAME:0.0 "NAME Altrad" C-m
 tmux send-keys -t $SESSION_NAME:0.1 "PASS jj" C-m
 tmux send-keys -t $SESSION_NAME:0.1 "NICK Bernard" C-m
 tmux send-keys -t $SESSION_NAME:0.1 "USER lhermite" C-m
 tmux send-keys -t $SESSION_NAME:0.2 "PASS jj" C-m
-tmux send-keys -t $SESSION_NAME:0.2 "NICK Bernard" C-m
 tmux send-keys -t $SESSION_NAME:0.2 "NICK Bianca" C-m
 tmux send-keys -t $SESSION_NAME:0.2 "USER Corine" C-m
 
-tmux send-keys -t $SESSION_NAME:0.1 "MODE arg1 arg2 arg3 :   vois tu ce message" C-m
-tmux send-keys -t $SESSION_NAME:0.1 "PRVMSG Bianca :Salut Bianca" C-m
-tmux send-keys -t $SESSION_NAME:0.1 "PRVMSG mathis :Salut Bianca" C-m
-
 tmux send-keys -t $SESSION_NAME:0.1 "JOIN #t1" C-m
 tmux send-keys -t $SESSION_NAME:0.2 "JOIN #t1" C-m
+# tmux send-keys -t $SESSION_NAME:0.1 "MODE #t1 +k popo" C-m
+tmux send-keys -t $SESSION_NAME:0.1 "KICK #t1 Bianca" C-m
+# tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t1" C-m
+
 
 
 # Attacher à la session
