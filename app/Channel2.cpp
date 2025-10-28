@@ -42,13 +42,16 @@ void Channel::chan_msg(const std::string& msg, Client* sender, Channel* Chan){
 	if (is_in(sender->getNick())==false)
 		return sender->rcvMsg(":server 442 " + sender->getNick() +  _name + " :You're not on that channel");
 	for(cci it = _member.begin(); it != _member.end(); it++){
+		std::cout << _name << " opop " << it->second->getMe() << std::endl;
 		if (sender != it->second && (it->first == PRESENT || it->first == CHANOP))
 			it->second->rcvMsg(sender->getMe() + " PRIVMSG " + _name + " :" + msg);
 	}
 }
 
 void Channel::chan_msg(const std::string& msg){
-	for(cci it = _member.begin(); it != _member.end(); it++)
+	for(cci it = _member.begin(); it != _member.end(); it++){
+		std::cout << _name << " " << it->second->getMe() << std::endl;
 		if (it->first == PRESENT || it->first == CHANOP)
 			it->second->rcvMsg(msg);
+	}
 }

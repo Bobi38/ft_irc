@@ -30,7 +30,7 @@ void exec_part(Request& rq, Server* server, Client* client){
     for(size_t i = 0; i < chan.size(); i++){
         TChan = server->find_channel(chan[i]);
         if (!TChan){
-            client->rcvMsg("403 " +TChan->getName() + " :No such channel");
+            client->rcvMsg("403 " + chan[i] + " :No such channel");
             continue;
         }
         if (client->is_Channel(chan[i])){

@@ -44,11 +44,11 @@ void prvmsg(Request& rq, Server* server, Client* sender){
 }
 
 void topic(Request& rq, Server* server, Client* sender){
-	std::cout << "/t/tTOPIC" << std::endl;
+	// std::cout << "/t/tTOPIC" << std::endl;
 	std::string chan = rq[1];
 	if (chan.empty())
 		return sender->rcvMsg(":server 301 "); // attention retour
-	std::cout << "first test only TOPIC" << std::endl;
+	// std::cout << "first test only TOPIC" << std::endl;
 	Channel* Chan= server->find_channel(chan);
 	if (!Chan)
 		return sender->rcvMsg(":server 403 :" + chan); //(403 : ERRNOSUCHCHANNEL)
@@ -59,27 +59,40 @@ void topic(Request& rq, Server* server, Client* sender){
 		else
 			return sender->rcvMsg(":server 332 " + chan + " :" + Chan->getTopic());
 	}	
-	std::cout << "test base ok TOPIC" << std::endl;
+	// std::cout << "test base ok TOPIC" << std::endl;
 	if (rq[2].empty()){
 		std::cout << "msg = " << rq[MSG] << std::endl;		
 		Chan->setTopic(rq[MSG], sender);
 	}
 	else{
-		std::cout << "test TOPIC msg[2]" << std::endl;
+		// std::cout << "test TOPIC msg[2]" << std::endl;
 		Chan->setTopic(rq[2], sender);
 	}
 }
 
+void Channel::whoExec(Client* Client){
+	std::string nickClient = Client->getNick();
+	for (cci it = _member.begin(); it != _member.end(); it++){
+		Client->rcvMsg(":server_irc 352 " \
+					+ nickClient + " "\
+					+ _name + " ~"\
+					+ it->second->getName() \
+					+ " 127.0.0.1 server_irc "\
+					+ it->second->getNick() \
+					+ " H" + (it->first == CHANOP ? "@" : "") \
+					+ " :0");
+	}
+	Client->rcvMsg(":server 315 :" + nickClient + " " + _name + " :End of WHO list");
+}
+
 void who(Request& rq, Server* server, Client* sender){
-	std::cout << "\t\tWHO" << std::endl;
+	// std::cout << "\t\tWHO" << std::endl;
 	std::string chan = rq[1];
 	if (chan.empty())
 		return sender->rcvMsg(":server 301 "); // attention retour
 	std::cout << "first test on WHO" << std::endl;
 	Channel* Chan= server->find_channel(chan);
 	if (!Chan)
-		sender->rcvMsg(":server 315 :" + sender->getNick() +" " + chan + " :End of WHO list"); //(403 : ERRNOSUCHCHANNEL)
-	sender->rcvMsg(":server 315 :" + sender->getNick() +" " + chan + " :End of WHO list"); //(403 : ERRNOSUCHCHANNEL)	
-
-	
+		sender->rcvMsg(":server 315 :" + sender->getNick() +" " + chan + " :End of WHO list"); //(403 : ERRNOSUCHCHANNEL) juste pour WHO
+	Chan->whoExec(sender);
 }

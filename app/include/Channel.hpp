@@ -68,7 +68,8 @@ class Channel{
         void change_statut(Client* clt, int new_st);
         void setTopic(std::string topic, Client* sender);
         std::string getTopic();
-		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte		
+		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte
+        void whoExec(Client* Client);
         void chan_msg(const std::string& msg, Client* sender, Channel*); //envoie un message a tous les connecte
         void invit(Client* User, Client* Invit);
         int getNbMemb();
