@@ -75,7 +75,7 @@ fclean: clean
 re: fclean all
 
 me: all
-	./$(NAME) 6667 jj
+	valgrind ./$(NAME) 6667 jj
 
 titi: all
 	valgrind ./$(NAME) 6666 pp

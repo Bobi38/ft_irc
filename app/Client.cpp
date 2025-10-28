@@ -50,45 +50,45 @@ Client::~Client() {
 }
 
 int Client::getFd(){
-    return _fd;
+	return _fd;
 }
 
 void Client::setNick(const std::string& str){
-    _nick = str;
+	_nick = str;
 }
 
 void Client::setName(const std::string& str){
-    _name = str;
+	_name = str;
 	_co = true;
 }
 
 bool Client::is_Channel(std::string channel){
-    for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it++){
-        if ((*it)->getName() == channel)
-            return true;
-    }
-    return false;
+	for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it++){
+		if ((*it)->getName() == channel)
+			return true;
+	}
+	return false;
 }
 
 void Client::addChannel(Channel* chan){
-    if (!chan->is_in(chan->getName()))
-        _chan.push_back(chan);
+	if (!chan->is_in(chan->getName()))
+		_chan.push_back(chan);
 }
 
 void Client::rmChannel(Channel* chan){
-    if (!chan)
-        return ;
-    std::vector<Channel*>::iterator it = find(_chan.begin(), _chan.end(), chan);
-    if (it != _chan.end())
-        _chan.erase(it);
+	if (!chan)
+		return ;
+	std::vector<Channel*>::iterator it = find(_chan.begin(), _chan.end(), chan);
+	if (it != _chan.end())
+		_chan.erase(it);
 }
 
 std::string Client::getName() const{
-    return _name;
+	return _name;
 }
 
 std::string Client::getNick() const{
-    return _nick;
+	return _nick;
 }
 
 void Client::setpssd() {
@@ -186,15 +186,24 @@ Client::operator bool() const{
 
 void Client::rcvMsg(const std::string& msg) {
 	std::string msg_temp = msg + "\r\n";
-	send(_fd, msg_temp.c_str(), msg_temp.size(), 0);
+	ssize_t sent = send(_fd, msg_temp.c_str(), msg_temp.size(), MSG_NOSIGNAL);
+	if (sent < 0) {
+		if (errno == EPIPE || errno == ECONNRESET) {
+			std::cerr << "Client disconnected" << std::endl;
+			// close(_fd);
+		}
+		else {
+			perror("send");
+		}
+	}
 }
 
 void Client::rcvMsg(const std::string& msg, Client* client) {
 	std::string msg_temp;
 	if (client == NULL)
 		return rcvMsg(":server 401 " + getNick()); //(401 : ERR_NOSUCHNICK)
-	msg_temp = client->getMe() + " PRIVMSG :" + msg + "\t\n";
-	send(_fd, msg_temp.c_str(), msg_temp.size(), 0);
+	msg_temp = client->getMe() + " PRIVMSG :" + msg;
+	rcvMsg(msg_temp);
 }
 
 // void Client::setRealName(std::string realname){
@@ -207,7 +216,7 @@ void Client::rcvMsg(const std::string& msg, Client* client) {
 
 void Client::print_all_chan(){
 	std::cout << getName() << " ";
-    for(size_t i = 0; i < _chan.size(); i++){
+	for(size_t i = 0; i < _chan.size(); i++){
 		std::cout << _chan[i]->getName() << " // ";
 	}
 	std::cout << std::endl;
