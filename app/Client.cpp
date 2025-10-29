@@ -184,6 +184,13 @@ Client::operator bool() const{
 	return _co;
 }
 
+void Client::deconne(){
+	_co = false;
+}
+
+void Client::setFd(int x){
+	_fd = x;
+}
 void Client::rcvMsg(const std::string& msg) {
 	std::string msg_temp = msg + "\r\n";
 	ssize_t sent = send(_fd, msg_temp.c_str(), msg_temp.size(), MSG_NOSIGNAL);

@@ -19,15 +19,15 @@ std::string Channel::getTopic(){
 
 void	Channel::invit(Client* User, Client* Invit){
 	int statut = getStatutClt(User);
-	if (statut != PRESENT && statut != CHANOP)
-		return User->rcvMsg(":server 443 " + _name + " :out of channel");//(443 -> ERR_USERONCHANNEL)
+	if (statut != CHANOP)
+		return User->rcvMsg(":server 482 " + _name + " :You're not channel operator");//(443 -> ERR_USERONCHANNEL)":server 443 " + _name + " :out of channel"
 	statut = getStatutClt(Invit);
 	if (statut >= PRESENT && statut <= BAN)
-		return User->rcvMsg(":server 443 " + _name + " :no invit" );//(443 -> ERR_USERONCHANNEL)
+		return User->rcvMsg(":server 443 " + _name + " :is already on channel");
 	
 	addClient(Invit, INVITE);
+	chan_msg(User->getMe() + " INVITE " + Invit->getName() + " " + _name);
 }
-
 
 void Channel::chan_msg(const std::string& msg, Client* sender){
 	for(cci it = _member.begin(); it != _member.end(); it++){
