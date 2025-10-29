@@ -44,6 +44,8 @@ void Channel::addClient(Client* client, int statut){
 		for(cci it = _member.begin(); it != _member.end(); it++)
 			if (it->second == client)
 				it->first = statut;
+	if (statut == INVITE)
+		return ;
 	if (is == false)
 		chan_msg(client->getMe() + " JOIN " + _name);
 }
