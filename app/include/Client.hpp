@@ -43,7 +43,7 @@ class Client{
         std::string getNick() const;
         std::string getMe() const;
         Channel* getChan(size_t i);
-        int getfd() const ;
+        int getfd() const;
         bool getco()const;
         void setNick(const std::string& str);
         void setName(const std::string& str);
@@ -56,6 +56,8 @@ class Client{
         void setRealName(std::string realname);
         std::string getRealName();
         operator bool() const;
+        void deconne();
+        void setFd(int);
         void rcvMsg(const std::string& str, Client* sender); //transmet le message de sender
         void rcvMsg(const std::string& str); // message de retour 
         size_t nbChan();

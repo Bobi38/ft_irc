@@ -16,7 +16,8 @@ Server::~Server(){
 	for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it ++)
 		delete *it;
 	for(size_t i = 1; i < _fds.size(); i++)
-		close(_fds[i].fd);
+		if (_fds[i].fd != -1)
+			close(_fds[i].fd);
 	_fds.clear();
 	_client.clear();
 	_chan.clear();
@@ -182,13 +183,20 @@ void Server::GoServ(){
 				int nfd = accept(_server_fd, (struct sockaddr *)&c, &client_len);
 				addFd(nfd);
 				addClient(nfd);
-			}
+		}
+
 		for (size_t i = 1; i < _fds.size(); i++) {
+			if (_fds[i].revents == 0) continue;
+
 			if (_fds[i].revents & POLLIN) {
 				memset(buffer, 0, BUFFER_SIZE);
 				int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
-				if (n < 0)
+				if (n < 0){
+					std::cout << "close fds client " << _fds[i].fd << std::endl;
+					close(_fds[i].fd);
+					_fds[i].fd = -1;
 					throw std::runtime_error("error recv");
+				}
 				Client* tmp = find_fd(_fds[i].fd);
 				std::string next(buffer);
 				size_t pos;
@@ -197,7 +205,12 @@ void Server::GoServ(){
 					next.erase(0, pos + 2);
 					mm.select(ine, this, tmp);
 				}
-
+            	if (_fds[i].revents & POLLHUP) {
+                	std::cerr << "Déco client " << _fds[i].fd << std::endl;
+                	close(_fds[i].fd);
+                	_fds[i].fd = -1;  // Marquer comme déconnecté
+					tmp->deconne();
+            	}
 			}
 		}
 	}

@@ -6,8 +6,13 @@ void exec_nick(Request& rq, Server* server, Client* client){
 	toto = server->find_client(rq[1].c_str());
 	if (!toto)
 		client->setNick(rq[1].c_str());
-	else
+	else if (toto->getco() == true)
 		client->rcvMsg("error 433 nick already use");
+	else{
+		std::cout << " ancien client detecte" << std::endl;
+		client->setNick("\r\n");
+		toto->setFd(client->getFd());
+	}
 }
 
 void exec_n(std::string name, Server* server, Client* client){
@@ -59,12 +64,17 @@ void exec_pass(Request& rq, Server* server, Client* client){
 
 
 void exec_user(Request& rq, Server* server, Client* client){
-	(void)server;
 
 	// if (rq.size_tab() < 5) {
 	//	 client->rcvMsg("461 USER :Not enough parameters\r\n");
 	//	 return;
 	// }
+	if (client->getNick() == "\r\n"){
+		std::cout << " balaise si ici" << std::endl;
+		Client* tmp = client;
+		client = server->find_fd(tmp->getFd());
+		tmp->setFd(-1);
+	}
 	client->setName(rq[1]);
 	client->setco();
 }
