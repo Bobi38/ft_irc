@@ -46,7 +46,7 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 	else if (pchan->getStatutClt(clt) == PRESENT)
 		return NULL;
 
-	else if (statut == BAN){
+	else if (statut == BAN && pchan->getMODE(NO_BAN) == true){
 		clt->rcvMsg("474 " + pchan->getName() + " :Cannot join channel (+b)");
 	}
 	else if (pchan->getMODE(INVITE_ONLY) == true && (statut != INVITE)){

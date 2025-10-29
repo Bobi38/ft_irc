@@ -42,7 +42,7 @@ void Channel::addClient(Client* client, int statut){
 	}
 	else
 		for(cci it = _member.begin(); it != _member.end(); it++)
-			if (it->second == client && it->first != BAN)
+			if (it->second == client)
 				it->first = statut;
 	if (is == false)
 		chan_msg(client->getMe() + " JOIN " + _name);
@@ -77,6 +77,20 @@ void Channel::new_op(std::string clt, Client* sender, int flag){
 	if (flag == PLUS)
 		return change_statut(cc, CHANOP);
 	return change_statut(cc, PRESENT);
+}
+
+void Channel::new_ban(std::string clt, Client* sender, int flag){
+	Client* cc;
+	cc = return_client(clt);
+	if (getStatutClt(sender) != CHANOP) 
+		return sender->rcvMsg(":server 482 " + _name + " :You're not channel operator");
+	if (!cc)
+		return sender->rcvMsg(":server 401 " + sender->getNick() + " " + clt + " :No such nick/channel");
+	if (flag == PLUS){
+		cc->rmChannel(this);
+		return change_statut(cc, BAN);
+	}
+	return rmClient(cc);
 }
 
 void Channel::init_limit(std::string limit){

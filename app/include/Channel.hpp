@@ -39,6 +39,7 @@ enum e_client{
 	MOINS,
 	PLUS,
     INVITE_ONLY,
+    NO_BAN,
 	TOPIC,
 	KEY,
 	LIMIT,
@@ -82,6 +83,7 @@ class Channel{
         void print_all_clt();
         void new_op(std::string clt, Client* sender, int flag);
         void init_limit(std::string limit);
+        void new_ban(std::string clt, Client* sender, int flag);
         ~Channel();
 };
 
