@@ -59,9 +59,9 @@ class Channel{
     public:
         Channel(std::string name, Client* client);
         std::string getName();
+        void initt_psswd(std::string psd);
         int getStatutClt(Client* clt);
         std::string getPssd();
-        void init_psswd(std::string psswd);
         bool is_in(std::string _client_name);
         void addClient(Client* client, int statut);
         void rmClient(Client* Client);
@@ -81,9 +81,12 @@ class Channel{
         bool setMOD(int mod, Client* user);
         std::pair<int,Client*> getPairC(size_t i);
         void print_all_clt();
-        void new_op(std::string clt, Client* sender, int flag);
-        void init_limit(std::string limit);
-        void new_ban(std::string clt, Client* sender, int flag);
+        void new_op(std::vector<std::string>::iterator& z, Client* sender, int flag);
+        void new_ban(std::vector<std::string>::iterator& z, Client* sender, int flag);
+        void init_limit(int sign, Client* clt, std::vector<std::string>::iterator& z);
+        void init_psswd(int sign, Client* clt, std::vector<std::string>::iterator& z);
+        void mod_op(int sign, Client* clt, std::vector<std::string>::iterator& z);
+        void mod_ban(int sign, Client* clt, std::vector<std::string>::iterator& z);
         ~Channel();
 };
 

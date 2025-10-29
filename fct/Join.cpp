@@ -32,7 +32,7 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 	if (!pchan){
 		pchan = server->addChannel(chan, clt);
 		if (!psswd.empty())
-			pchan->init_psswd(psswd);
+			pchan->initt_psswd(psswd);
 		clt->rcvMsg(clt->getMe() + " JOIN " + chan);
 		return pchan;
 	}
@@ -55,6 +55,8 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 	else if (pchan->getMODE(KEY) == true && (psswd != pchan->getPssd())){
 		clt->rcvMsg("475 " + pchan->getName() + " :Cannot join channel (+k)");
 	}
+    else if (pchan->is_in(clt->getNick()) == true)
+        return NULL;
 	else{ 
 		pchan->addClient(clt, PRESENT);
 		return pchan;
@@ -91,6 +93,7 @@ void exec_join(Request& rq, Server* server, Client* client){
 		Channel* TChan = init_chan(server, chan[i], key[i], client);
 		if (!TChan)
 			continue ;
+
 		client->addChannel(TChan);
 		if (TChan->getTopic() != "")
 			client->rcvMsg(":server_irc 332 " + client->getNick() + " " + chan[i] + " :" + TChan->getTopic());

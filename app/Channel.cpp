@@ -8,7 +8,9 @@ std::pair<int,Client*> Channel::getPairC(size_t i){
 }
 
 Client* Channel::return_client(std::string _client_name){
+	std::cout << "here" << _client_name << std::endl;
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+		std::cout << "in" << it->second->getNick() << std::endl;
 		if (it->second->getNick() == _client_name)
 			return it->second;
 	}
@@ -31,6 +33,10 @@ bool Channel::is_in(std::string _client_name){
 			return true;
 	}
 	return false;
+}
+
+void Channel::initt_psswd(std::string psd){
+	_psswrd = psd;
 }
 
 void Channel::addClient(Client* client, int statut){
@@ -59,53 +65,48 @@ void Channel::rmClient(Client* client){
 	}
 }
 
-void Channel::init_psswd(std::string psswd){
-	_psswrd = psswd;
-}
 
 Channel::~Channel(){
 	_member.clear();
 }
 
-void Channel::new_op(std::string clt, Client* sender, int flag){
+void Channel::new_op(std::vector<std::string>::iterator& z, Client* sender, int flag){
 	Client* cc;
-	cc = return_client(clt);
-	if (getStatutClt(sender) != CHANOP) 
-		return sender->rcvMsg(":server 482 " + _name + " :You're not channel operator");
+	cc = return_client(z->c_str());
 	if (!cc)
-		return sender->rcvMsg(":server 401 " + sender->getNick() + " " + clt + " :No such nick/channel");
-	if (flag == PLUS)
-		return change_statut(cc, CHANOP);
-	return change_statut(cc, PRESENT);
-}
-
-void Channel::new_ban(std::string clt, Client* sender, int flag){
-	Client* cc;
-	cc = return_client(clt);
-	if (getStatutClt(sender) != CHANOP) 
-		return sender->rcvMsg(":server 482 " + _name + " :You're not channel operator");
-	if (!cc)
-		return sender->rcvMsg(":server 401 " + sender->getNick() + " " + clt + " :No such nick/channel");
+		return sender->rcvMsg(":server 401 " + sender->getNick() + " " + z->c_str() + " :No such nick/channel");
+	std::string s = (flag == -1) ? "-" : "+";
+	chan_msg(sender->getMe() + " MODE " + _name + " " + s + "o "+ cc->getNick(), sender, this);
 	if (flag == PLUS){
-		cc->rmChannel(this);
-		return change_statut(cc, BAN);
+		change_statut(cc, CHANOP);
+		z++;
+		return ;
 	}
-	return rmClient(cc);
+	change_statut(cc, PRESENT);
+	z++;
 }
 
-void Channel::init_limit(std::string limit){
-	for(size_t i = 0; i < limit.size(); i++){
-		if (!isdigit(limit[i]))
-			return ;
+void Channel::new_ban(std::vector<std::string>::iterator& z, Client* sender, int flag){
+	Client* cc;
+	cc = return_client(z->c_str());
+	if (!cc)
+		return sender->rcvMsg(":server 401 " + sender->getNick() + " " + z->c_str() + " :No such nick/channel");
+	std::string s = (flag == -1) ? "-" : "+";
+	chan_msg(sender->getMe() + " MODE " + _name + " " + s + "b "+ cc->getNick(), sender, this);
+	if (flag == +1){
+		cc->rmChannel(this);
+		change_statut(cc, BAN);
+		z++;
+		return;
 	}
-	int lim = atoi(limit.c_str());
-	_limit = lim;
-	return ;	
+	rmClient(cc);
+	z++;
 }
+
 
 bool Channel::setMOD(int mod, Client* user){
        if (getStatutClt(user) != CHANOP){ 
-               user->rcvMsg(":server 482 " + _name + " :You're not channel operator");
+               user->rcvMsg(":server 482 " + user->getNick() + " :You're not channel operator");
                return false;
        }
        bool set = mod > 0;
