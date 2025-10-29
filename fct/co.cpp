@@ -2,16 +2,20 @@
 #include "Channel.hpp"
 
 void exec_nick(Request& rq, Server* server, Client* client){
+	std::cout << "\033[32m"<< " -1- detection clt" << "\033[0m" << rq[MSG] << "<--";
 	Client* toto;
 	toto = server->find_client(rq[1].c_str());
-	if (!toto)
+	if (!toto){
+		std::cout << " -2- detection clt" << std::endl;
 		client->setNick(rq[1].c_str());
-	else if (toto->getco() == true)
-		client->rcvMsg("error 433 nick already use");
-	else{
-		std::cout << " ancien client detecte" << std::endl;
+	}
+	else if (rq[1].empty() && rq[MSG] == "Welcome"){
+		std::cout << "\033[35m"<< " -4- ancien client detecte" << "\033[0m"<< std::endl;
 		client->setNick("\r\n");
-		toto->setFd(client->getFd());
+	}
+	else if (toto->getco() == true){
+		std::cout << " -3- detection clt" << std::endl;
+		client->rcvMsg("error 433 nick already use");
 	}
 }
 
@@ -64,18 +68,20 @@ void exec_pass(Request& rq, Server* server, Client* client){
 
 
 void exec_user(Request& rq, Server* server, Client* client){
-
-	// if (rq.size_tab() < 5) {
-	//	 client->rcvMsg("461 USER :Not enough parameters\r\n");
-	//	 return;
-	// }
+	std::string name = rq[1];
+	if (name.empty())
+		return ;
 	if (client->getNick() == "\r\n"){
-		std::cout << " balaise si ici" << std::endl;
-		Client* tmp = client;
-		client = server->find_fd(tmp->getFd());
-		tmp->setFd(-1);
+		Client* tmp = server->find_client(rq[1]);
+		std::cout << " -1- balaise si ici" << std::endl;
+		if (tmp){
+			std::cout << " -2- balaise si ici" << std::endl;
+			tmp->setFd(client->getFd());
+			client->setFd(-1);
+		}
 	}
-	client->setName(rq[1]);
+	else
+		client->setName(rq[1]);
 	client->setco();
 }
 
