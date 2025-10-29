@@ -23,7 +23,7 @@ int Channel::getStatutClt(Client* clt){
 	if (!clt)
 		return -1;
 	for(cci it = _member.begin(); it != _member.end(); it++){
-		if (it->second == clt){
+		if (it->second->getNick() == clt->getNick()){
 			return it->first;
 		}
 	}

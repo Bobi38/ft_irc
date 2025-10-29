@@ -88,6 +88,6 @@ void who(Request& rq, Server* server, Client* sender){
 	// std::cout << "first test on WHO" << std::endl;
 	Channel* Chan= server->find_channel(chan);
 	if (!Chan)
-		sender->rcvMsg(":server 315 :" + sender->getNick() +" " + chan + " :End of WHO list"); //(403 : ERRNOSUCHCHANNEL) juste pour WHO
+		sender->rcvMsg(":server 315 " + chan + " :End of WHO list"); //(403 : ERRNOSUCHCHANNEL) juste pour WHO
 	Chan->whoExec(sender);
 }

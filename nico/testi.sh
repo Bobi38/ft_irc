@@ -32,14 +32,22 @@ tmux select-layout -t $SESSION_NAME tiled
 
 sleep 1
 tmux send-keys -t $SESSION_NAME:0.0 "PASS jj
-NICK tvoisin
-USER tvoisiny t y" C-m
+NICK titi
+USER toto" C-m
+sleep 0.1
 tmux send-keys -t $SESSION_NAME:0.1 "PASS jj" C-m
+sleep 0.1
 tmux send-keys -t $SESSION_NAME:0.1 "NICK Bernard" C-m
+sleep 0.1
 tmux send-keys -t $SESSION_NAME:0.1 "USER lhermite" C-m
+sleep 0.1
 tmux send-keys -t $SESSION_NAME:0.2 "PASS jj" C-m
+sleep 0.1
 tmux send-keys -t $SESSION_NAME:0.2 "NICK Bianca" C-m
+sleep 0.1
+
 tmux send-keys -t $SESSION_NAME:0.2 "USER Corine" C-m
+sleep 0.1
 
 tmux send-keys -t $SESSION_NAME:0.1 "JOIN #t1" C-m
 tmux send-keys -t $SESSION_NAME:0.2 "JOIN #t1" C-m

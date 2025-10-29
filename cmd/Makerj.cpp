@@ -15,7 +15,7 @@ Maker::Maker(){
 	table[11] = Level("OPER", test2);
 	table[12] = Level("LIST", exec_list);
 	table[13] = Level("TOPIC", topic);
-	table[14] = Level("TEST1", test2);
+	table[14] = Level("PING", exec_ping);
 	table[15] = Level("PART", exec_part);
 	table[16] = Level("PRIVMSG", prvmsg);
 	table[17] = Level("WHO", who);

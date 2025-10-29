@@ -8,9 +8,7 @@ std::pair<int,Client*> Channel::getPairC(size_t i){
 }
 
 Client* Channel::return_client(std::string _client_name){
-	std::cout << "here" << _client_name << std::endl;
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
-		std::cout << "in" << it->second->getNick() << std::endl;
 		if (it->second->getNick() == _client_name)
 			return it->second;
 	}
@@ -21,7 +19,9 @@ void Channel::change_statut(Client* clt, int new_st){
 
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
 		if (it->second->getNick() == clt->getNick()){
+			std::cout << "je suis encor la" << clt->getNick() << " " << it->second << std::endl;
 			it->first = new_st;
+			std::cout << "apres " << clt->getNick() << " " << it->second << std::endl;
 			return;
 		}
 	}
@@ -29,7 +29,7 @@ void Channel::change_statut(Client* clt, int new_st){
 
 bool Channel::is_in(std::string _client_name){
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
-		if (it->second->getNick() == _client_name)
+		if (it->second->getNick() == _client_name && (it->first == PRESENT || it->first == CHANOP))
 			return true;
 	}
 	return false;
@@ -79,7 +79,8 @@ void Channel::new_op(std::vector<std::string>::iterator& z, Client* sender, int 
 		return sender->rcvMsg(":server 401 " + sender->getNick() + " " + z->c_str() + " :No such nick/channel");
 	std::string s = (flag == -1) ? "-" : "+";
 	chan_msg(sender->getMe() + " MODE " + _name + " " + s + "o "+ cc->getNick(), sender, this);
-	if (flag == PLUS){
+	if (flag == 1){
+		std::cout << "je suis la" << cc->getNick() << std::endl;
 		change_statut(cc, CHANOP);
 		z++;
 		return ;
@@ -95,7 +96,7 @@ void Channel::new_ban(std::vector<std::string>::iterator& z, Client* sender, int
 		return sender->rcvMsg(":server 401 " + sender->getNick() + " " + z->c_str() + " :No such nick/channel");
 	std::string s = (flag == -1) ? "-" : "+";
 	chan_msg(sender->getMe() + " MODE " + _name + " " + s + "b "+ cc->getNick(), sender, this);
-	if (flag == +1){
+	if (flag == 1){
 		cc->rmChannel(this);
 		change_statut(cc, BAN);
 		z++;

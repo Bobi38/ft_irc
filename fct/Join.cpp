@@ -27,7 +27,7 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 		clt->rcvMsg("403 " + chan + " :No such channel");
 		return NULL;
 	}
-
+	std::cout << "1" << std::endl;
 	Channel* pchan = server->find_channel(chan);
 	if (!pchan){
 		pchan = server->addChannel(chan, clt);
@@ -45,7 +45,6 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 	}
 	else if (pchan->getStatutClt(clt) == PRESENT)
 		return NULL;
-
 	else if (statut == BAN && pchan->getMODE(NO_BAN) == true){
 		clt->rcvMsg("474 " + pchan->getName() + " :Cannot join channel (+b)");
 	}
@@ -55,8 +54,8 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 	else if (pchan->getMODE(KEY) == true && (psswd != pchan->getPssd())){
 		clt->rcvMsg("475 " + pchan->getName() + " :Cannot join channel (+k)");
 	}
-    else if (pchan->is_in(clt->getNick()) == true)
-        return NULL;
+	else if (pchan->is_in(clt->getNick()) == true)
+		return NULL;
 	else{ 
 		pchan->addClient(clt, PRESENT);
 		return pchan;
@@ -67,6 +66,7 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 std::string init_namel(Channel* chan){
 	std::string namel;
 	for(size_t i = 0; i < static_cast<size_t>(chan->getNbMemb()); i++){
+		std::cout << "name =" <<chan->getPairC(i).second->getNick() << " et " <<  chan->getPairC(i).first << std::endl;
 		if (chan->getPairC(i).first == CHANOP)
 			namel = namel + "@" + chan->getPairC(i).second->getNick() + " ";
 		else if (chan->getPairC(i).first == PRESENT)
