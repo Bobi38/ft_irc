@@ -71,5 +71,6 @@ void clean_std(std::string &rest);
 void handle_sigint(int signum);
 void send_msg(int fd, std::string msg);
 void send_msg_client_Chan(Client* clt, std::string msg, int code, Channel* chan);
+void send_all_chan(std::string msg, Client* clt);
 
 #endif

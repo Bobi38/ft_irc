@@ -2,7 +2,7 @@
 #include "Channel.hpp"
 
 void exec_nick(Request& rq, Server* server, Client* client){
-	if (rq.size_tab == 1)
+	if (rq.size_tab() == 1)
 		return client->rcvMsg("461 PASS :Not enough parameters");
 	Client* toto;
 	toto = server->find_client(rq[1].c_str());
@@ -18,7 +18,7 @@ void exec_n(std::string name, Server* server, Client* client){
 	if (!toto)
 		client->setNick(name);
 	else
-		client->rcvMsg("433 " + rq[1] + " :Nickname is already in use");
+		client->rcvMsg("433 " + name + " :Nickname is already in use");
 }
 
 void exec_pass(Request& rq, Server* server, Client* client){
@@ -62,7 +62,7 @@ void exec_pass(Request& rq, Server* server, Client* client){
 
 void exec_user(Request& rq, Server* server, Client* client){
 	(void)server;
-	if (rq.size_tab == 1)
+	if (rq.size_tab() == 1)
 		return client->rcvMsg(":server 461 PASS :Not enough parameters");
 	if (client->getName() != "")
 		return client->rcvMsg(":server 462 " + client->getNick() + " :You may not reregister");

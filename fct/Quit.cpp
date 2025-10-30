@@ -11,6 +11,13 @@ void fd_send(Client* clt, std::set<int>& list){
 	}
 }
 
+void send_all_chan(std::string msg, Client* clt){
+	std::set<int> list;
+	fd_send(clt, list);
+	for(std::set<int>::iterator it = list.begin(); it != list.end(); it++)
+		send_msg(*it, msg);
+}
+
 void send_all(Request& rq, Client* clt){
 	std::set<int> list;
 	fd_send(clt, list);

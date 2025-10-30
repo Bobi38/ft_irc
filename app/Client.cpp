@@ -55,7 +55,7 @@ int Client::getFd(){
 
 void Client::setNick(const std::string& str){
 	if (_nick != "")
-		rcvMsg(getMe() + " NICK " + ":" + str);
+		send_all_chan(getMe() + " NICK :" + str, this);
 	_nick = str;
 }
 
