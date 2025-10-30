@@ -1,16 +1,17 @@
 #include "Channel.hpp"
 #include "Request.hpp"
 
-void Channel::setTopic(std::string topic, Client* user){
-	if (_mode[TOPIC - MOINS] == true && getStatutClt(user) != CHANOP)
-		return user->rcvMsg(":server 482 " + _name + " :only CHANOP");
+bool Channel::setTopic(std::string topic, Client* user){
+	if (_mode[TOPIC - MOINS] == true && getStatutClt(user) != CHANOP){
+		user->rcvMsg(":server 482 " + _name + " :only CHANOP");
+		return false;
+	}
 	if (topic == Request::EMPTY_MSG)
 		_topic = "";
 	else
 		_topic = topic;
 	_topic_exist = true;
-
-	chan_msg("TOPIC " + _name + " :" + _topic, user, this);
+	return true;
 }
 
 std::string Channel::getTopic(){

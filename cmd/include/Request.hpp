@@ -33,11 +33,8 @@ class Request{
 		std::string getCmd() const;
 		std::string getMsg() const;
 		int size_tab();
-		// int getMsgStatus() const;
-		std::string operator[](int x) const;
+		std::string operator[](int x);
 		operator std::string();
-		virtual bool check(const Server* Serv, const Client* clt) const {(void) clt; (void) Serv; return true;}; // a suuprimer
-		virtual void exec(Server* Serv, Client* clt) {(void) clt; (void) Serv; std::cout << "ne viens pas la " << std::endl;};	// a suuprimer
 
 		static std::string EMPTY_MSG;
 };

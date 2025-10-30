@@ -209,7 +209,7 @@ void Client::rcvMsg(const std::string& msg, Client* client) {
 	std::string msg_temp;
 	if (client == NULL)
 		return rcvMsg(":server 401 " + getNick()); //(401 : ERR_NOSUCHNICK)
-	msg_temp = client->getMe() + " PRIVMSG :" + msg;
+	msg_temp = client->getMe() + " PRIVMSG " + msg;
 	rcvMsg(msg_temp);
 }
 

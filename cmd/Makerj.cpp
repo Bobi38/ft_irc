@@ -27,6 +27,9 @@ void Maker::select(std::string& str, Server* server, Client* client){
 	std::string temp = str;
 	Request rq(temp);
 
+	if (rq[1].empty())
+		return client->rcvMsg(":server 461 :Not enough parameters");
+
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first){
 			if (client->getco() == false && i > 4){

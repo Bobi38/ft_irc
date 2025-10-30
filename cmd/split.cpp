@@ -16,7 +16,7 @@ std::string* split(char sep, std::string& str){
 	if (!nb)
 		return NULL;
 	std::string* tab;
-	tab = new std::string[nb + 1];
+	tab = new std::string[nb + 2];
 	nb = 0;
 	for (i = 0; i < size; i++){
 		j = 0;
