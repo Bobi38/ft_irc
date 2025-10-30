@@ -24,7 +24,7 @@ void	Channel::invit(Client* User, Client* Invit){
 		return User->rcvMsg(":server 482 " + _name + " :You're not channel operator");//(443 -> ERR_USERONCHANNEL)":server 443 " + _name + " :out of channel"
 	statut = getStatutClt(Invit);
 	std::cout << "status " << statut << " " << Invit->getNick() << std::endl;
-	if (statut != -1)
+	if (statut == PRESENT || statut == CHANOP)
 		return User->rcvMsg(":server 443 " + _name + " :is already on channel");
 	
 	addClient(Invit, INVITE);
