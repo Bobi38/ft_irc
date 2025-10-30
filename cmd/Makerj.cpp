@@ -11,7 +11,7 @@ Maker::Maker(){
 	table[7] = Level("INVITE", invit);
 	table[8] = Level("PRVMSG", prvmsg);
 	table[9] = Level("QUIT", exec_quit);
-	table[10] = Level("NAMES", test2);
+	table[10] = Level("NAMES", exec_Names);
 	table[11] = Level("OPER", test2);
 	table[12] = Level("LIST", exec_list);
 	table[13] = Level("TOPIC", topic);
@@ -26,6 +26,9 @@ void Maker::select(std::string& str, Server* server, Client* client){
 
 	std::string temp = str;
 	Request rq(temp);
+
+	if (rq[1].empty())
+		return client->rcvMsg(":server 461 :Not enough parameters");
 
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first){

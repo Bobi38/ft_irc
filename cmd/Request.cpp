@@ -41,6 +41,7 @@ Request::Request(const std::string& str_init)
 			str[i] = std::toupper(str[i]);
 		_tab[0] = str;
 	}
+	_tab[_tabSize] = _msg;
 }
 
 Request::Request(const Request& other) 
@@ -73,16 +74,12 @@ std::string Request::getNick() const{
 	return _user.getNick();
 }
 
-Request::operator std::string(){
-	return _msg;
-}
-
-std::string Request::operator[](int x)const{
+std::string Request::operator[](int x){
 	if (x == MSG)
-		return _msg;
+		return _tab[_tabSize];
 	if (x == -1)
 		return _user.getPrefix();
-	if (x < 0 || x >= _tabSize)
+	if (x < 0 || x > _tabSize)
 		return ("");
 	return _tab[x];
 }

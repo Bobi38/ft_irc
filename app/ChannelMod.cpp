@@ -66,3 +66,11 @@ void Channel::mod_op(int sign, Client* clt, std::vector<std::string>::iterator& 
         return clt->rcvMsg(":server 461 " + clt->getNick() + " MODE :Not enough parameters");
     new_op(z, clt, sign);
 }
+
+bool Channel::mode_act(){
+    for(int i = 0; i < 6; i++){
+        if (_mode[i] == true)
+            return true;
+    }
+    return false;
+}
