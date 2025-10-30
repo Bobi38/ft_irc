@@ -2,12 +2,14 @@
 #include "Channel.hpp"
 
 void exec_nick(Request& rq, Server* server, Client* client){
+	if (rq.size_tab == 1)
+		return client->rcvMsg("461 PASS :Not enough parameters");
 	Client* toto;
 	toto = server->find_client(rq[1].c_str());
 	if (!toto)
 		client->setNick(rq[1].c_str());
 	else
-		client->rcvMsg("error 433 nick already use");
+		client->rcvMsg("433 " + rq[1] + " :Nickname is already in use");
 }
 
 void exec_n(std::string name, Server* server, Client* client){
@@ -16,7 +18,7 @@ void exec_n(std::string name, Server* server, Client* client){
 	if (!toto)
 		client->setNick(name);
 	else
-		client->rcvMsg("error 433 nick already use");
+		client->rcvMsg("433 " + rq[1] + " :Nickname is already in use");
 }
 
 void exec_pass(Request& rq, Server* server, Client* client){
@@ -42,17 +44,17 @@ void exec_pass(Request& rq, Server* server, Client* client){
 	}
 	std::string ps(rq[1]);
 	if (client->getName() != "" || client->getNick() != ""){
-		client->rcvMsg("462 " + client->getNick() + " :You may not reregister");
+		client->rcvMsg(":server 462 " + client->getNick() + " :You may not reregister");
 		return;
 	}
 	if (rq.size_tab() < 2) {
-		client->rcvMsg("461 PASS :Not enough parameters");
+		client->rcvMsg(":server 461 PASS :Not enough parameters");
 		return;
 	}
 	if (ps == server->getPSSD())
 		client->setpssd();
 	else{
-		client->rcvMsg("464 " + client->getNick() + " :Password incorrect");
+		client->rcvMsg(":server 464 " + client->getNick() + " :Password incorrect");
 		server->dlt_client(client, client->getfd());
 	}
 }
@@ -60,11 +62,10 @@ void exec_pass(Request& rq, Server* server, Client* client){
 
 void exec_user(Request& rq, Server* server, Client* client){
 	(void)server;
-
-	// if (rq.size_tab() < 5) {
-	//	 client->rcvMsg("461 USER :Not enough parameters\r\n");
-	//	 return;
-	// }
+	if (rq.size_tab == 1)
+		return client->rcvMsg(":server 461 PASS :Not enough parameters");
+	if (client->getName() != "")
+		return client->rcvMsg(":server 462 " + client->getNick() + " :You may not reregister");
 	client->setName(rq[1]);
 	client->setco();
 }
