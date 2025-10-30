@@ -28,11 +28,11 @@ typedef C_Client::iterator cci;
 
 enum e_client{
     BAD = -1,
-	PRESENT,
-    CHANOP,
-	NO_PRESENT,
-    INVITE,
-    BAN,
+	PRESENT = 1,
+    CHANOP = 2,
+	NO_PRESENT = 3,
+    INVITE = 4,
+    BAN = 5,
     PRIVATE,
     TOPICOP,
     TOPIC_EXIST,
@@ -54,11 +54,12 @@ class Channel{
         std::string _topic;
         int _limit;
         bool _topic_exist;
-        bool _mode[6];
+        bool _mode[7];
         std::vector<std::pair<int,Client*> > _member;
     public:
         Channel(std::string name, Client* client);
         std::string getName();
+        int getlimit();
         void initt_psswd(std::string psd);
         int getStatutClt(Client* clt);
         std::string getPssd();
@@ -73,6 +74,7 @@ class Channel{
         void whoExec(Client* Client);
         void chan_msg(const std::string& msg, Client* sender, Channel*); //envoie un message a tous les connecte
         void invit(Client* User, Client* Invit);
+        bool is_inv(std::string _client_name);
         int getNbMemb();
 		Client* getClient(size_t i);
 		bool getMODE(int mod) const;
@@ -87,6 +89,7 @@ class Channel{
         void init_psswd(int sign, Client* clt, std::vector<std::string>::iterator& z);
         void mod_op(int sign, Client* clt, std::vector<std::string>::iterator& z);
         void mod_ban(int sign, Client* clt, std::vector<std::string>::iterator& z);
+        bool mode_act();
         ~Channel();
 };
 

@@ -102,3 +102,12 @@ void exec_join(Request& rq, Server* server, Client* client){
 		client->rcvMsg(":server_irc 366 " + client->getNick() + " " + chan[i] + " :End of /NAMES list");
 	}
 }
+
+
+void exec_Names(Request& rq, Server* server, Client* client){
+    Channel* Chan;
+	Chan = server->find_channel(rq[1]);
+	if (!Chan)
+		return client->rcvMsg("403 " + rq[1] + " :No such channel"); 
+    Chan->print_all_clt();
+}

@@ -5,8 +5,12 @@ Channel::Channel(std::string name, Client* client): _name(name), _limit(-1), _to
 		std::pair<int , Client*> tt (CHANOP, client);
 		_member.push_back(tt);
 	}
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 7; ++i)
 		_mode[i] = false;
+}
+
+int Channel::getlimit(){
+	return _limit;
 }
 
 std::string Channel::getName(){
@@ -37,16 +41,13 @@ std::string Channel::getPssd(){
 std::string Channel::str_mode = "-+itklo";
 
 bool Channel::getMODE(int mod) const{
-	// std::cout << "je renvoie " << mod <<" "<< (_mode[mod - MOINS] ? "TRUE" : "FALSE") << std::endl;
 	return _mode[mod - MOINS];
 }
 
 void Channel::print_all_clt(){
-	std::cout << getName() << " ";
 	for(size_t i = 0; i < _member.size(); i++){
-		std::cout << _member[i].second->getName() << " - " << _member[i].first << " // ";
+		std::cout << _member[i].second->getNick() << " - " << _member[i].first << std::endl;
 	}
-	std::cout << std::endl;
 }
 
 int Channel::getNbMemb(){

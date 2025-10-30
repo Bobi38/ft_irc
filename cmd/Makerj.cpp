@@ -11,7 +11,7 @@ Maker::Maker(){
 	table[7] = Level("INVITE", invit);
 	table[8] = Level("PRVMSG", prvmsg);
 	table[9] = Level("QUIT", exec_quit);
-	table[10] = Level("NAMES", test2);
+	table[10] = Level("NAMES", exec_Names);
 	table[11] = Level("OPER", test2);
 	table[12] = Level("LIST", exec_list);
 	table[13] = Level("TOPIC", topic);

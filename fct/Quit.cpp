@@ -14,7 +14,6 @@ void fd_send(Client* clt, std::set<int>& list){
 void send_all(Request& rq, Client* clt){
 	std::set<int> list;
 	fd_send(clt, list);
-	std::cout << "taille list= " << list.size() << std::endl;
 	for(std::set<int>::iterator it = list.begin(); it != list.end(); it++)
 		send_msg(*it, rq.getMsg());
 }
@@ -24,7 +23,6 @@ void exec_quit(Request& rq, Server* serv, Client* clt){
 		return ;
 	if (!clt)
 		return;
-	std::cout << "mssg= " << rq.getMsg() << std::endl;
 	if (rq.getMsg() != Request::EMPTY_MSG)
 		send_all(rq, clt);
 	serv->dlt_client(clt, clt->getfd());

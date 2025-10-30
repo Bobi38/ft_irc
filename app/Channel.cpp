@@ -19,9 +19,7 @@ void Channel::change_statut(Client* clt, int new_st){
 
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
 		if (it->second->getNick() == clt->getNick()){
-			std::cout << "je suis encor la" << clt->getNick() << " " << it->second << std::endl;
 			it->first = new_st;
-			std::cout << "apres " << clt->getNick() << " " << it->second << std::endl;
 			return;
 		}
 	}
@@ -35,21 +33,31 @@ bool Channel::is_in(std::string _client_name){
 	return false;
 }
 
+bool Channel::is_inv(std::string _client_name){
+	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+		if (it->second->getNick() == _client_name && (it->first == INVITE || it->first == BAN))
+			return true;
+	}
+	return false;
+}
+
 void Channel::initt_psswd(std::string psd){
 	_psswrd = psd;
 }
 
 void Channel::addClient(Client* client, int statut){
 	bool is = true;
-	if (!client->is_Channel(client->getName())){
+	if (!client->is_Channel(client->getNick()) && !is_inv(client->getNick())){
 		std::pair<int , Client*> tt (statut, client);
 		_member.push_back(tt);
 		is = false;
 	}
-	else
-		for(cci it = _member.begin(); it != _member.end(); it++)
-			if (it->second == client)
+	else{
+		for(cci it = _member.begin(); it != _member.end(); it++){
+			if (it->second->getNick() == client->getNick())
 				it->first = statut;
+		}
+	}
 	if (statut == INVITE)
 		return ;
 	if (is == false)
@@ -80,7 +88,6 @@ void Channel::new_op(std::vector<std::string>::iterator& z, Client* sender, int 
 	std::string s = (flag == -1) ? "-" : "+";
 	chan_msg(sender->getMe() + " MODE " + _name + " " + s + "o "+ cc->getNick(), sender, this);
 	if (flag == 1){
-		std::cout << "je suis la" << cc->getNick() << std::endl;
 		change_statut(cc, CHANOP);
 		z++;
 		return ;
