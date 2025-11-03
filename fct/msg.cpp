@@ -68,7 +68,7 @@ void topic(Request& rq, Server* server, Client* sender){
 
 	if (rq[MSG].empty() && rq[2].empty()){
 		if (Chan->getMODE(TOPIC_EXIST) == false)
-			return sender->rcvMsg(":server 331 " + chan + " :No topic is set");
+			return sender->rcvMsg(":server 331 : " + chan + " No topic is set");
 		else
 			return sender->rcvMsg(":server 332 : " + chan + " "  + Chan->getTopic());
 	}	

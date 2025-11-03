@@ -20,8 +20,10 @@ Server::~Server(){
 	_fds.clear();
 	_client.clear();
 	_chan.clear();
-	if (_server_fd != -1)
+	if (_server_fd != -1){
+		std::cout << "close fd server" << std::endl;
 		close(_server_fd);
+	}
 }
 
 void Server::addClient(int fd){
@@ -142,12 +144,12 @@ void Server::dlt_client(Client* clt, int fd){
 			delete tmp;
 		}
 	}
+	std::cout << "on ferme le fd :" <<  fd << std::endl;
 	close (fd);
 	delete clt;
 }
 
 void Server::send_ping(){
-	std::cout << "JE SUIS LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
 	for(size_t i = 0; i < _client.size(); i++){
 		std::cout << "msg envoye a =" << _client[i]->getNick() << std::endl;
 		_client[i]->rcvMsg("PING 4242");
@@ -187,8 +189,10 @@ void Server::GoServ(){
 			if (_fds[i].revents & POLLIN) {
 				memset(buffer, 0, BUFFER_SIZE);
 				int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
-				if (n < 0)
-					throw std::runtime_error("error recv");
+				if (n < 0){
+					std::cout << " le fd qui plante : " << _fds[i].fd << std::endl;
+					throw std::runtime_error(strerror(errno));
+				}
 				Client* tmp = find_fd(_fds[i].fd);
 				std::string next(buffer);
 				size_t pos;
@@ -199,6 +203,13 @@ void Server::GoServ(){
 				}
 
 			}
+			else if (_fds[i].revents & POLLHUP) {
+
+				std::cerr << "Client disconnected" << std::endl;
+				// close(_fd);
+
+			}
+			
 		}
 	}
 

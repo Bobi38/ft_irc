@@ -77,7 +77,7 @@ fclean: clean
 re: fclean all
 
 me: all
-	valgrind ./$(NAME) 6667 jj
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 6667 jj
 
 titi: all
 	valgrind ./$(NAME) 6666 pp

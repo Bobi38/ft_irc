@@ -27,7 +27,7 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 		clt->rcvMsg("403 " + chan + " :No such channel");
 		return NULL;
 	}
-	std::cout << "1" << std::endl;
+	// std::cout << "1" << std::endl;
 	Channel* pchan = server->find_channel(chan);
 	if (!pchan){
 		pchan = server->addChannel(chan, clt);

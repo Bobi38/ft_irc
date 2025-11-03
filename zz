@@ -1,0 +1,4 @@
+c++ .obj/Channel.o .obj/Channel2.o .obj/ChannelGet.o .obj/ChannelMod.o .obj/Server.o .obj/Client.o .obj/fct.o .obj/Quit.o .obj/Join.o .obj/Part.o .obj/Kick.o .obj/co.o .obj/List.o .obj/Mode.o .obj/msgx.o .obj/msg.o .obj/Request.o .obj/Makerj.o .obj/Prefix.o .obj/split.o app/main.cpp -o ircserv
+valgrind --leak-check=full --show-leak-kinds=all ./ircserv 6667 jj
+close fd server
+[31mBind failed[0m

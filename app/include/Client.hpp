@@ -45,7 +45,7 @@ class Client{
         Channel* getChan(size_t i);
         int getfd() const;
         bool getco()const;
-        void setNick(const std::string& str);
+        void setNick(const std::string& str, Server* serv);
         void setName(const std::string& str);
         void rmChannel(Channel* chan);
         void addChannel(Channel* chan);

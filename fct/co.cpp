@@ -6,19 +6,27 @@ void exec_nick(Request& rq, Server* server, Client* client){
 		return client->rcvMsg("461 PASS :Not enough parameters");
 	Client* toto;
 	toto = server->find_client(rq[1].c_str());
-	if (!toto)
-		client->setNick(rq[1].c_str());
-	else
-		client->rcvMsg("433 " + rq[1] + " :Nickname is already in use");
+	if (!toto){
+		std::cout << " pas trouve de nick equivalent" << std::endl;
+		client->setNick(rq[1].c_str(), server);
+		client->rcvMsg("NICK : " + rq[1]);
+		if (!client->getNick().empty() && !client->getName().empty())
+			client->setco();
+	}
+	else{
+		std::cout << " deja un nick pareil exist " << std::endl;
+		client->deconne();
+		client->rcvMsg(":server 433  " + rq[1] + " :Nickname is already in use");
+	}
 }
 
 void exec_n(std::string name, Server* server, Client* client){
 	Client* toto;
 	toto = server->find_client(name);
 	if (!toto)
-		client->setNick(name);
+		client->setNick(name, server);
 	else
-		client->rcvMsg("433 " + name + " :Nickname is already in use");
+		client->rcvMsg(":server 433 : " + name + " Nickname is already in use");
 }
 
 void exec_pass(Request& rq, Server* server, Client* client){
@@ -67,7 +75,8 @@ void exec_user(Request& rq, Server* server, Client* client){
 	if (client->getName() != "")
 		return client->rcvMsg(":server 462 " + client->getNick() + " :You may not reregister");
 	client->setName(rq[1]);
-	client->setco();
+	if (!client->getNick().empty() && !client->getName().empty())
+		client->setco();
 }
 
 void exec_ping(Request& rq, Server* server, Client* client){

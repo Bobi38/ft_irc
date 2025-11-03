@@ -54,9 +54,9 @@ int Client::getFd(){
 	return _fd;
 }
 
-void Client::setNick(const std::string& str){
+void Client::setNick(const std::string& str, Server* serv){
 	if (_nick != "")
-		send_all_chan(getMe() + " NICK :" + str, this);
+		send_all_chan(getMe() + " NICK :" + str, this, serv);
 	_nick = str;
 }
 

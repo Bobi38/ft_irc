@@ -3,7 +3,7 @@
 
 bool Channel::setTopic(std::string topic, Client* user){
 	if (_mode[TOPIC - MOINS] == true && getStatutClt(user) != CHANOP){
-		user->rcvMsg(":server 482 " + _name + " :only CHANOP");
+		user->rcvMsg(":server 482 : " + getName() + " You're not channel operator");
 		return false;
 	}
 	if (topic == Request::EMPTY_MSG)

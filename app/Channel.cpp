@@ -116,7 +116,7 @@ void Channel::new_ban(std::vector<std::string>::iterator& z, Client* sender, int
 
 bool Channel::setMOD(int mod, Client* user){
        if (getStatutClt(user) != CHANOP){ 
-               user->rcvMsg(":server 482 " + user->getNick() + " :You're not channel operator");
+               user->rcvMsg(":server 482 : " + getName() + " You're not channel operator");
                return false;
        }
        bool set = mod > 0;
