@@ -9,7 +9,6 @@ Request::Request(const std::string& str_init)
 		return ;
 	}
 
-	size_t size = str_init.size();
 	int start = 0;
 
 	if (str_init[0] == ':'){
@@ -21,7 +20,7 @@ Request::Request(const std::string& str_init)
 	std::string str = str_init.substr(start);
 
 	size_t msg = str.find(':');
-	if (size - 1 > msg && msg != std::string::npos){
+	if (msg != std::string::npos){
 		_msg = str.substr(msg + 1);
 		if (_msg.empty())
 			_msg = EMPTY_MSG;

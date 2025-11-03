@@ -1,4 +1,5 @@
 #include "include/Client.hpp"
+#include "Request.hpp"
 
 Client::Client(int fd): _fd(fd), _co(false), _psswd(false), _nick(""), _name(""), _host("127.0.0.1") {}
 
@@ -104,7 +105,6 @@ void Client::setco() {
 	this->rcvMsg(":server_irc 001 " + _nick + " :Welcome to the IRC Network " + this->getMe());
 	this->rcvMsg(":serveur 002 " + _nick + " :Your host is serveur");
 	this->rcvMsg(":serveur 376 " + _nick + " :End of /MOTD command.");
-
 }
 
 Channel* Client::getChan(size_t i){
@@ -193,6 +193,7 @@ void Client::deconne(){
 void Client::setFd(int x){
 	_fd = x;
 }
+
 void Client::rcvMsg(const std::string& msg) {
 	std::string msg_temp = msg + "\r\n";
 	ssize_t sent = send(_fd, msg_temp.c_str(), msg_temp.size(), MSG_NOSIGNAL);
@@ -208,10 +209,12 @@ void Client::rcvMsg(const std::string& msg) {
 }
 
 void Client::rcvMsg(const std::string& msg, Client* client) {
-	std::string msg_temp;
+	std::string msg_temp = msg;
+	if (msg_temp == Request::EMPTY_MSG)
+		msg_temp = "";
 	if (client == NULL)
 		return rcvMsg(":server 401 " + getNick()); //(401 : ERR_NOSUCHNICK)
-	msg_temp = client->getMe() + " PRIVMSG " + msg;
+	msg_temp = client->getMe() + " PRIVMSG : " + msg_temp;
 	rcvMsg(msg_temp);
 }
 

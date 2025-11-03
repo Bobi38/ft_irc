@@ -38,7 +38,9 @@ void prvmsg(Request& rq, Server* server, Client* sender){
 
 	for (std::vector<std::string>::iterator it = vDest.begin(); it != vDest.end(); it++){
 		std::string dest = *it;
+		
 		if (dest[0] == '#'|| dest[0] == '&'){
+			
 			Channel* Chan = server->find_channel(dest);
 			if (!Chan)
 				sender->rcvMsg(":server 403 " + dest + " :No such channel");
@@ -55,8 +57,6 @@ void prvmsg(Request& rq, Server* server, Client* sender){
 	}
 }
 
- //:niroppp!~nirochedy@769F5092.E49DA241.E46FA5AB.IP TOPIC #titi :quatre cinq 
-
 void topic(Request& rq, Server* server, Client* sender){
 	std::string chan = rq[1];
 	if (chan.empty())
@@ -68,9 +68,9 @@ void topic(Request& rq, Server* server, Client* sender){
 
 	if (rq[MSG].empty() && rq[2].empty()){
 		if (Chan->getMODE(TOPIC_EXIST) == false)
-			return sender->rcvMsg(":server 331 " + chan + " No topic is set");
+			return sender->rcvMsg(":server 331 " + chan + " :No topic is set");
 		else
-			return sender->rcvMsg(":server 332 " + chan + " :" + Chan->getTopic());
+			return sender->rcvMsg(":server 332 : " + chan + " "  + Chan->getTopic());
 	}	
 
 	// if (rq[2].empty())
@@ -78,7 +78,7 @@ void topic(Request& rq, Server* server, Client* sender){
 	// else
 	// 	Chan->setTopic(rq[2], sender);
 	if (Chan->setTopic(rq[2], sender))
-		sender->rcvMsg(sender->getMe() + " TOPIC " + chan + " :" + rq[2]);
+		Chan->chan_msg(sender->getMe() + " TOPIC " + chan + " :" + rq[2]);
 }
 
 void Channel::whoExec(Client* Client){
@@ -104,6 +104,6 @@ void who(Request& rq, Server* server, Client* sender){
 	// std::cout << "first test on WHO" << std::endl;
 	Channel* Chan= server->find_channel(chan);
 	if (!Chan)
-		sender->rcvMsg(":server 315 " + chan + " :End of WHO list"); //(403 : ERRNOSUCHCHANNEL) juste pour WHO
+		sender->rcvMsg(":server 315 " + chan + " :End of WHO list"); //(403 : ERRNOSUCHCHANNEL) pa pour WHO
 	Chan->whoExec(sender);
 }

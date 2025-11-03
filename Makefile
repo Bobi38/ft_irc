@@ -32,6 +32,7 @@ SRCS_FCT = \
 	$(FCTDIR)/co.cpp \
 	$(FCTDIR)/List.cpp \
 	$(FCTDIR)/Mode.cpp \
+	$(FCTDIR)/msgx.cpp \
 	$(FCTDIR)/msg.cpp
 # 	$(FCTDIR)/Join.cpp \
 
