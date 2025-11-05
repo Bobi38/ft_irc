@@ -138,51 +138,9 @@ std::string Client::getMe() const{
 	return (":" + _nick + "!" + _name + "@" + _host );
 }
 
-Client::operator bool() const{
-	return _co;
-}
-
 void Client::deconne(){
 	_co = false;
 }
-
-void Client::setFd(int x){
-	_fd = x;
-}
-
-
-
-void Client::rcvMsg(const std::string& msg) {
-	std::string msg_temp = msg + "\r\n";
-	ssize_t sent = send(_fd, msg_temp.c_str(), msg_temp.size(), MSG_NOSIGNAL);
-	if (sent < 0) {
-		if (errno == EPIPE || errno == ECONNRESET) {
-			std::cerr << "Client disconnected" << std::endl;
-			// close(_fd);
-		}
-		else {
-			perror("send");
-		}
-	}
-}
-
-void Client::rcvMsg(const std::string& msg, Client* client) {
-	std::string msg_temp = msg;
-	if (msg_temp == Request::EMPTY_MSG)
-		msg_temp = "";
-	if (client == NULL)
-		return rcvMsg(":server 401 " + getNick()); //(401 : ERR_NOSUCHNICK)
-	msg_temp = client->getMe() + " PRIVMSG : " + msg_temp;
-	rcvMsg(msg_temp);
-}
-
-// void Client::setRealName(std::string realname){
-// 	_realname = realname;
-// }
-
-// std::string Client::getRealName(){
-// 	return _realname;
-// }
 
 void Client::print_all_chan(){
 	std::cout << getName() << " ";
