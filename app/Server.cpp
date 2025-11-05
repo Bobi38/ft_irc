@@ -176,6 +176,12 @@ void Server::GoServ(){
 	std::cout << "server good" << std::endl;
 	
 	while(stop_server == 0){
+		for (size_t i = 1; i < _fds.size(); i++){
+			_fds[i].events = POLLIN;
+			Client* client = find_fd(_fds[i].fd);
+			if (client && !client->getBuffOut().empty())
+				_fds[i].events |= POLLOUT;
+		}
 		if (poll(_fds.data(), _fds.size(), 500) == -1){
 			if (errno == EINTR) continue;
 			throw std::runtime_error("poll failed");
@@ -186,6 +192,12 @@ void Server::GoServ(){
 				addClient(nfd);
 			}
 		for (size_t i = 1; i < _fds.size(); i++) {
+			Client* tmp = find_fd(_fds[i].fd);
+			if (!tmp)
+				continue ;
+			if (_fds[i].revents & POLLOUT){
+				tmp->write();
+			}
 			if (_fds[i].revents & POLLIN) {
 				memset(buffer, 0, BUFFER_SIZE);
 				// std::string next;
@@ -214,8 +226,8 @@ void Server::GoServ(){
 				int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
 				if (n <= 0){
 					if (n == 0){
-						Client* tmp;
-						tmp = find_fd(_fds[i].fd);
+						// Client* tmp;
+						// tmp = find_fd(_fds[i].fd);
 						std::string ine = "QUIT";
 						mm.select(ine, this, tmp);
 						i--;
@@ -224,7 +236,7 @@ void Server::GoServ(){
 					std::cout << " le fd qui plante : " << _fds[i].fd << std::endl;
 				}
 
-				Client* tmp = find_fd(_fds[i].fd);
+				// Client* tmp = find_fd(_fds[i].fd);
 				std::string next(buffer);
 				std::cout << "out =" << next << "--" << std::endl;
 				mm.preselect(next, this, tmp);
@@ -236,16 +248,8 @@ void Server::GoServ(){
 				// }
 
 			}
-			else if (_fds[i].revents & POLLHUP) {
-
-				std::cerr << "Client disconnected" << std::endl;
-				// close(_fd);
-
-			}
-			
 		}
 	}
-
 	std::cout << "server down correctly " << std::endl;
 }
 
