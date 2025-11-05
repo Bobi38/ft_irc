@@ -2,6 +2,7 @@
 #include "Channel.hpp"
 
 void exec_nick(Request& rq, Server* server, Client* client){
+	std::cout << " icicici" << std::endl;
 	if (rq.size_tab() == 1)
 		return client->rcvMsg("461 PASS :Not enough parameters");
 	Client* toto;
@@ -10,11 +11,10 @@ void exec_nick(Request& rq, Server* server, Client* client){
 		std::cout << " pas trouve de nick equivalent" << std::endl;
 		client->setNick(rq[1].c_str(), server);
 		client->rcvMsg("NICK : " + rq[1]);
-		if (!client->getNick().empty() && !client->getName().empty())
+		if (!client->getNick().empty() && !client->getName().empty() && client->getpssd())
 			client->setco();
 	}
 	else{
-		std::cout << " deja un nick pareil exist " << std::endl;
 		client->deconne();
 		client->rcvMsg(":server 433  " + rq[1] + " :Nickname is already in use");
 	}
@@ -65,6 +65,8 @@ void exec_pass(Request& rq, Server* server, Client* client){
 		client->rcvMsg(":server 464 " + client->getNick() + " :Password incorrect");
 		server->dlt_client(client, client->getfd());
 	}
+	if (!client->getNick().empty() && !client->getName().empty() && client->getpssd())
+		client->setco();
 }
 
 
@@ -75,7 +77,7 @@ void exec_user(Request& rq, Server* server, Client* client){
 	if (client->getName() != "")
 		return client->rcvMsg(":server 462 " + client->getNick() + " :You may not reregister");
 	client->setName(rq[1]);
-	if (!client->getNick().empty() && !client->getName().empty())
+	if (!client->getNick().empty() && !client->getName().empty() && client->getpssd())
 		client->setco();
 }
 
