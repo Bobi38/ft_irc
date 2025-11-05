@@ -35,6 +35,7 @@ class Client{
 		std::string _host;
 		std::vector<Channel*>_chan;
 	public:
+		Client();
 		Client(int fd);
 		Client(const std::string& prefix);
 		Client(const Client& other);
@@ -56,7 +57,7 @@ class Client{
 		void print_all_chan();
 		void setpssd();
 		bool getpssd();
-		void setco();
+		void setco(Server* serv);
 		void deconne();
 		void addBuffOut(std::string& str);
 		void write();

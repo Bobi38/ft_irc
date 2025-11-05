@@ -3,6 +3,8 @@
 
 Client::Client(int fd): _fd(fd), _co(false), _psswd(false), _nick(""), _name(""), _buff(""), _host("127.0.0.1") {}
 
+Client::Client(): _fd(50), _co(true), _psswd(true), _nick("bot"), _name("bot"), _buff("bot"), _host("127.0.0.1") {}
+
 Client::Client(const std::string& prefix) {
 	_buff = "";
 	size_t size = prefix.size();
@@ -108,12 +110,15 @@ void Client::setpssd() {
 		_psswd = true;
 }
 
-void Client::setco() {
+void Client::setco(Server *serv) {
+	(void)serv;
 	if (_co == false)
 		_co = true;
 	this->rcvMsg(":server_irc 001 " + _nick + " :Welcome to the IRC Network " + this->getMe());
 	this->rcvMsg(":serveur 002 " + _nick + " :Your host is serveur");
 	this->rcvMsg(":serveur 376 " + _nick + " :End of /MOTD command.");
+	// Client *bot = serv->find_client("bot");
+	this->rcvMsg("coucou je suis le bot, veux tu jouer a pil ou face ?");
 }
 
 Channel* Client::getChan(size_t i){

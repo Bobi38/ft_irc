@@ -4,37 +4,37 @@
 #include <fstream>
 #include <curl/curl.h>
 
-size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
-    size_t totalSize = size * nmemb;
-    output->append((char*)contents, totalSize);
-    return totalSize;
-}
+// size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
+//     size_t totalSize = size * nmemb;
+//     output->append((char*)contents, totalSize);
+//     return totalSize;
+// }
 
-std::string httpGet(const std::string& url) {
-    CURL* curl = curl_easy_init();
-    std::string response;
+// std::string httpGet(const std::string& url) {
+//     CURL* curl = curl_easy_init();
+//     std::string response;
 
-    if (curl) {
-        // Indique l’URL à appeler
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        // Dit à libcurl où stocker la réponse
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-        // Option facultative : ignorer SSL si besoin
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+//     if (curl) {
+//         // Indique l’URL à appeler
+//         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+//         // Dit à libcurl où stocker la réponse
+//         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+//         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+//         // Option facultative : ignorer SSL si besoin
+//         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+//         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 
-        // Exécute la requête
-        CURLcode res = curl_easy_perform(curl);
-        if (res != CURLE_OK) {
-            std::cerr << "Erreur curl : " << curl_easy_strerror(res) << std::endl;
-        }
+//         // Exécute la requête
+//         CURLcode res = curl_easy_perform(curl);
+//         if (res != CURLE_OK) {
+//             std::cerr << "Erreur curl : " << curl_easy_strerror(res) << std::endl;
+//         }
 
-        curl_easy_cleanup(curl);  // Libère la mémoire
-    }
+//         curl_easy_cleanup(curl);  // Libère la mémoire
+//     }
 
-    return response;
-}
+//     return response;
+// }
 
 // void open_api(std::string& api){
 //     std::string buff;
@@ -43,15 +43,15 @@ std::string httpGet(const std::string& url) {
 
 void exec_bot(Request& rq, Server* server, Client* client) {
     // Channel *TChan;
-
+    std::cout << "coucou la team" << std::endl;
     // TChan
     (void)rq;
     (void)server;
     (void)client;
-    std::string apiKey = "d3sl0tpr01qpdd5k56ugd3sl0tpr01qpdd5k56v0"; // Remplace par ta clé Finnhub
-    std::string symbol = "AAPL";
-    std::string url = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiKey;
+    // std::string apiKey = "d3sl0tpr01qpdd5k56ugd3sl0tpr01qpdd5k56v0"; // Remplace par ta clé Finnhub
+    // std::string symbol = "AAPL";
+    // std::string url = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiKey;
 
-    std::string response = httpGet(url); // Envoie la requête
-    std::cout << "Réponse brute de l'API :\n" << response << std::endl;
+    // std::string response = httpGet(url); // Envoie la requête
+    // std::cout << "Réponse brute de l'API :\n" << response << std::endl;
 }

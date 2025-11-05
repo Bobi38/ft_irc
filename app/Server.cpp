@@ -174,7 +174,9 @@ void Server::GoServ(){
 		throw std::runtime_error("listen failed");
 
 	std::cout << "server good" << std::endl;
-	
+	// Client* bot = new Client("bot");
+	// _client.push_back(bot);
+	// addFd(50);
 	while(stop_server == 0){
 		for (size_t i = 1; i < _fds.size(); i++){
 			_fds[i].events = POLLIN;
