@@ -52,6 +52,7 @@ class Client{
         bool is_Channel(std::string channel);
         void print_all_chan();
         void setpssd();
+        bool getpssd();
         void setco();
         void setRealName(std::string realname);
         std::string getRealName();

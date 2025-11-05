@@ -113,69 +113,16 @@ Channel* Client::getChan(size_t i){
 	return _chan[i];
 }
 
-bool Client::valid_co(std::string psswd, char* buff, Server *serv){
-	Client *toto;
-
-
-	if (_nick == "" && _name == "" && strncmp(buff, "PASS ", 5) && _psswd == false){
-		send_msg(_fd, "we need a password to connect with command PASS <password>\n");
-		std::cout << " tentative connection mdp bloque\n";
-		return true;
-	}
-	if (!strncmp(buff, "PASS ", 5) && _psswd == false){
-		std::string rest(buff + 5);
-		clean_std(rest);
-		if ( rest == psswd){
-			_psswd = true;
-			return true;
-		}
-		else{
-			send_msg(_fd, "wrong password bye\n");
-			return false;
-		}
-	}
-	if (_nick == "" && strncmp(buff, "NICK ", 5)){
-		send_msg(_fd, "we need a nick to connect with command NICK <nickname>\n");
-		return true;
-	}
-	if (!strncmp(buff, "NICK ", 5)){
-		std::string rest(buff + 5);
-		clean_std(rest);
-		toto = serv->find_client(rest);
-		if (!toto){
-			_nick = rest;
-			return true;
-		}
-		send_msg(_fd, "NICK already exist, try an over \n");
-		return true;
-	}
-	if (_nick != "" && _name == "" && strncmp(buff, "NAME ", 5)){
-		send_msg(_fd, "we need a name to connect with command NAME <nickname>\n");
-		return true;
-	}
-	if (!strncmp(buff, "NAME ", 5)){
-		std::string rest(buff + 5);
-		clean_std(rest);
-		toto = serv->find_client(rest);
-		if (!toto){
-			_name = rest;
-			send_msg(_fd, "welcome to server IRC\n");
-			_co = true;
-			return true;
-		}
-		send_msg(_fd, "NAME already exist, try an over \n");
-		return true;
-	}
-	return true;
-
-}
-
 int Client::getfd()const {
 	return _fd;
 }
 
 bool Client::getco()const {
 	return _co;
+}
+
+bool Client::getpssd() {
+	return _psswd;
 }
 
 std::string Client::getMe() const{
