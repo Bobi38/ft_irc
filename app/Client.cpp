@@ -152,19 +152,19 @@ void Client::setFd(int x){
 
 
 
-// void Client::rcvMsg(const std::string& msg) {
-// 	std::string msg_temp = msg + "\r\n";
-// 	ssize_t sent = send(_fd, msg_temp.c_str(), msg_temp.size(), MSG_NOSIGNAL);
-// 	if (sent < 0) {
-// 		if (errno == EPIPE || errno == ECONNRESET) {
-// 			std::cerr << "Client disconnected" << std::endl;
-// 			// close(_fd);
-// 		}
-// 		else {
-// 			perror("send");
-// 		}
-// 	}
-// }
+void Client::rcvMsg(const std::string& msg) {
+	std::string msg_temp = msg + "\r\n";
+	ssize_t sent = send(_fd, msg_temp.c_str(), msg_temp.size(), MSG_NOSIGNAL);
+	if (sent < 0) {
+		if (errno == EPIPE || errno == ECONNRESET) {
+			std::cerr << "Client disconnected" << std::endl;
+			// close(_fd);
+		}
+		else {
+			perror("send");
+		}
+	}
+}
 
 void Client::rcvMsg(const std::string& msg, Client* client) {
 	std::string msg_temp = msg;

@@ -28,6 +28,6 @@ void Client::write() {
 	}
 }
 
-void Client::rcvMsg(const std::string& msg) {
-	_outBuff += msg + "/r/n";
-}
+// void Client::rcvMsg(const std::string& msg) {
+// 	_outBuff += msg + "/r/n";
+// }

@@ -2,6 +2,7 @@
 #include "Channel.hpp"
 #include <iostream>
 #include <fstream>
+#include <curl/curl.h>
 
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
     size_t totalSize = size * nmemb;
@@ -35,19 +36,22 @@ std::string httpGet(const std::string& url) {
     return response;
 }
 
-void open_api(std::string& api){
-    std::string buff;
-    std::ifstream in(".api");
-}
+// void open_api(std::string& api){
+//     std::string buff;
+//     std::ifstream in(".api");
+// }
 
 void exec_bot(Request& rq, Server* server, Client* client) {
+    // Channel *TChan;
 
-
+    // TChan
+    (void)rq;
+    (void)server;
+    (void)client;
     std::string apiKey = "d3sl0tpr01qpdd5k56ugd3sl0tpr01qpdd5k56v0"; // Remplace par ta clé Finnhub
     std::string symbol = "AAPL";
     std::string url = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiKey;
 
     std::string response = httpGet(url); // Envoie la requête
     std::cout << "Réponse brute de l'API :\n" << response << std::endl;
-    return 0;
 }
