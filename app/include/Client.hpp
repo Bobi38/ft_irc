@@ -38,13 +38,13 @@ class Client{
 		Client(int fd);
 		Client(const std::string& prefix);
 		Client(const Client& other);
-		bool valid_co(std::string psswd, char* buff, Server *serv);
 		int getFd();
 		void setbuff(std::string newb);
 		std::string getBuff();
 		std::string getName() const;
 		std::string getNick() const;
 		std::string getMe() const;
+		std::string& getBuffOut();
 		Channel* getChan(size_t i);
 		int getfd() const;
 		bool getco()const;
@@ -57,16 +57,11 @@ class Client{
 		void setpssd();
 		bool getpssd();
 		void setco();
-		void setRealName(std::string realname);
-		std::string getRealName();
-		operator bool() const;
 		void deconne();
-		void setFd(int);
-		std::string& getBuffOut();
 		void addBuffOut(std::string& str);
 		void write();
-		void rcvMsg(const std::string& str, Client* sender); //transmet le message de sender
-		void rcvMsg(const std::string& str); // message de retour 
+		void rcvMsg(const std::string& str, Client* sender);
+		void rcvMsg(const std::string& str);
 		size_t nbChan();
 		~Client();
 };
