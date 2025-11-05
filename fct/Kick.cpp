@@ -25,7 +25,9 @@ void exec_kick(Request& rq, Server* server, Client* client){
 		client->rcvMsg("482 " + client->getNick() + " :You're not channel operator");
 		return ;
 	}
+	TChan->chan_msg(client->getMe() + " KICK " + TChan->getName() + " " + TClt->getNick());
 	TClt->rmChannel(TChan);
 	TChan->change_statut(TClt, BAN);
+
 
 }

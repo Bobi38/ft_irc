@@ -38,6 +38,7 @@ public:
 	~Maker();
 
 	void select(std::string& str, Server* server, Client* client);
+	void preselect(std::string& str, Server* server, Client* client);
 };
 
 #endif

@@ -2,9 +2,6 @@
 #include "Channel.hpp"
 
 bool init_chan(Request& rq,  std::vector<std::string>& chan){
-    if (rq.size_tab() != 2){
-        return false;
-    }
     std::stringstream ss_chan(rq[1]);
     std::string item;
     while (std::getline(ss_chan, item, ',')) {
@@ -33,7 +30,7 @@ void exec_part(Request& rq, Server* server, Client* client){
             client->rcvMsg("403 " + chan[i] + " :No such channel");
             continue;
         }
-        if (client->is_Channel(chan[i])){
+        if (client->is_Channel(chan[i]) && !TChan->is_inv(client->getNick())){
             TChan->chan_msg(client->getMe() + " PART " + chan[i] + " :" + rq.getMsg());
             server->unlinkClienttoChannel(client, TChan);
         }
@@ -42,3 +39,5 @@ void exec_part(Request& rq, Server* server, Client* client){
         TChan = NULL;
     }
 }
+
+// /server localhost 6667 jj

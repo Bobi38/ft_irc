@@ -86,7 +86,7 @@ void Channel::new_op(std::vector<std::string>::iterator& z, Client* sender, int 
 	if (!cc)
 		return sender->rcvMsg(":server 401 " + sender->getNick() + " " + z->c_str() + " :No such nick/channel");
 	std::string s = (flag == -1) ? "-" : "+";
-	chan_msg(sender->getMe() + " MODE " + _name + " " + s + "o "+ cc->getNick(), sender, this);
+	chan_msg(sender->getMe() + " MODE " + _name + " " + s + "o "+ cc->getNick());
 	if (flag == 1){
 		change_statut(cc, CHANOP);
 		z++;
@@ -102,7 +102,7 @@ void Channel::new_ban(std::vector<std::string>::iterator& z, Client* sender, int
 	if (!cc)
 		return sender->rcvMsg(":server 401 " + sender->getNick() + " " + z->c_str() + " :No such nick/channel");
 	std::string s = (flag == -1) ? "-" : "+";
-	chan_msg(sender->getMe() + " MODE " + _name + " " + s + "b "+ cc->getNick(), sender, this);
+	chan_msg(sender->getMe() + " MODE " + _name + " " + s + "b "+ cc->getNick());
 	if (flag == 1){
 		cc->rmChannel(this);
 		change_statut(cc, BAN);

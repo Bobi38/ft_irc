@@ -51,10 +51,10 @@ void exec_pass(Request& rq, Server* server, Client* client){
 		return ;
 	}
 	std::string ps(rq[1]);
-	if (client->getName() != "" || client->getNick() != ""){
-		client->rcvMsg(":server 462 " + client->getNick() + " :You may not reregister");
-		return;
-	}
+	// if (client->getName() != "" || client->getNick() != ""){
+	// 	client->rcvMsg(":server 462 " + client->getNick() + " :You may not reregister");
+	// 	return;
+	// }
 	if (rq.size_tab() < 2) {
 		client->rcvMsg(":server 461 PASS :Not enough parameters");
 		return;
@@ -63,7 +63,7 @@ void exec_pass(Request& rq, Server* server, Client* client){
 		client->setpssd();
 	else{
 		client->rcvMsg(":server 464 " + client->getNick() + " :Password incorrect");
-		server->dlt_client(client, client->getfd());
+		return server->dlt_client(client, client->getfd());
 	}
 	if (!client->getNick().empty() && !client->getName().empty() && client->getpssd())
 		client->setco();

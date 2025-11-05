@@ -161,7 +161,7 @@ void Server::GoServ(){
 	Maker mm;
 	struct sockaddr_in s, c;
 	socklen_t client_len = sizeof(c);
-	char buffer[512];
+	char buffer[BUFFER_SIZE];
 	s.sin_family = AF_INET;
 	s.sin_port = htons(_port);
 	s.sin_addr.s_addr = INADDR_ANY;
@@ -188,19 +188,52 @@ void Server::GoServ(){
 		for (size_t i = 1; i < _fds.size(); i++) {
 			if (_fds[i].revents & POLLIN) {
 				memset(buffer, 0, BUFFER_SIZE);
+				// std::string next;
+				// while (next[next.size() - 1] != '\n' && next[next.size() - 2] != '\r'){
+				// 	int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
+				// 	std::cout << "n= " << n << " -" << buffer << "----" << std::endl;
+				// 	if (n <= 0){
+				// 		if (n == 0){
+				// 			Client* tmp;
+				// 			tmp = find_fd(_fds[i].fd);
+				// 			std::string ine = "QUIT";
+				// 			mm.select(ine, this, tmp);
+				// 			i--;
+				// 			break ;
+				// 		}
+				// 		std::cout << " le fd qui plante : " << _fds[i].fd << std::endl;
+				// 		throw std::runtime_error(strerror(errno));
+				// 	}
+				// 	std::string tmp(buffer);
+				// 	std::cout << "--" << tmp << "--" << std::endl;
+				// 	next = next + tmp;
+				// 	std::cout << static_cast<int>(next[next.size() - 1]) << " " << static_cast<int>(next[next.size() - 2]) << std::endl;
+				// 	memset(buffer, 0, BUFFER_SIZE);
+				// }
+				// std::cout << "out next =" << next << "--" << std::endl;
 				int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
-				if (n < 0){
+				if (n <= 0){
+					if (n == 0){
+						Client* tmp;
+						tmp = find_fd(_fds[i].fd);
+						std::string ine = "QUIT";
+						mm.select(ine, this, tmp);
+						i--;
+						break ;
+					}
 					std::cout << " le fd qui plante : " << _fds[i].fd << std::endl;
-					throw std::runtime_error(strerror(errno));
 				}
+
 				Client* tmp = find_fd(_fds[i].fd);
 				std::string next(buffer);
-				size_t pos;
-				while((pos = next.find("\r\n")) != std::string::npos){
-					std::string ine = next.substr(0, pos);
-					next.erase(0, pos + 2);
-					mm.select(ine, this, tmp);
-				}
+				std::cout << "out =" << next << "--" << std::endl;
+				mm.preselect(next, this, tmp);
+				// size_t pos;
+				// while((pos = next.find("\r\n")) != std::string::npos){
+				// 	std::string ine = next.substr(0, pos);
+				// 	next.erase(0, pos + 2);
+				// 	mm.select(ine, this, tmp);
+				// }
 
 			}
 			else if (_fds[i].revents & POLLHUP) {

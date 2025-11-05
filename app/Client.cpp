@@ -1,9 +1,10 @@
 #include "include/Client.hpp"
 #include "Request.hpp"
 
-Client::Client(int fd): _fd(fd), _co(false), _psswd(false), _nick(""), _name(""), _host("127.0.0.1") {}
+Client::Client(int fd): _fd(fd), _co(false), _psswd(false), _nick(""), _name(""), _buff(""), _host("127.0.0.1") {}
 
 Client::Client(const std::string& prefix) {
+	_buff = "";
 	size_t size = prefix.size();
 	size_t space = prefix.find(" ");
 
@@ -63,6 +64,14 @@ void Client::setNick(const std::string& str, Server* serv){
 void Client::setName(const std::string& str){
 	_name = str;
 	_co = true;
+}
+
+void Client::setbuff(std::string newb){
+	_buff = newb;
+}
+
+std::string Client::getBuff(){
+	return _buff;
 }
 
 bool Client::is_Channel(std::string channel){
@@ -140,6 +149,8 @@ void Client::deconne(){
 void Client::setFd(int x){
 	_fd = x;
 }
+
+
 
 void Client::rcvMsg(const std::string& msg) {
 	std::string msg_temp = msg + "\r\n";

@@ -30,6 +30,7 @@ class Client{
         bool _psswd;
         std::string _nick;
         std::string _name;
+        std::string _buff;
         // std::string _realname;
         std::string _host;
         std::vector<Channel*>_chan;
@@ -39,6 +40,8 @@ class Client{
         Client(const Client& other);
         bool valid_co(std::string psswd, char* buff, Server *serv);
         int getFd();
+        void setbuff(std::string newb);
+        std::string getBuff();
         std::string getName() const;
         std::string getNick() const;
         std::string getMe() const;

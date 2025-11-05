@@ -31,8 +31,6 @@ void send_all(Request& rq, Client* clt){
 }
 
 void exec_quit(Request& rq, Server* serv, Client* clt){
-	if (clt->getco() == false)
-		return ;
 	if (!clt)
 		return;
 	if (rq.getMsg() != Request::EMPTY_MSG)
