@@ -49,15 +49,15 @@ void Channel::chan_msg(const std::string& msg, Client* sender, Channel* Chan){
 	}
 }
 
-void Channel::chan_msgg(const std::string& msg, Client* sender, Channel* Chan, Client* sender1){
-	if (Chan != this)
-		return ;
+void Channel::chan_msgg(const std::string& msg, Client* sender, std::string send, std::string me){
+	std::cout << "cicicici" << std::endl;
 	if (is_in(sender->getNick())==false)
 		return sender->rcvMsg(":server 442 " + sender->getNick() +  _name + " :You're not on that channel");
 	for(cci it = _member.begin(); it != _member.end(); it++){
-		if (sender != it->second && (it->first == PRESENT || it->first == CHANOP) && sender1 != it->second)
-			it->second->rcvMsg(sender->getMe() + " PRIVMSG " + _name + " :" + msg);
+		if (sender != it->second && (it->first == PRESENT || it->first == CHANOP))
+			it->second->rcvMsg(me + " PRIVMSG " + _name + " :" + msg);
 	}
+	sender->rcvMsg(me + " PRIVMSG " + _name + " :" + send);
 }
 
 

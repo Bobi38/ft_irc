@@ -65,11 +65,16 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 
 std::string init_namel(Channel* chan){
 	std::string namel;
-	for(size_t i = 0; i < static_cast<size_t>(chan->getNbMemb()); i++){
-		if (chan->getPairC(i).first == CHANOP)
+	size_t cpt = 0;
+	for(size_t i = 0; cpt != static_cast<size_t>(chan->getNbMemb()); i++){
+		if (chan->getPairC(i).first == CHANOP){
 			namel = namel + "@" + chan->getPairC(i).second->getNick() + " ";
-		else if (chan->getPairC(i).first == PRESENT)
+			cpt++;
+		}
+		else if (chan->getPairC(i).first == PRESENT || chan->getPairC(i).first == BOT){
 			namel = namel + chan->getPairC(i).second->getNick() + " ";
+			cpt++;
+		}
 	}
 	namel.erase(namel.end() - 1);
 	return namel;

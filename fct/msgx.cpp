@@ -29,13 +29,13 @@ void prvmsg(Request& rq, Server* server, Client* sender){
 			else
 				Chan->chan_msg(msg, sender, Chan);
 		}
+		else if (dest == "bot")
+			exec_bot(rq, server, sender);
 		else {
 			Client* clrcv = server->find_client(dest);
 			if (!clrcv)
 				sender->rcvMsg(":server 401 " + dest + " :No such nick/channel");
 			else{
-					if (clrcv->getNick() == "bot")
-						return exec_bot(rq, server, sender);
 				clrcv->rcvMsg(msg, sender);
 			}
 		}

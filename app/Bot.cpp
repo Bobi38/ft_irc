@@ -33,12 +33,16 @@ void Bot::getScore(Client *clt){
 void Bot::addPoint(int result, Client* clt, Channel* Chan){
     if (result == LOSE){
         _score[clt].second += 1;
-        clt->rcvMsg("Desole tu as perdu gros nul");
-        Chan->chan_msgg(clt->getNick() + " a perdu a pile ou face", this, Chan, clt);
+        if (Chan == NULL)
+            clt->rcvMsg(this->getMe() + " PRVMSG : Desole tu as perdu gros nul");
+        if (Chan != NULL)
+            Chan->chan_msgg(clt->getNick() + " a perdu a pile ou face", clt, "Desole tu as perdu gros nul", this->getMe());
     }
     if (result == WIN){
         _score[clt].first += 1;
-        clt->rcvMsg("Bon tu as gagne ... mais tu n'y arrivera plus");
-        Chan->chan_msgg(clt->getNick() + " a gagne a pile ou face", this, Chan, clt);
+        if (Chan == NULL)
+            clt->rcvMsg(this->getMe() + " PRVMSG :Bon tu as gagne ... mais tu n'y arrivera plus");
+        if (Chan != NULL)
+            Chan->chan_msgg(clt->getNick() + " a gagne a pile ou face", clt, "Bon tu as gagne ... mais tu n'y arrivera plus", this->getMe());
     }
 }
