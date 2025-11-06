@@ -28,7 +28,7 @@ Server::~Server(){
 
 void Server::addClient(int fd){
 	Client* toto = new Client(fd);
-	Bot* bot = find_client("bot");
+	Bot* bot = dynamic_cast<Bot *>(find_client("bot"));
 	_client.push_back(toto);
 	bot->addClient(toto);
 }
@@ -123,7 +123,7 @@ Client* Server::find_fd(int fd){
 }
 
 void Server::dlt_client(Client* clt, int fd){
-	Bot* bot = find_client("bot");
+	Bot* bot = dynamic_cast<Bot *>(find_client("bot"));
 	bot->rmClient(clt);
 	for(std::vector<Client*>::iterator it = _client.begin(); it != _client.end(); it++){
 		if ((*it) == clt){

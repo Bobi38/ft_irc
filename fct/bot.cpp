@@ -41,16 +41,32 @@
 //     std::ifstream in(".api");
 // }
 
-void exec_bot(Request& rq, Server* server, Client* client) {
-    Channel *TChan;
-    Client* bot = server->find_client("bot");
-    if (rq.size_tab() == 1)
-        return client->rcvMsg("envoie "!pile" ou "!face" pour jouer. Si tu veux connaitre ton score envoie "!score"", bot);
+void sw_piece(bool CPiece, Bot* bot, Client* clt, Channel* TChan){
+    srand(time(NULL));
+    bool resultat = (rand() % 2 == 0);
+    bot->addPoint((resultat == CPiece) ? LOSE : WIN, clt, TChan);
+}
 
-    if (rq[1] != "!pile" || rq[1] != "!face" || rq[1] != "!score"){
+void exec_bot(Request& rq, Server* server, Client* client) {
+    bool pil_face;
+    Channel *TChan;
+	TChan = server->find_channel(rq[1]);
+	if (!TChan){
+		client->rcvMsg("403 " + rq[1] + " :No such channel");
+		return ;
+	}
+    Bot* bot = dynamic_cast<Bot *>(server->find_client("bot"));
+    if (rq.size_tab() == 2)
+        return client->rcvMsg("envoie 'pile' ou 'face' pour jouer. Si tu veux connaitre ton score envoie 'score'", bot);
+
+    if (rq[2] != "pile" && rq[2] != "face" && rq[2] != "score"){
         client->rcvMsg("Désolé je ne comprend pas ton message", bot);
-        return client->rcvMsg("envoie "!pile" ou "!face" pour jouer. Si tu veux connaitre ton score envoie "!score"", bot);
+        return client->rcvMsg("envoie 'pile' ou 'face' pour jouer. Si tu veux connaitre ton score envoie 'score'", bot);
     }
+    if (rq[2] == "score")
+        return bot->getScore(client);
+    pil_face = (rq[2] == "pile");
+    return sw_piece(pil_face, bot, client, TChan);
 
     // std::string apiKey = "d3sl0tpr01qpdd5k56ugd3sl0tpr01qpdd5k56v0"; // Remplace par ta clé Finnhub
     // std::string symbol = "AAPL";

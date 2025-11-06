@@ -62,7 +62,7 @@ class Client{
 		void rcvMsg(const std::string& str, Client* sender);
 		void rcvMsg(const std::string& str);
 		size_t nbChan();
-		~Client();
+		virtual ~Client();
 };
 
 #endif

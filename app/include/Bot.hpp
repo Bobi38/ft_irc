@@ -4,6 +4,7 @@
 # include <map>
 # include <utility>
 # include "Client.hpp"
+#include "Channel.hpp"
 
 
 enum e_coin{
@@ -20,7 +21,7 @@ class Bot: public Client{
 		Bot();
 		void addClient(Client *clt);
 		void rmClient(Client *clt);
-		void addPoint(int result);
+		void addPoint(int result, Client *clt, Channel* Chan);
 		void getScore(Client *clt);
 		~Bot(){};
 };
