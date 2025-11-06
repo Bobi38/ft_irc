@@ -33,6 +33,7 @@ enum e_client{
 	NO_PRESENT = 3,
     INVITE = 4,
     BAN = 5,
+    BOT ,
     PRIVATE,
     TOPICOP,
     TOPIC_EXIST,

@@ -117,8 +117,8 @@ void Client::setco(Server *serv) {
 	this->rcvMsg(":server_irc 001 " + _nick + " :Welcome to the IRC Network " + this->getMe());
 	this->rcvMsg(":serveur 002 " + _nick + " :Your host is serveur");
 	this->rcvMsg(":serveur 376 " + _nick + " :End of /MOTD command.");
-	// Client *bot = serv->find_client("bot");
-	this->rcvMsg("coucou je suis le bot, veux tu jouer a pil ou face ?");
+	Client *bot = serv->find_client("bot");
+	this->rcvMsg(bot->getMe() + "coucou je suis le bot, veux tu jouer a pil ou face ?");
 }
 
 Channel* Client::getChan(size_t i){

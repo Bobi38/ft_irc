@@ -16,15 +16,13 @@
 # include <netinet/in.h>
 # include <arpa/inet.h> 
 # include <poll.h>
-# include "Channel.hpp"
-# include "Server.hpp"
 
 class Server;
 
 class Channel;
 
 class Client{
-	private:
+	protected:
 		int _fd;
 		bool _co;
 		bool _psswd;

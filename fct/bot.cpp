@@ -42,12 +42,16 @@
 // }
 
 void exec_bot(Request& rq, Server* server, Client* client) {
-    // Channel *TChan;
-    std::cout << "coucou la team" << std::endl;
-    // TChan
-    (void)rq;
-    (void)server;
-    (void)client;
+    Channel *TChan;
+    Client* bot = server->find_client("bot");
+    if (rq.size_tab() == 1)
+        return client->rcvMsg("envoie "!pile" ou "!face" pour jouer. Si tu veux connaitre ton score envoie "!score"", bot);
+
+    if (rq[1] != "!pile" || rq[1] != "!face" || rq[1] != "!score"){
+        client->rcvMsg("Désolé je ne comprend pas ton message", bot);
+        return client->rcvMsg("envoie "!pile" ou "!face" pour jouer. Si tu veux connaitre ton score envoie "!score"", bot);
+    }
+
     // std::string apiKey = "d3sl0tpr01qpdd5k56ugd3sl0tpr01qpdd5k56v0"; // Remplace par ta clé Finnhub
     // std::string symbol = "AAPL";
     // std::string url = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiKey;
