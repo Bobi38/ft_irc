@@ -4,10 +4,9 @@ Maker::Maker(){
 	table[0] = Level("PASS", exec_pass);
 	table[1] = Level("NICK", exec_nick);
 	table[2] = Level("USER", exec_user);
-	table[5] = Level("JOIN", exec_join);
 	table[3] = Level("CAP", test2);
 	table[4] = Level("QUIT", exec_quit);
-	table[5] = Level("KICK", exec_kick);
+	table[5] = Level("JOIN", exec_join);
 	table[6] = Level("MODE", exec_Mode);
 	table[7] = Level("INVITE", invit);
 	table[8] = Level("PRVMSG", prvmsg);
