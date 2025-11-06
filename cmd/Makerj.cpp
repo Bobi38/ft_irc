@@ -19,6 +19,7 @@ Maker::Maker(){
 	table[15] = Level("PART", exec_part);
 	table[16] = Level("PRIVMSG", prvmsg);
 	table[17] = Level("WHO", who);
+	table[18] = Level("BOT", exec_bot);
 	};
 
 
@@ -28,7 +29,7 @@ void Maker::preselect(std::string& str, Server* server, Client* client){
 	// std::cout << "coucou =" << str << "--" << client->getBuff()<< std::endl;
 
 	client->setbuff(client->getBuff() + str);
-	std::cout << client->getBuff()[client->getBuff().size() - 1] << " " << client->getBuff()[client->getBuff().size() - 2] << std::endl;
+	// std::cout << client->getBuff()[client->getBuff().size() - 1] << " " << client->getBuff()[client->getBuff().size() - 2] << std::endl;
 	if (client->getBuff() != "" && client->getBuff()[client->getBuff().size() - 1] != '\n' && client->getBuff()[client->getBuff().size() - 2] != '\r')
 		return ;
 	std::string next(client->getBuff());

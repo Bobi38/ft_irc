@@ -41,13 +41,33 @@
 //     std::ifstream in(".api");
 // }
 
+void sw_piece(bool CPiece, Bot* bot, Client* clt, Channel* TChan){
+    srand(time(NULL));
+    bool resultat = (rand() % 2 == 0);
+    bot->addPoint((resultat == CPiece) ? LOSE : WIN, clt, TChan);
+}
+
 void exec_bot(Request& rq, Server* server, Client* client) {
-    // Channel *TChan;
-    std::cout << "coucou la team" << std::endl;
-    // TChan
-    (void)rq;
-    (void)server;
-    (void)client;
+    bool pil_face;
+    Channel *TChan;
+	TChan = server->find_channel(rq[1]);
+	if (!TChan){
+		client->rcvMsg("403 " + rq[1] + " :No such channel");
+		return ;
+	}
+    Bot* bot = dynamic_cast<Bot *>(server->find_client("bot"));
+    if (rq.size_tab() == 2)
+        return client->rcvMsg("envoie 'pile' ou 'face' pour jouer. Si tu veux connaitre ton score envoie 'score'", bot);
+
+    if (rq[2] != "pile" && rq[2] != "face" && rq[2] != "score"){
+        client->rcvMsg("Désolé je ne comprend pas ton message", bot);
+        return client->rcvMsg("envoie 'pile' ou 'face' pour jouer. Si tu veux connaitre ton score envoie 'score'", bot);
+    }
+    if (rq[2] == "score")
+        return bot->getScore(client);
+    pil_face = (rq[2] == "pile");
+    return sw_piece(pil_face, bot, client, TChan);
+
     // std::string apiKey = "d3sl0tpr01qpdd5k56ugd3sl0tpr01qpdd5k56v0"; // Remplace par ta clé Finnhub
     // std::string symbol = "AAPL";
     // std::string url = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiKey;

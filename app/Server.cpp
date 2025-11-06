@@ -28,7 +28,9 @@ Server::~Server(){
 
 void Server::addClient(int fd){
 	Client* toto = new Client(fd);
+	Bot* bot = dynamic_cast<Bot *>(find_client("bot"));
 	_client.push_back(toto);
+	bot->addClient(toto);
 }
 
 Channel* Server::addChannel(std::string name, Client* client){
@@ -121,6 +123,8 @@ Client* Server::find_fd(int fd){
 }
 
 void Server::dlt_client(Client* clt, int fd){
+	Bot* bot = dynamic_cast<Bot *>(find_client("bot"));
+	bot->rmClient(clt);
 	for(std::vector<Client*>::iterator it = _client.begin(); it != _client.end(); it++){
 		if ((*it) == clt){
 			_client.erase(it);
@@ -174,9 +178,8 @@ void Server::GoServ(){
 		throw std::runtime_error("listen failed");
 
 	std::cout << "server good" << std::endl;
-	// Client* bot = new Client("bot");
-	// _client.push_back(bot);
-	// addFd(50);
+	Client* bot = new Bot();
+	_client.push_back(bot);
 	while(stop_server == 0){
 		for (size_t i = 1; i < _fds.size(); i++){
 			_fds[i].events = POLLIN;
@@ -240,7 +243,7 @@ void Server::GoServ(){
 
 				// Client* tmp = find_fd(_fds[i].fd);
 				std::string next(buffer);
-				std::cout << "out =" << next << "--" << std::endl;
+				// std::cout << "out =" << next << "--" << std::endl;
 				mm.preselect(next, this, tmp);
 				// size_t pos;
 				// while((pos = next.find("\r\n")) != std::string::npos){

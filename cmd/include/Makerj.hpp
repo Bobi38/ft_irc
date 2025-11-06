@@ -30,7 +30,7 @@ typedef std::pair<std::string, void (*)(Request&, Server*, Client*)> Level;
 class Maker
 {
 private:
-	Level table[18];
+	Level table[19];
 	std::string _buff;
 public:
 	Maker();

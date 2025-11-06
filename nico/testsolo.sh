@@ -2,7 +2,7 @@
 
 # Configuration
 IRC_HOST="localhost"
-IRC_PORT="6666"
+IRC_PORT="6667"
 PSS="jj"
 NAME0="Alpha"
 NAME1="BRAVO"

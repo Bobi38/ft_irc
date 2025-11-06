@@ -19,7 +19,8 @@ SRCS_APP = \
 	$(SRCDIR)/ChannelGet.cpp \
 	$(SRCDIR)/ChannelMod.cpp \
 	$(SRCDIR)/Server.cpp \
-	$(SRCDIR)/Client.cpp
+	$(SRCDIR)/Client.cpp \
+	$(SRCDIR)/Bot.cpp
 
 SRCS_CMD = \
 	$(CMDDIR)/Request.cpp \
