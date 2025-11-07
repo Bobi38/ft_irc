@@ -20,6 +20,11 @@ void exec_nick(Request& rq, Server* server, Client* client){
 	if (!toto){
 		if (!check_name(rq[1].c_str()))
 			return client->rcvMsg(":server 777 " + rq[1] + " :Nickname not valiable");	
+		if (client->getNick() != ""){
+			client->rcvMsg(client->getMe() + " NICK :" + rq[1]);
+			client->setNick(rq[1].c_str(), server);
+			return ;
+		}
 		client->setNick(rq[1].c_str(), server);
 		client->rcvMsg("NICK : " + rq[1]);
 		if (!client->getNick().empty() && !client->getName().empty() && client->getpssd())

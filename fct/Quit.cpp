@@ -7,8 +7,11 @@ void fd_send(Client* clt, std::set<int>& list, bool in){
 			continue;
 		for(size_t y = 0;chan->getClient(y); y++){
 			int testfd = chan->getClient(y)->getfd();
-			if (in == false && testfd != clt->getfd())
-				list.insert(testfd);
+			if (chan->getClient(y)->getNick() == "bot")
+				continue ;
+			if (in == false && testfd == clt->getfd())
+				continue ;
+			list.insert(testfd);
 		}
 	}
 }
