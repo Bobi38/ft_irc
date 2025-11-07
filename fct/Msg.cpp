@@ -1,8 +1,7 @@
-#include "Makerj.hpp"
+#include "Maker.hpp"
 #include <vector>
 
 void prvmsg(Request& rq, Server* server, Client* sender){
-
 	std::string msg = rq[MSG];
 	if (msg == Request::EMPTY_MSG)
 		msg = "";
@@ -10,7 +9,6 @@ void prvmsg(Request& rq, Server* server, Client* sender){
 		return sender->rcvMsg(":server 461 :Not enough parameters");
 	else if (msg.empty())
 		msg = rq[2];
-
 
 	std::stringstream ss_chan(rq[1]);
 	std::vector<std::string> vDest;
@@ -54,6 +52,10 @@ void Client::write() {
 	if (_outBuff.empty())
 		return;
 	
+	if (_outBuff.length() > 512) {
+		_outBuff = _outBuff.substr(0, 510) + "\r\n";
+	}
+
 	ssize_t sent = send(_fd, 
 					_outBuff.c_str(), 
 					_outBuff.length(), 
@@ -66,7 +68,6 @@ void Client::write() {
 	}
 	else if (sent == -1)
 		std::cerr << "Erreur send: " << strerror(errno) << std::endl;
-
 }
 
 void Client::rcvMsg(const std::string& msg) {

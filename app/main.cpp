@@ -11,19 +11,8 @@ int main(int ac , char **av){
         serv.GoServ();
     }catch (const std::exception& e) {
         std::cout << "\033[31m" << e.what() + 2 << "\033[0m"  << std::endl;
-        // close(atoi(e.what()));
         return 1;
     }
     return 0;
     
 }
-
-// #include "ACmd.hpp"
-// #include "Maker.hpp"
-
-// int main(){
-//      Maker tt;
-//      ACmd* rr = tt.makeCmd(2, "coucou JOIN popo");
-//     rr->action();
-//      delete rr;
-// }

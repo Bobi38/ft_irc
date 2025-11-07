@@ -122,18 +122,12 @@ bool Channel::setMOD(int mod, Client* user){
                return false;
        }
        bool set = mod > 0;
-	//    if (set == false)
-	//    		std::cout << "set false " << mod << std::endl;
-	// 	else
-	//    		std::cout << "set true " << mod << std::endl;
+
        if (mod < 0)
                mod = -mod;
        if (set == _mode[mod - MOINS])
                return true;
        _mode[mod - MOINS] = set;
-	//    if (_mode[mod - MOINS] == false)
-	//    		std::cout << "mod false " << mod << std::endl;
-	// 	else
-	//    		std::cout << "mod true " << mod << std::endl;
+
        return true;
 }

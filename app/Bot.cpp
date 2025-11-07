@@ -10,8 +10,10 @@ Bot::Bot(){
 
 void Bot::rmClient(Client* clt){
     for(sco::iterator it = _score.begin(); it != _score.end(); it++){
-        if (it->first == clt)
-            return _score.erase(it);
+        if (it->first == clt){
+            _score.erase(it);
+            return ;
+        }
     }
 }
 

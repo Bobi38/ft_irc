@@ -1,4 +1,4 @@
-#include "Makerj.hpp"
+#include "Maker.hpp"
 
 void fd_send(Client* clt, std::set<int>& list, bool in){
 	for(size_t i = 0; clt->getChan(i); i++){
@@ -38,6 +38,5 @@ void exec_quit(Request& rq, Server* serv, Client* clt){
 		return;
 	if (rq.getMsg() != Request::EMPTY_MSG)
 		send_all(rq, clt);
-	std::cout << "le fd a quit  " << clt->getfd()<<  std::endl;
 	serv->dlt_client(clt, clt->getfd());
 }

@@ -1,5 +1,5 @@
 #include "include/Server.hpp"
-#include "Makerj.hpp"
+#include "Maker.hpp"
 #include <sstream>
 
 Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password), _ping(time(NULL)), _server_fd(-1)  {
@@ -64,7 +64,6 @@ void Server::addFd(int fd){
 
 bool Server::check_psswd(int fd){
 	char buffer[BUFFER_SIZE];
-	std::cout << fd << " test passwd" << std::endl;
 	while (1){
 		int n = recv(fd, buffer, BUFFER_SIZE, 0);
 		buffer[n] = '\0';
@@ -81,7 +80,6 @@ bool Server::check_psswd(int fd){
 		}
 	}
 	if (rest == _password){
-		std::cout << "good" << std::endl;
 		addClient(fd);
 		addFd(fd);
 		return true;
@@ -149,14 +147,12 @@ void Server::dlt_client(Client* clt, int fd){
 			delete tmp;
 		}
 	}
-	std::cout << "on ferme le fd :" <<  fd << std::endl;
 	close (fd);
 	delete clt;
 }
 
 void Server::send_ping(){
 	for(size_t i = 0; i < _client.size(); i++){
-		std::cout << "msg envoye a =" << _client[i]->getNick() << std::endl;
 		_client[i]->rcvMsg("PING 4242");
 	}
 

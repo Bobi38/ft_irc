@@ -4,7 +4,6 @@
 # include "Request.hpp"
 # include <map>
 
-void test2(Request& rq, Server* server, Client* client);
 void prvmsg(Request& rq, Server* server, Client* client);
 void exec_quit(Request& rq, Server* serv, Client* clt);
 void exec_join(Request& rq, Server* server, Client* client);
@@ -19,7 +18,6 @@ void exec_CAP(Request& rq, Server* server, Client* client);
 void exec_Mode(Request& rq, Server* server, Client* client);
 void exec_Names(Request& rq, Server* server, Client* client);
 void exec_bot(Request& rq, Server* server, Client* client) ;
-void test3(Request& rq, Server* server, Client* client);
 void invit(Request& rq, Server* server, Client* client);
 void who(Request& rq, Server* server, Client* client);
 void topic(Request& rq, Server* server, Client* client);
@@ -30,7 +28,7 @@ typedef std::pair<std::string, void (*)(Request&, Server*, Client*)> Level;
 class Maker
 {
 private:
-	Level table[20];
+	Level table[17];
 	std::string _buff;
 public:
 	Maker();

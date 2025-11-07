@@ -1,4 +1,4 @@
-#include "Makerj.hpp"
+#include "Maker.hpp"
 
 bool init_chan_key(Request& rq,  std::vector<std::string>& chan, std::vector<std::string>& key){ 
 	if (rq.size_tab() < 2 || rq.size_tab() > 3){

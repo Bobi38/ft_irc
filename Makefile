@@ -21,7 +21,7 @@ SRCS_APP = \
 
 SRCS_CMD = \
 	$(CMDDIR)/Request.cpp \
-	$(CMDDIR)/Makerj.cpp \
+	$(CMDDIR)/Maker.cpp \
 	$(CMDDIR)/Prefix.cpp \
 	$(CMDDIR)/split.cpp
 
@@ -34,11 +34,9 @@ SRCS_FCT = \
 	$(FCTDIR)/co.cpp \
 	$(FCTDIR)/List.cpp \
 	$(FCTDIR)/Mode.cpp \
-	$(FCTDIR)/msgx.cpp \
+	$(FCTDIR)/Msg.cpp \
 	$(FCTDIR)/bot.cpp \
-	$(FCTDIR)/msg.cpp
-# 	$(FCTDIR)/Join.cpp \
-
+	$(FCTDIR)/Topic.cpp
 
 SRCS = $(SRCS_APP) $(SRCS_CMD)
 
