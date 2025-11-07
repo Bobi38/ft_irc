@@ -14,7 +14,7 @@ bool check_name(std::string str){
 
 void exec_nick(Request& rq, Server* server, Client* client){
 	if (rq.size_tab() == 1)
-		return client->rcvMsg("461 PASS :Not enough parameters");
+		return client->rcvMsg("461 NICK :Not enough parameters");
 	Client* toto;
 	toto = server->find_client(rq[1].c_str());
 	if (!toto){
@@ -48,7 +48,7 @@ void exec_n(std::string name, Server* server, Client* client){
 void exec_pass(Request& rq, Server* server, Client* client){
 	std::string ps(rq[1]);
 	if (rq.size_tab() < 2) {
-		client->rcvMsg(":server 461 PASS :Not enough parameters");
+		client->rcvMsg(":server 461 CAP :Not enough parameters");
 		return;
 	}
 	if (ps == server->getPSSD()){
@@ -64,11 +64,11 @@ void exec_pass(Request& rq, Server* server, Client* client){
 void exec_user(Request& rq, Server* server, Client* client){
 	(void)server;
 	if (rq.size_tab() == 1)
-		return client->rcvMsg(":server 461 PASS :Not enough parameters");
+		return client->rcvMsg(":server 461 USER :Not enough parameters");
 	if (client->getName() != "")
 		return client->rcvMsg(":server 462 " + client->getNick() + " :You may not reregister");
 	if (!check_name(rq[1].c_str()))
-			client->rcvMsg(":server 777 " + rq[1] + " :Nickname not valiable");	
+		return client->rcvMsg(":server 777 " + rq[1] + " :Nickname not valiable");	
 	client->setName(rq[1]);
 	if (!client->getNick().empty() && !client->getName().empty() && client->getpssd())
 		client->setco(server);
