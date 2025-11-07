@@ -4,10 +4,9 @@ Maker::Maker(){
 	table[0] = Level("PASS", exec_pass);
 	table[1] = Level("NICK", exec_nick);
 	table[2] = Level("USER", exec_user);
-	table[5] = Level("JOIN", exec_join);
 	table[3] = Level("CAP", test2);
 	table[4] = Level("QUIT", exec_quit);
-	table[5] = Level("KICK", exec_kick);
+	table[5] = Level("JOIN", exec_join);
 	table[6] = Level("MODE", exec_Mode);
 	table[7] = Level("INVITE", invit);
 	table[8] = Level("PRVMSG", prvmsg);
@@ -20,6 +19,7 @@ Maker::Maker(){
 	table[15] = Level("PART", exec_part);
 	table[16] = Level("PRIVMSG", prvmsg);
 	table[17] = Level("WHO", who);
+	table[18] = Level("BOT", exec_bot);
 	};
 
 
@@ -29,7 +29,7 @@ void Maker::preselect(std::string& str, Server* server, Client* client){
 	// std::cout << "coucou =" << str << "--" << client->getBuff()<< std::endl;
 
 	client->setbuff(client->getBuff() + str);
-	std::cout << client->getBuff()[client->getBuff().size() - 1] << " " << client->getBuff()[client->getBuff().size() - 2] << std::endl;
+	// std::cout << client->getBuff()[client->getBuff().size() - 1] << " " << client->getBuff()[client->getBuff().size() - 2] << std::endl;
 	if (client->getBuff() != "" && client->getBuff()[client->getBuff().size() - 1] != '\n' && client->getBuff()[client->getBuff().size() - 2] != '\r')
 		return ;
 	std::string next(client->getBuff());

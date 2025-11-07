@@ -56,7 +56,7 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 	}
 	else if (pchan->is_in(clt->getNick()) == true)
 		return NULL;
-	else{ 
+	else{
 		pchan->addClient(clt, PRESENT);
 		return pchan;
 	}
@@ -65,11 +65,16 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 
 std::string init_namel(Channel* chan){
 	std::string namel;
-	for(size_t i = 0; i < static_cast<size_t>(chan->getNbMemb()); i++){
-		if (chan->getPairC(i).first == CHANOP)
+	size_t cpt = 0;
+	for(size_t i = 0; cpt != static_cast<size_t>(chan->getNbMemb()); i++){
+		if (chan->getPairC(i).first == CHANOP){
 			namel = namel + "@" + chan->getPairC(i).second->getNick() + " ";
-		else if (chan->getPairC(i).first == PRESENT)
+			cpt++;
+		}
+		else if (chan->getPairC(i).first == PRESENT || chan->getPairC(i).first == BOT){
 			namel = namel + chan->getPairC(i).second->getNick() + " ";
+			cpt++;
+		}
 	}
 	namel.erase(namel.end() - 1);
 	return namel;
@@ -78,6 +83,7 @@ std::string init_namel(Channel* chan){
 void exec_join(Request& rq, Server* server, Client* client){
 	std::vector<std::string> chan;
 	std::vector<std::string> key;
+	Bot* bot = dynamic_cast<Bot *>(server->find_client("bot"));
 
 	if (init_chan_key(rq, chan, key) == false){
 		client->rcvMsg("461 USER :Not enough parameters\r\n");
@@ -99,7 +105,10 @@ void exec_join(Request& rq, Server* server, Client* client){
 		
 		client->rcvMsg(":server_irc 353 " + client->getNick() + " = " + chan[i] + " :" + init_namel(TChan));
 		client->rcvMsg(":server_irc 366 " + client->getNick() + " " + chan[i] + " :End of /NAMES list");
+		if (!TChan->is_inv("bot"))
+			TChan->addClient(bot, BOT);
 	}
+
 }
 
 

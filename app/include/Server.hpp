@@ -21,6 +21,7 @@
 # include <algorithm>
 # include "Client.hpp"
 # include "Channel.hpp"
+# include "Bot.hpp"
 # include <set>
 
 class Client;

@@ -16,15 +16,13 @@
 # include <netinet/in.h>
 # include <arpa/inet.h> 
 # include <poll.h>
-# include "Channel.hpp"
-# include "Server.hpp"
 
 class Server;
 
 class Channel;
 
 class Client{
-	private:
+	protected:
 		int _fd;
 		bool _co;
 		bool _psswd;
@@ -35,6 +33,7 @@ class Client{
 		std::string _host;
 		std::vector<Channel*>_chan;
 	public:
+		Client();
 		Client(int fd);
 		Client(const std::string& prefix);
 		Client(const Client& other);
@@ -56,14 +55,14 @@ class Client{
 		void print_all_chan();
 		void setpssd();
 		bool getpssd();
-		void setco();
+		void setco(Server* serv);
 		void deconne();
 		void addBuffOut(std::string& str);
 		void write();
 		void rcvMsg(const std::string& str, Client* sender);
 		void rcvMsg(const std::string& str);
 		size_t nbChan();
-		~Client();
+		virtual ~Client();
 };
 
 #endif

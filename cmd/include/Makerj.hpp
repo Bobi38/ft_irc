@@ -18,6 +18,7 @@ void exec_ping(Request& rq, Server* server, Client* client);
 void exec_CAP(Request& rq, Server* server, Client* client);
 void exec_Mode(Request& rq, Server* server, Client* client);
 void exec_Names(Request& rq, Server* server, Client* client);
+void exec_bot(Request& rq, Server* server, Client* client) ;
 void test3(Request& rq, Server* server, Client* client);
 void invit(Request& rq, Server* server, Client* client);
 void who(Request& rq, Server* server, Client* client);
@@ -29,7 +30,7 @@ typedef std::pair<std::string, void (*)(Request&, Server*, Client*)> Level;
 class Maker
 {
 private:
-	Level table[18];
+	Level table[19];
 	std::string _buff;
 public:
 	Maker();

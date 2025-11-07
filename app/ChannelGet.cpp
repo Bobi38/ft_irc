@@ -53,7 +53,7 @@ void Channel::print_all_clt(){
 int Channel::getNbMemb(){
 	int cpt = 0;
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
-		if (it->first == CHANOP || it->first == PRESENT){
+		if (it->first == CHANOP || it->first == PRESENT || it->first == BOT){
 			cpt++;
 		}
 	}

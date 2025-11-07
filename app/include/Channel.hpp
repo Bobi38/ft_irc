@@ -33,6 +33,7 @@ enum e_client{
 	NO_PRESENT = 3,
     INVITE = 4,
     BAN = 5,
+    BOT ,
     PRIVATE,
     TOPICOP,
     TOPIC_EXIST,
@@ -43,7 +44,9 @@ enum e_client{
 	TOPIC,
 	KEY,
 	LIMIT,
-	OPERATOR
+	OPERATOR,
+    PILE,
+    FACE
 };
 
 
@@ -73,6 +76,7 @@ class Channel{
 		void chan_msg(const std::string& msg, Client* sender); //envoie un message a tous les connecte
         void whoExec(Client* Client);
         void chan_msg(const std::string& msg, Client* sender, Channel*); //envoie un message a tous les connecte
+        void chan_msgg(const std::string& msg, Client* sender, std::string send, std::string me);
         void invit(Client* User, Client* Invit);
         bool is_inv(std::string _client_name);
         int getNbMemb();

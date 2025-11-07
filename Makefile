@@ -4,9 +4,13 @@ OBJDIR = .obj
 SRCDIR = app
 CMDDIR = cmd
 FCTDIR = fct
+CURL_DIR = $(HOME)/curl-8.5.0
+CURL_INCLUDE = -I$(CURL_DIR)/include
+CURL_LIBS = -L$(CURL_DIR)/lib/.libs -lcurl -lz -lbrotlidec
+LDFLAGS = $(CURL_LIBS)
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -g3 -std=c++98 -I $(SRCDIR)/$(INCDIR) -I $(CMDDIR)/$(INCDIR)
+CXXFLAGS = -Wall -Wextra -Werror -g3 -std=c++98 -I $(SRCDIR)/$(INCDIR) -I $(CMDDIR)/$(INCDIR) $(CURL_INCLUDE)
 DEPFLAGS = -MM -MP
 
 SRCS_APP = \
@@ -15,7 +19,8 @@ SRCS_APP = \
 	$(SRCDIR)/ChannelGet.cpp \
 	$(SRCDIR)/ChannelMod.cpp \
 	$(SRCDIR)/Server.cpp \
-	$(SRCDIR)/Client.cpp
+	$(SRCDIR)/Client.cpp \
+	$(SRCDIR)/Bot.cpp
 
 SRCS_CMD = \
 	$(CMDDIR)/Request.cpp \
@@ -33,6 +38,7 @@ SRCS_FCT = \
 	$(FCTDIR)/List.cpp \
 	$(FCTDIR)/Mode.cpp \
 	$(FCTDIR)/msgx.cpp \
+	$(FCTDIR)/bot.cpp \
 	$(FCTDIR)/msg.cpp
 # 	$(FCTDIR)/Join.cpp \
 
@@ -49,7 +55,7 @@ DEPS = $(OBJS:.o=.d)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CXX) $(OBJS) $(SRCDIR)/main.cpp -o $(NAME)
+	$(CXX) $(OBJS) $(LDFLAGS) $(SRCDIR)/main.cpp -o $(NAME)
 
 -include $(DEPS)
 
