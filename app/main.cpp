@@ -10,7 +10,8 @@ int main(int ac , char **av){
         Server serv(av[2], av[1]);
         serv.GoServ();
     }catch (const std::exception& e) {
-        std::cout << "\033[31m" << e.what() << "\033[0m"  << std::endl;
+        std::cout << "\033[31m" << e.what() + 2 << "\033[0m"  << std::endl;
+        // close(atoi(e.what()));
         return 1;
     }
     return 0;

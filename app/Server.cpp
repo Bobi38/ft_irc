@@ -1,12 +1,13 @@
 #include "include/Server.hpp"
 #include "Makerj.hpp"
+#include <sstream>
 
-Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password), _ping(time(NULL))  {
+Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password), _ping(time(NULL)), _server_fd(-1)  {
 	if (_port < 0 || _port > 65535)
-		throw std::runtime_error("Port is not valid");
+		throw std::runtime_error("  Port is not valid");
 	_server_fd = socket (AF_INET, SOCK_STREAM, 0);
 	if (_server_fd == -1)
-		throw std::runtime_error("Socket failed");
+		throw std::runtime_error("  Socket failed");
 	addFd(_server_fd);
 }
 
@@ -162,6 +163,9 @@ void Server::send_ping(){
 }
 
 void Server::GoServ(){
+	std::ostringstream os;
+	os << _server_fd;
+	std::string str = os.str();
 	Maker mm;
 	struct sockaddr_in s, c;
 	socklen_t client_len = sizeof(c);
@@ -171,12 +175,12 @@ void Server::GoServ(){
 	s.sin_addr.s_addr = INADDR_ANY;
 	int opt = 1;
 	if (setsockopt(_server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
-  		throw std::runtime_error("setsocket failed");
+  		throw std::runtime_error(str +" setsocket failed");
 	if (bind (_server_fd, (struct sockaddr *)&s, sizeof(s)) == -1)
-		throw std::runtime_error("Bind failed");
+		throw std::runtime_error(str +" Bind failed");
 	if (listen(_server_fd, 100) == -1)
-		throw std::runtime_error("listen failed");
-
+		throw std::runtime_error(str +" listen failed");
+	// throw std::runtime_error(str +" listen failed");
 	std::cout << "server good" << std::endl;
 	Client* bot = new Bot();
 	_client.push_back(bot);
@@ -189,7 +193,7 @@ void Server::GoServ(){
 		}
 		if (poll(_fds.data(), _fds.size(), 500) == -1){
 			if (errno == EINTR) continue;
-			throw std::runtime_error("poll failed");
+			throw std::runtime_error(str + " poll failed");
 		}
 		if (_fds[0].revents & POLLIN){
 				int nfd = accept(_server_fd, (struct sockaddr *)&c, &client_len);
