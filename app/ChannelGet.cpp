@@ -38,8 +38,6 @@ std::string Channel::getPssd(){
 	return _psswrd;
 }
 
-std::string Channel::str_mode = "-+itklo";
-
 bool Channel::getMODE(int mod) const{
 	return _mode[mod - MOINS];
 }

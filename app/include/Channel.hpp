@@ -49,7 +49,6 @@ enum e_client{
     FACE
 };
 
-
 class Channel{
     private:
         std::string _name;
@@ -82,7 +81,6 @@ class Channel{
         int getNbMemb();
 		Client* getClient(size_t i);
 		bool getMODE(int mod) const;
-		static std::string str_mode;
         void chan_msg(const std::string& msg);
         bool setMOD(int mod, Client* user);
         std::pair<int,Client*> getPairC(size_t i);
