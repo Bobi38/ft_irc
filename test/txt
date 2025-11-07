@@ -1,0 +1,5 @@
+/server localhost 6667 jj
+PASS jj
+NICK Antoine
+USER poplo
+JOIN #t
