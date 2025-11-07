@@ -2,7 +2,7 @@
 #include "Channel.hpp"
 #include <iostream>
 #include <fstream>
-#include <curl/curl.h>
+// #include <curl/curl.h>
 
 // size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
 //     size_t totalSize = size * nmemb;

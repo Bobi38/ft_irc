@@ -43,7 +43,7 @@ void Maker::preselect(std::string& str, Server* server, Client* client){
 }
 
 void Maker::select(std::string& str, Server* server, Client* client){
-	std::cout << client->getfd() << "*"  << client->getNick() << " " << str << std::endl;
+	// std::cout << client->getfd() << "*"  << client->getNick() << " " << str << std::endl;
 
 	std::string temp = str;
 	Request rq(temp);

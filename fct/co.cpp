@@ -13,13 +13,11 @@ bool check_name(std::string str){
 }
 
 void exec_nick(Request& rq, Server* server, Client* client){
-	std::cout << " icicici" << std::endl;
 	if (rq.size_tab() == 1)
 		return client->rcvMsg("461 PASS :Not enough parameters");
 	Client* toto;
 	toto = server->find_client(rq[1].c_str());
 	if (!toto){
-		std::cout << " pas trouve de nick equivalent" << std::endl;
 		if (!check_name(rq[1].c_str()))
 			return client->rcvMsg(":server 777 " + rq[1] + " :Nickname not valiable");	
 		client->setNick(rq[1].c_str(), server);
