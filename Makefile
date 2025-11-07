@@ -4,13 +4,10 @@ OBJDIR = .obj
 SRCDIR = app
 CMDDIR = cmd
 FCTDIR = fct
-CURL_DIR = $(HOME)/curl-8.5.0
-CURL_INCLUDE = -I$(CURL_DIR)/include
-CURL_LIBS = -L$(CURL_DIR)/lib/.libs -lcurl -lz -lbrotlidec
-LDFLAGS = $(CURL_LIBS)
+
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -g3 -std=c++98 -I $(SRCDIR)/$(INCDIR) -I $(CMDDIR)/$(INCDIR) $(CURL_INCLUDE)
+CXXFLAGS = -Wall -Wextra -Werror -g3 -std=c++98 -I $(SRCDIR)/$(INCDIR) -I $(CMDDIR)/$(INCDIR)
 DEPFLAGS = -MM -MP
 
 SRCS_APP = \
@@ -55,7 +52,7 @@ DEPS = $(OBJS:.o=.d)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CXX) $(OBJS) $(LDFLAGS) $(SRCDIR)/main.cpp -o $(NAME)
+	$(CXX) $(OBJS) $(SRCDIR)/main.cpp -o $(NAME)
 
 -include $(DEPS)
 
