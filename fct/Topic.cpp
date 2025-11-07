@@ -65,3 +65,9 @@ void who(Request& rq, Server* server, Client* sender){
 		
 	Chan->whoExec(sender);
 }
+
+void unknowCmd(Request& rq, Server* server, Client* sender){
+	(void) server;
+	sender->rcvMsg(":server 421 " + sender->getNick() + " " + rq[0] + " : Command not found");
+}
+

@@ -36,6 +36,7 @@ void Maker::preselect(std::string& str, Server* server, Client* client){
 }
 
 void Maker::select(std::string& str, Server* server, Client* client){
+	std::cout << str << std::endl;
 	std::string temp = str;
 	Request rq(temp);
 
@@ -48,6 +49,7 @@ void Maker::select(std::string& str, Server* server, Client* client){
 		return table[i].second(rq, server, client);
 		}
 	}
+	return unknowCmd(rq, server, client);
 }
 
 Maker::Maker(const Maker& other) {

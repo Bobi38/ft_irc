@@ -43,8 +43,8 @@ bool switch_mode(char c, Client* clt, Channel* Chan, int flag){
 	}
 }
 
-void mode_flag(Channel* chan, Client* clt){
-    std::string msg =":server 324 " + clt->getNick() + " " + chan->getName();
+std::string mode_flag(Channel* chan){
+    std::string msg =":server 324 " + chan->getName();
     if (chan->mode_act() == true)
         msg = msg + " +";
     if (chan->getMODE(KEY) == true)
@@ -59,7 +59,7 @@ void mode_flag(Channel* chan, Client* clt){
 		std::string str = oss.str();
         msg = msg + "l " + str;
     }
-    clt->rcvMsg(msg);
+	return msg;
 }
 
 void exec_Mode(Request& rq, Server* server, Client* client){
@@ -73,7 +73,7 @@ void exec_Mode(Request& rq, Server* server, Client* client){
 	if (!Chan)
 		return client->rcvMsg("403 " + rq[1] + " :No such channel");
 	if (rq.size_tab() == 2)
-		return mode_flag(Chan, client);
+		return client->rcvMsg(mode_flag(Chan));
 	init_map(rq, flag, arg);
     std::vector<std::string>::iterator z = arg.begin();
 	for(size_t i = 0; i < flag.size(); i++){
@@ -95,4 +95,5 @@ void exec_Mode(Request& rq, Server* server, Client* client){
 	        }
 		}
 	}
+	Chan->chan_msg(mode_flag(Chan));
 }

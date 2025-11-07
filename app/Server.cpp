@@ -176,7 +176,6 @@ void Server::GoServ(){
 		throw std::runtime_error(str +" Bind failed");
 	if (listen(_server_fd, 100) == -1)
 		throw std::runtime_error(str +" listen failed");
-	// throw std::runtime_error(str +" listen failed");
 	std::cout << "server good" << std::endl;
 	Client* bot = new Bot();
 	_client.push_back(bot);
@@ -187,8 +186,11 @@ void Server::GoServ(){
 			if (client && !client->getBuffOut().empty())
 				_fds[i].events |= POLLOUT;
 		}
-		if (poll(_fds.data(), _fds.size(), 500) == -1){
-			if (errno == EINTR) continue;
+		if (poll(_fds.data(), _fds.size(), 100) == -1){
+			if (errno == EINTR) {
+				std::cout << "bad poll" << std::endl;
+				continue;
+			}
 			throw std::runtime_error(str + " poll failed");
 		}
 		if (_fds[0].revents & POLLIN){
@@ -205,34 +207,10 @@ void Server::GoServ(){
 			}
 			if (_fds[i].revents & POLLIN) {
 				memset(buffer, 0, BUFFER_SIZE);
-				// std::string next;
-				// while (next[next.size() - 1] != '\n' && next[next.size() - 2] != '\r'){
-				// 	int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
-				// 	std::cout << "n= " << n << " -" << buffer << "----" << std::endl;
-				// 	if (n <= 0){
-				// 		if (n == 0){
-				// 			Client* tmp;
-				// 			tmp = find_fd(_fds[i].fd);
-				// 			std::string ine = "QUIT";
-				// 			mm.select(ine, this, tmp);
-				// 			i--;
-				// 			break ;
-				// 		}
-				// 		std::cout << " le fd qui plante : " << _fds[i].fd << std::endl;
-				// 		throw std::runtime_error(strerror(errno));
-				// 	}
-				// 	std::string tmp(buffer);
-				// 	std::cout << "--" << tmp << "--" << std::endl;
-				// 	next = next + tmp;
-				// 	std::cout << static_cast<int>(next[next.size() - 1]) << " " << static_cast<int>(next[next.size() - 2]) << std::endl;
-				// 	memset(buffer, 0, BUFFER_SIZE);
-				// }
-				// std::cout << "out next =" << next << "--" << std::endl;
+
 				int n = recv(_fds[i].fd, buffer, BUFFER_SIZE, 0);
 				if (n <= 0){
 					if (n == 0){
-						// Client* tmp;
-						// tmp = find_fd(_fds[i].fd);
 						std::string ine = "QUIT";
 						mm.select(ine, this, tmp);
 						i--;
@@ -240,18 +218,8 @@ void Server::GoServ(){
 					}
 					std::cout << " le fd qui plante : " << _fds[i].fd << std::endl;
 				}
-
-				// Client* tmp = find_fd(_fds[i].fd);
 				std::string next(buffer);
-				// std::cout << "out =" << next << "--" << std::endl;
 				mm.preselect(next, this, tmp);
-				// size_t pos;
-				// while((pos = next.find("\r\n")) != std::string::npos){
-				// 	std::string ine = next.substr(0, pos);
-				// 	next.erase(0, pos + 2);
-				// 	mm.select(ine, this, tmp);
-				// }
-
 			}
 		}
 	}

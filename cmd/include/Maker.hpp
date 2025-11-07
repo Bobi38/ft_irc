@@ -21,6 +21,7 @@ void exec_bot(Request& rq, Server* server, Client* client) ;
 void invit(Request& rq, Server* server, Client* client);
 void who(Request& rq, Server* server, Client* client);
 void topic(Request& rq, Server* server, Client* client);
+void unknowCmd(Request& rq, Server* server, Client* sender);
 
 
 typedef std::pair<std::string, void (*)(Request&, Server*, Client*)> Level;

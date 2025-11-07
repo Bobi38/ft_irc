@@ -71,6 +71,8 @@ void Client::write() {
 }
 
 void Client::rcvMsg(const std::string& msg) {
+	if (_outBuff == msg + "\r\n")
+		return ;
 	_outBuff += msg + "\r\n";
 }
 

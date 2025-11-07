@@ -56,8 +56,11 @@ void Channel::addClient(Client* client, int statut){
 	}
 	else{
 		for(cci it = _member.begin(); it != _member.end(); it++){
-			if (it->second->getNick() == client->getNick())
+			if (it->second->getNick() == client->getNick()){
+				if (it->first == INVITE && statut == PRESENT)
+					is = false;
 				it->first = statut;
+			}
 		}
 	}
 	if (statut == INVITE)
@@ -128,6 +131,5 @@ bool Channel::setMOD(int mod, Client* user){
        if (set == _mode[mod - MOINS])
                return true;
        _mode[mod - MOINS] = set;
-
        return true;
 }
