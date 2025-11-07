@@ -20,6 +20,7 @@ Maker::Maker(){
 	table[16] = Level("PRIVMSG", prvmsg);
 	table[17] = Level("WHO", who);
 	table[18] = Level("BOT", exec_bot);
+	table[19] = Level("bot", exec_bot);
 	};
 
 

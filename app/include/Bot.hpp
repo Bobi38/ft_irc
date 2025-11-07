@@ -22,7 +22,7 @@ class Bot: public Client{
 		void addClient(Client *clt);
 		void rmClient(Client *clt);
 		void addPoint(int result, Client *clt, Channel* Chan);
-		void getScore(Client *clt);
+		void getScore(Client *clt, Channel* chan);
 		~Bot(){};
 };
 

@@ -13,7 +13,7 @@ void exec_kick(Request& rq, Server* server, Client* client){
 		return ;
 	}
 	TClt = TChan->return_client(rq[2]);
-	if (!TClt || (TChan->getStatutClt(TClt) != PRESENT && TChan->getStatutClt(TClt) != CHANOP)){
+	if (!TClt || (TChan->getStatutClt(TClt) != PRESENT && TChan->getStatutClt(TClt) != CHANOP && TChan->getStatutClt(TClt) != BOT)){
 		client->rcvMsg("442 " + rq[2] + " :You're not on that channel");
 		return ;
 	}

@@ -35,6 +35,8 @@ bool Channel::is_in(std::string _client_name){
 
 bool Channel::is_inv(std::string _client_name){
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+		if (it->second->getNick() == _client_name && it->first == BAN && _client_name == "bot")
+			return false;
 		if (it->second->getNick() == _client_name && (it->first == INVITE || it->first == BAN || it->first == BOT))
 			return true;
 	}
