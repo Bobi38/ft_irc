@@ -148,15 +148,6 @@ void Server::dlt_client(Client* clt, int fd){
 	for(size_t i = 0; i < channels_copy.size(); i++){
 		Channel *tmp = channels_copy[i];
 		unlinkClienttoChannel(clt, tmp);
-		if (tmp->getNbMemb() == 0){
-			for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it++){
-				if ((*it) == tmp){
-					_chan.erase(it);
-					break;
-				}
-			}
-			delete tmp;
-		}
 	}
 	close (fd);
 	delete clt;
