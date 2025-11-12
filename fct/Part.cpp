@@ -16,7 +16,7 @@ void exec_part(Request& rq, Server* server, Client* client){
     if (client->getco() == false)
         return ;
     if (rq.size_tab() < 2) {
-        client->rcvMsg("461 USER :Not enough parameters");
+        client->rcvMsg(":server 461 USER :Not enough parameters");
         return;
     }
     std::vector<std::string> chan;
@@ -27,7 +27,7 @@ void exec_part(Request& rq, Server* server, Client* client){
     for(size_t i = 0; i < chan.size(); i++){
         TChan = server->find_channel(chan[i]);
         if (!TChan){
-            client->rcvMsg("403 " + chan[i] + " :No such channel");
+            client->rcvMsg(":server 403 " + chan[i] + " :No such channel");
             continue;
         }
         if (client->is_Channel(chan[i]) && !TChan->is_inv(client->getNick())){
@@ -35,9 +35,7 @@ void exec_part(Request& rq, Server* server, Client* client){
             server->unlinkClienttoChannel(client, TChan);
         }
         else
-            client->rcvMsg("442 " +TChan->getName() + " : You're not on that channel");
+            client->rcvMsg(":server 442 " +TChan->getName() + " : You're not on that channel");
         TChan = NULL;
     }
 }
-
-// /server localhost 6667 jj

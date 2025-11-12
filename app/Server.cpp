@@ -142,12 +142,8 @@ void Server::dlt_client(Client* clt, int fd){
 			break ;
 		}
 	}
-	// std::vector<Channel*> channels_copy;
-	// for(size_t i = 0; i < clt->nbChan(); i++)
-	// 	channels_copy.push_back(clt->getChan(i));
 
 	for(size_t i = 0; i < _chan.size(); i++){
-		// Channel *tmp = channels_copy[i];
 		unlinkClienttoChannel(clt, _chan[i]);
 	}
 	close (fd);

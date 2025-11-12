@@ -43,8 +43,8 @@ bool switch_mode(char c, Client* clt, Channel* Chan, int flag){
 	}
 }
 
-std::string mode_flag(Channel* chan){
-    std::string msg =":server 324 " + chan->getName() + " ";
+std::string mode_flag(Channel* chan, Client* client){
+    std::string msg =":server 324 " + client->getNick() + " " +chan->getName() + " ";
     if (chan->mode_act() == true)
         msg = msg + "+";
     if (chan->getMODE(KEY) == true)
@@ -69,12 +69,12 @@ void exec_Mode(Request& rq, Server* server, Client* client){
     std::vector<std::string> arg;
 
 	if (client->is_Channel(rq[1]) == false)
-		return client->rcvMsg("442 " + rq[1] + " :You're not on that channel");
+		return client->rcvMsg(":server 442 " + rq[1] + " :You're not on that channel");
 	Chan = server->find_channel(rq[1]);
 	if (!Chan)
-		return client->rcvMsg("403 " + rq[1] + " :No such channel");
+		return client->rcvMsg(":server 403 " + rq[1] + " :No such channel");
 	if (rq.size_tab() == 2)
-		return client->rcvMsg(mode_flag(Chan));
+		return client->rcvMsg(mode_flag(Chan, client));
 	init_map(rq, flag, arg);
     std::vector<std::string>::iterator z = arg.begin();
 	for(size_t i = 0; i < flag.size(); i++){
@@ -92,9 +92,9 @@ void exec_Mode(Request& rq, Server* server, Client* client){
 		        case 't': Chan->setMOD(TOPIC * sign, client); break ;
 		        case 'o': Chan->mod_op(sign, client, z); break ;
 		        default:
-		        	client->rcvMsg(":server 472 " + Chan->getName() + " " + flag[i][y] + " :is unknown mode char to me");
+		        	client->rcvMsg(":server 472 " + client->getNick() + " " + Chan->getName() + " " + flag[i][y] + " :is unknown mode char to me");
 	        }
 		}
 	}
-	Chan->chan_msg(mode_flag(Chan));
+	Chan->chan_msg(mode_flag(Chan, client));
 }

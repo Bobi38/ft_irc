@@ -36,9 +36,10 @@ void Maker::preselect(std::string& str, Server* server, Client* client){
 }
 
 void Maker::select(std::string& str, Server* server, Client* client){
-	std::cout << str << std::endl;
 	std::string temp = str;
 	Request rq(temp);
+	if (rq[0] != "PING" && rq[0] != "WHO")
+		std::cout << client->getFd() << " envoie : " <<str << std::endl;
 	if (rq.getCmd() == "")
 		return ;
 	for (int i = 0; !table[i].first.empty(); i++) {
