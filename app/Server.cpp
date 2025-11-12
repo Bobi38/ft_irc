@@ -48,7 +48,8 @@ void Server::linkClienttoChannel(Client* client, Channel* channel){
 }
 
 void Server::unlinkClienttoChannel(Client* client, Channel* channel){
-	if (channel->is_in(client->getNick())){
+	std::cout << "un =" << client->getNick() << " " << channel->getStatutClt(client) << std::endl;
+	if (channel->is_in(client->getNick()) || channel->is_inv(client->getNick())){
 		channel->rmClient(client);
 		std::cout << "si =" << channel->getNbMembb() << std::endl;
 	}
@@ -57,8 +58,8 @@ void Server::unlinkClienttoChannel(Client* client, Channel* channel){
 	if (channel->getNbMembb() == 0){
 		for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it ++){
 			if (*it == channel){
-				delete *it;
 				_chan.erase(it);
+				delete *it;
 				return ;
 			}
 		}
@@ -141,13 +142,13 @@ void Server::dlt_client(Client* clt, int fd){
 			break ;
 		}
 	}
-	std::vector<Channel*> channels_copy;
-	for(size_t i = 0; i < clt->nbChan(); i++)
-		channels_copy.push_back(clt->getChan(i));
+	// std::vector<Channel*> channels_copy;
+	// for(size_t i = 0; i < clt->nbChan(); i++)
+	// 	channels_copy.push_back(clt->getChan(i));
 
-	for(size_t i = 0; i < channels_copy.size(); i++){
-		Channel *tmp = channels_copy[i];
-		unlinkClienttoChannel(clt, tmp);
+	for(size_t i = 0; i < _chan.size(); i++){
+		// Channel *tmp = channels_copy[i];
+		unlinkClienttoChannel(clt, _chan[i]);
 	}
 	close (fd);
 	delete clt;

@@ -28,6 +28,4 @@ void exec_kick(Request& rq, Server* server, Client* client){
 	TChan->chan_msg(client->getMe() + " KICK " + TChan->getName() + " " + TClt->getNick());
 	TClt->rmChannel(TChan);
 	TChan->change_statut(TClt, BAN);
-
-
 }
