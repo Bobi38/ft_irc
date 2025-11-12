@@ -16,7 +16,7 @@ void exec_part(Request& rq, Server* server, Client* client){
     if (client->getco() == false)
         return ;
     if (rq.size_tab() < 2) {
-        client->rcvMsg(":server 461 " + client->getNick +" :Not enough parameters");
+        client->rcvMsg(":server 461 " + client->getNick() +" :Not enough parameters");
         return;
     }
     std::vector<std::string> chan;
