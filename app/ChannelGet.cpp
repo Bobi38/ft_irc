@@ -62,6 +62,7 @@ int Channel::getNbMemb(){
 int Channel::getNbMembb(){
 	int cpt = 0;
 	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+		std::cout << it->second->getNick() << std::endl;
 		if (it->first == CHANOP || it->first == PRESENT){
 			cpt++;
 		}

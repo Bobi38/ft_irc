@@ -41,17 +41,28 @@ Channel* Server::addChannel(std::string name, Client* client){
 }
 
 void Server::linkClienttoChannel(Client* client, Channel* channel){
-	if (!channel->is_in(client->getName()))
+	if (!channel->is_in(client->getNick()))
 		channel->addClient(client, PRESENT);
 	if (!client->is_Channel(channel->getName()))
 		client->addChannel(channel);
 }
 
 void Server::unlinkClienttoChannel(Client* client, Channel* channel){
-	if (!channel->is_in(client->getName()))
+	if (channel->is_in(client->getNick())){
 		channel->rmClient(client);
-	if (!client->is_Channel(channel->getName()))
+		std::cout << "si =" << channel->getNbMembb() << std::endl;
+	}
+	if (client->is_Channel(channel->getName()))
 		client->rmChannel(channel);
+	if (channel->getNbMembb() == 0){
+		for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it ++){
+			if (*it == channel){
+				delete *it;
+				_chan.erase(it);
+				return ;
+			}
+		}
+	}
 }
 
 void Server::addFd(int fd){
