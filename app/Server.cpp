@@ -48,10 +48,8 @@ void Server::linkClienttoChannel(Client* client, Channel* channel){
 }
 
 void Server::unlinkClienttoChannel(Client* client, Channel* channel){
-	std::cout << "un =" << client->getNick() << " " << channel->getStatutClt(client) << std::endl;
 	if (channel->is_in(client->getNick()) || channel->is_inv(client->getNick())){
 		channel->rmClient(client);
-		std::cout << "si =" << channel->getNbMembb() << std::endl;
 	}
 	if (client->is_Channel(channel->getName()))
 		client->rmChannel(channel);
@@ -154,7 +152,6 @@ void Server::send_ping(){
 	for(size_t i = 0; i < _client.size(); i++){
 		_client[i]->rcvMsg("PING 4242");
 	}
-
 }
 
 void Server::GoServ(){
@@ -187,7 +184,6 @@ void Server::GoServ(){
 		}
 		if (poll(_fds.data(), _fds.size(), 100) == -1){
 			if (errno == EINTR) {
-				std::cout << "bad poll" << std::endl;
 				continue;
 			}
 			throw std::runtime_error(str + " poll failed");
@@ -215,7 +211,7 @@ void Server::GoServ(){
 						i--;
 						break ;
 					}
-					std::cout << " le fd qui plante : " << _fds[i].fd << std::endl;
+					std::cout << " error f : " << _fds[i].fd << std::endl;
 				}
 				std::string next(buffer);
 				mm.preselect(next, this, tmp);

@@ -59,7 +59,6 @@ std::string mode_flag(Channel* chan, Client* client){
 		std::string str = oss.str();
         msg = msg + "l " + str;
     }
-	std::cout << msg << std::endl;
 	return msg;
 }
 

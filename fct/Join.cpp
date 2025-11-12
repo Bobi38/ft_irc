@@ -121,5 +121,5 @@ void exec_Names(Request& rq, Server* server, Client* client){
 	Chan = server->find_channel(rq[1]);
 	if (!Chan)
 		return client->rcvMsg("403 " + rq[1] + " :No such channel"); 
-    Chan->print_all_clt();
+    // Chan->print_all_clt();
 }

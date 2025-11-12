@@ -14,7 +14,7 @@ void prv_bot(Request& rq, Server* server, Client* client){
     Bot* bot = dynamic_cast<Bot *>(server->find_client("bot"));
     if (rq.size_tab() == 2)
         return client->rcvMsg("envoie 'pile' ou 'face' pour jouer. Si tu veux connaitre ton score envoie 'score'", bot);
-    std::cout << "msg =" << rq[MSG] << "--" << std::endl;
+
     if (rq[MSG] != "pile" && rq[MSG] != "face" && rq[MSG] != "score"){
         client->rcvMsg("Désolé je ne comprend pas ton message", bot);
         return client->rcvMsg("envoie 'pile' ou 'face' pour jouer. Si tu veux connaitre ton score envoie 'score'", bot);
