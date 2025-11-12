@@ -65,7 +65,6 @@ void Client::setNick(const std::string& str, Server* serv){
 
 void Client::setName(const std::string& str){
 	_name = str;
-	_co = true;
 }
 
 void Client::setbuff(std::string newb){
