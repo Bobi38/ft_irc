@@ -90,7 +90,7 @@ void exec_join(Request& rq, Server* server, Client* client){
 	Bot* bot = dynamic_cast<Bot *>(server->find_client("bot"));
 
 	if (init_chan_key(rq, chan, key) == false){
-		client->rcvMsg("461 USER :Not enough parameters\r\n");
+		client->rcvMsg("461 " + client->getNick() " :Not enough parameters\r\n");
 		return;
 	}
 
