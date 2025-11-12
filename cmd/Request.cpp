@@ -62,6 +62,8 @@ Request::~Request() {
 }
 
 std::string Request::getCmd() const {
+	if (_tab[0] == EMPTY_MSG)
+		return "";
 	return _tab[0];
 }
 

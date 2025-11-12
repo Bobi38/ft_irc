@@ -40,25 +40,51 @@ sleep 0.1
 tmux send-keys -t $SESSION_NAME:0.1 "NICK Bernard" C-m
 sleep 0.1
 tmux send-keys -t $SESSION_NAME:0.1 "USER lhermite" C-m
-sleep 0.1
-tmux send-keys -t $SESSION_NAME:0.2 "PASS jj" C-m
-sleep 0.1
-tmux send-keys -t $SESSION_NAME:0.2 "NICK Bianca" C-m
-sleep 0.1
+# sleep 0.1
+# tmux send-keys -t $SESSION_NAME:0.2 "PASS jj" C-m
+# sleep 0.1
+# tmux send-keys -t $SESSION_NAME:0.2 "NICK Bianca" C-m
+# sleep 0.1
 
-tmux send-keys -t $SESSION_NAME:0.2 "USER Corine" C-m
-sleep 0.1
+# tmux send-keys -t $SESSION_NAME:0.2 "USER Corine" C-m
+# sleep 0.1
 
-tmux send-keys -t $SESSION_NAME:0.1 "JOIN #t1" C-m
-# tmux send-keys -t $SESSION_NAME:0.1 "MODE #t1 +k popo" C-m
-tmux send-keys -t $SESSION_NAME:0.1 "MODE #t1 +i" C-m
-sleep 0.1
-tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t1" C-m
-sleep 0.1
-tmux send-keys -t $SESSION_NAME:0.1 "MODE #t1 -i" C-m
+# tmux send-keys -t $SESSION_NAME:0.1 "JOIN #t1" C-m
+# # tmux send-keys -t $SESSION_NAME:0.1 "MODE #t1 +k popo" C-m
+# tmux send-keys -t $SESSION_NAME:0.1 "MODE #t1 +i" C-m
+# sleep 0.1
+# tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t1" C-m
+# sleep 0.1
+# tmux send-keys -t $SESSION_NAME:0.1 "MODE #t1 -i" C-m
 sleep 0.1
 tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t1" C-m
 # tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t1" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t2" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t3" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t4" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t5" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t6" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t7" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t8" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t9" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t10" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t11" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t12" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t13" C-m
+sleep 0.1
+tmux send-keys -t $SESSION_NAME:0.0 "MODE #t1 +kl un 1" C-m
 
 
 

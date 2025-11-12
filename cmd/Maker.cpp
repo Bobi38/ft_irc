@@ -39,7 +39,8 @@ void Maker::select(std::string& str, Server* server, Client* client){
 	std::cout << str << std::endl;
 	std::string temp = str;
 	Request rq(temp);
-
+	if (rq.getCmd() == "")
+		return ;
 	for (int i = 0; !table[i].first.empty(); i++) {
 		if (rq.getCmd() == table[i].first){
 			if (client->getco() == false && i > 3){

@@ -44,9 +44,9 @@ bool switch_mode(char c, Client* clt, Channel* Chan, int flag){
 }
 
 std::string mode_flag(Channel* chan){
-    std::string msg =":server 324 " + chan->getName();
+    std::string msg =":server 324 " + chan->getName() + " ";
     if (chan->mode_act() == true)
-        msg = msg + " +";
+        msg = msg + "+";
     if (chan->getMODE(KEY) == true)
         msg = msg + "k";
     if (chan->getMODE(INVITE_ONLY) == true)
@@ -59,6 +59,7 @@ std::string mode_flag(Channel* chan){
 		std::string str = oss.str();
         msg = msg + "l " + str;
     }
+	std::cout << msg << std::endl;
 	return msg;
 }
 

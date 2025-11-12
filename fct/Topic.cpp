@@ -68,6 +68,7 @@ void who(Request& rq, Server* server, Client* sender){
 
 void unknowCmd(Request& rq, Server* server, Client* sender){
 	(void) server;
-	sender->rcvMsg(":server 421 " + sender->getNick() + " " + rq[0] + " : Command not found");
+	if (rq[0] != "")
+		sender->rcvMsg(":server 421 " + sender->getNick() + " " + rq[0] + " : Command not found");
 }
 

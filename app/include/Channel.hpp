@@ -79,6 +79,7 @@ class Channel{
         void invit(Client* User, Client* Invit);
         bool is_inv(std::string _client_name);
         int getNbMemb();
+        int getNbMembb();
 		Client* getClient(size_t i);
 		bool getMODE(int mod) const;
         void chan_msg(const std::string& msg);

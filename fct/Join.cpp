@@ -30,6 +30,10 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 	// std::cout << "1" << std::endl;
 	Channel* pchan = server->find_channel(chan);
 	if (!pchan){
+		if (clt->nbChan() >= 10){
+			clt->rcvMsg("405 " + chan + " :You have joined too many channels");
+			return NULL;
+		}
 		pchan = server->addChannel(chan, clt);
 		if (!psswd.empty())
 			pchan->initt_psswd(psswd);
@@ -40,7 +44,7 @@ Channel* init_chan(Server* server, std::string& chan, std::string psswd, Client*
 	if (clt->nbChan() >= 10){
 		clt->rcvMsg("405 " + pchan->getName() + " :You have joined too many channels");
 	}
-	else if (pchan->getNbMemb() >= 10){
+	else if (pchan->getNbMembb() >= pchan->getlimit() && pchan->getMODE(LIMIT) == true){
 		clt->rcvMsg("471 " + pchan->getName() + " :Cannot join channel (+l)");
 	}
 	else if (pchan->getStatutClt(clt) == PRESENT)

@@ -57,3 +57,14 @@ int Channel::getNbMemb(){
 	}
 	return cpt;
 }
+
+
+int Channel::getNbMembb(){
+	int cpt = 0;
+	for(std::vector<std::pair<int,Client*> >::iterator it = _member.begin(); it != _member.end(); it++){
+		if (it->first == CHANOP || it->first == PRESENT){
+			cpt++;
+		}
+	}
+	return cpt;
+}

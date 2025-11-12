@@ -1,12 +1,13 @@
 #include "Channel.hpp"
 
 void Channel::init_limit(int sign, Client* clt, std::vector<std::string>::iterator& z){
-    if (setMOD(LIMIT * sign, clt) == false)
-        return ;
     std::string s = (sign == -1) ? "-" : "+";
     if (sign == -1) {
+        if (setMOD(LIMIT * sign, clt) == false)
+            return ;
         _limit = 0;
-    chan_msg(clt->getMe() + " MODE " + _name + " " + s + "l", clt, this);
+        chan_msg(clt->getMe() + " MODE " + _name + " " + s + "l", clt, this);
+        
         return;
     }
     if (z->empty() || atoi(z->c_str()) <= 0)
@@ -14,8 +15,10 @@ void Channel::init_limit(int sign, Client* clt, std::vector<std::string>::iterat
     std::string limit = z->c_str();
     for(size_t i = 0; i < (limit).size(); i++){
 		if (!isdigit(limit[i]))
-			return clt->rcvMsg("PASSWORD NOT VALID: " + limit);
+			return clt->rcvMsg("LIMIT NOT VALID: " + limit);
 	}
+    if (setMOD(LIMIT * sign, clt) == false)
+        return ;
     _limit = atoi(limit.c_str());
     chan_msg(clt->getMe() + " MODE " + _name + " " + s + "l " + limit, clt, this);
     z++; 
@@ -68,7 +71,7 @@ void Channel::mod_op(int sign, Client* clt, std::vector<std::string>::iterator& 
 }
 
 bool Channel::mode_act(){
-    for(int i = 0; i < 6; i++){
+    for(int i = 0; i < 7; i++){
         if (_mode[i] == true)
             return true;
     }
