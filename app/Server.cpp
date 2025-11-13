@@ -3,8 +3,10 @@
 #include <sstream>
 
 Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password), _ping(time(NULL)), _server_fd(-1)  {
-	if (_port < 0 || _port > 65535)
+	if (_port < 1024 || _port > 65535)
 		throw std::runtime_error("  Port is not valid");
+	if (_password == "")
+		throw std::runtime_error("  Password not valid");
 	_server_fd = socket (AF_INET, SOCK_STREAM, 0);
 	if (_server_fd == -1)
 		throw std::runtime_error("  Socket failed");
