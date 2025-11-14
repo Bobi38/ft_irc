@@ -3,6 +3,9 @@
 #include <sstream>
 
 Server::Server(const char* password, const char* port): _port(atoi(port)), _password(password), _ping(time(NULL)), _server_fd(-1)  {
+	for (int i = 0; port[i]; i++)
+		if (!isdigit(port[i]) || i > 9)
+			throw std::runtime_error("  Port is not valid");
 	if (_port < 1024 || _port > 65535)
 		throw std::runtime_error("  Port is not valid");
 	if (_password == "")
@@ -181,10 +184,11 @@ void Server::GoServ(){
 		for (size_t i = 1; i < _fds.size(); i++){
 			_fds[i].events = POLLIN;
 			Client* client = find_fd(_fds[i].fd);
-			if (client && !client->getBuffOut().empty())
+			if (client && !client->getBuffOut().empty()){
 				_fds[i].events |= POLLOUT;
+			}
 		}
-		if (poll(_fds.data(), _fds.size(), 100) == -1){
+		if (poll(_fds.data(), _fds.size(), 500) == -1){
 			if (errno == EINTR) {
 				continue;
 			}
