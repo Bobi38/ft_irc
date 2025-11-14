@@ -8,12 +8,30 @@ Server::Server(const char* password, const char* port): _port(atoi(port)), _pass
 			throw std::runtime_error("  Port is not valid");
 	if (_port < 1024 || _port > 65535)
 		throw std::runtime_error("  Port is not valid");
-	if (_password == "")
+	if (!check_psd(_password))
 		throw std::runtime_error("  Password not valid");
 	_server_fd = socket (AF_INET, SOCK_STREAM, 0);
 	if (_server_fd == -1)
 		throw std::runtime_error("  Socket failed");
 	addFd(_server_fd);
+}
+
+
+bool Server::check_psd(std::string password){
+	bool icpt = false;
+	bool tcpt = false;
+
+	if (password.size() < 4)
+		return false ;
+	for(size_t i = 0; i < password.size(); i++){
+		if (isdigit(password[i]) && !icpt)
+			icpt = true;
+		if (isupper(password[i]) && !tcpt)
+			tcpt = true;
+	}
+	if (!icpt || !tcpt)
+		return false;
+	return true;
 }
 
 Server::~Server(){
@@ -77,31 +95,6 @@ void Server::addFd(int fd){
 	_fds.push_back(tmp);
 }
 
-bool Server::check_psswd(int fd){
-	char buffer[BUFFER_SIZE];
-	while (1){
-		int n = recv(fd, buffer, BUFFER_SIZE, 0);
-		buffer[n] = '\0';
-		if (!strncmp(buffer, "PASS ", 5))
-			break ;
-		std::cout << "send the server password with the cmd PASS <password> " << std::endl;
-		memset(buffer, 0, sizeof(buffer));
-	}
-	std::string rest(buffer + 5);
-	for(size_t i = 0; i < rest.size(); i++){
-		if (!isprint(rest[i])){
-			rest.erase(i);
-			i = 0;
-		}
-	}
-	if (rest == _password){
-		addClient(fd);
-		addFd(fd);
-		return true;
-	}
-
-	return false;
-}
 
 Client* Server::find_client(std::string _nick){
 	if (_nick == "")

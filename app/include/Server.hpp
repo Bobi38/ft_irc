@@ -50,7 +50,7 @@ class Server{
 		void addFd(int fd);
 		std::string getPSSD();
 		void GoServ();
-		bool check_psswd(int fd);
+		bool check_psd(std::string password);
 		Client* find_client(std::string _nick);
 		Channel* find_channel(std::string chan);
 		Channel* getSChan(size_t i);
