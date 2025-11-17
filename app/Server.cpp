@@ -104,6 +104,13 @@ void Server::dlt_client(Client* clt, int fd){
 			continue ;
 		i++;
 	}
+	for (std::vector<struct pollfd>::iterator it = _fds.begin(); 
+		 it != _fds.end(); it++) {
+		if (it->fd == fd) {
+			_fds.erase(it);
+			break;
+		}
+	}
 	close (fd);
 	delete clt;
 }
