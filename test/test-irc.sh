@@ -3,7 +3,7 @@
 # Configuration
 IRC_HOST="localhost"
 IRC_PORT="6667"
-PSS="jj"
+PSS="j4Jp"
 NAME0="Alpha"
 NAME1="BRAVO"
 NAME2="cHarl1e"
@@ -31,7 +31,8 @@ tmux split-window -v -t $SESSION_NAME:0.0 "telnet $IRC_HOST $IRC_PORT"
 tmux select-layout -t $SESSION_NAME tiled
 
 sleep 0.5
-tmux send-keys -t $SESSION_NAME:0.0 "PASS jj" C-m
+tmux send-keys -t $SESSION_NAME:0.0 "PASS $PSS" C-m
+sleep 0.01
 tmux send-keys -t $SESSION_NAME:0.0 "NICK Alain" C-m
 tmux send-keys -t $SESSION_NAME:0.0 "NAME Altrad" C-m
 tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t1" C-m
@@ -40,10 +41,12 @@ tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t2" C-m
 sleep 0.2
 tmux send-keys -t $SESSION_NAME:0.0 "JOIN #t3" C-m
 sleep 0.2
-tmux send-keys -t $SESSION_NAME:0.1 "PASS jj" C-m
+tmux send-keys -t $SESSION_NAME:0.1 "PASS $PSS" C-m
+sleep 0.01
 tmux send-keys -t $SESSION_NAME:0.1 "NICK Bernard" C-m
 tmux send-keys -t $SESSION_NAME:0.1 "NAME lhermite" C-m
-tmux send-keys -t $SESSION_NAME:0.2 "PASS jj" C-m
+tmux send-keys -t $SESSION_NAME:0.2 "PASS $PSS" C-m
+sleep 0.01
 tmux send-keys -t $SESSION_NAME:0.2 "NICK Bernard" C-m
 tmux send-keys -t $SESSION_NAME:0.2 "NICK Bianca" C-m
 tmux send-keys -t $SESSION_NAME:0.2 "NAME Corine" C-m

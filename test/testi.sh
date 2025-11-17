@@ -3,7 +3,7 @@
 # Configuration
 IRC_HOST="localhost"
 IRC_PORT="6667"
-PSS="jj"
+PSS="j4Jp"
 NAME0="Alpha"
 NAME1="BRAVO"
 NAME2="cHarl1e"
@@ -31,11 +31,11 @@ tmux split-window -v -t $SESSION_NAME:0.0 "telnet $IRC_HOST $IRC_PORT"
 tmux select-layout -t $SESSION_NAME tiled
 
 sleep 1
-tmux send-keys -t $SESSION_NAME:0.0 "PASS jj
+tmux send-keys -t $SESSION_NAME:0.0 "PASS $PSS
 NICK titi
 USER toto" C-m
 sleep 0.1
-tmux send-keys -t $SESSION_NAME:0.1 "PASS jj" C-m
+tmux send-keys -t $SESSION_NAME:0.1 "PASS $PSS" C-m
 sleep 0.1
 tmux send-keys -t $SESSION_NAME:0.1 "NICK Bernard" C-m
 sleep 0.1
@@ -86,8 +86,8 @@ sleep 0.1
 # sleep 0.1
 tmux send-keys -t $SESSION_NAME:0.0 "MODE #t1 +kl un 1" C-m
 sleep 0.1
-tmux send-keys -t $SESSION_NAME:0.0 "PART #t1" C-m
-
+# tmux send-keys -t $SESSION_NAME:0.0 "PART #t1" C-m
+tmux send-keys -t $SESSION_NAME:0.0 "QUIT" C-m
 
 
 # Attacher à la session
