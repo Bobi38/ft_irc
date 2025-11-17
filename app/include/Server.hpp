@@ -57,7 +57,7 @@ class Server{
 		size_t sizeChan();
 		void send_ping();
 		void linkClienttoChannel(Client* client, Channel* channel);
-		void unlinkClienttoChannel(Client* client, Channel* channel);
+		bool unlinkClienttoChannel(Client* client, Channel* channel);
 		~Server();
 	class WrongPassword : public std::exception {
 		public:
