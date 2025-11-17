@@ -70,21 +70,42 @@ void Server::linkClienttoChannel(Client* client, Channel* channel){
 		client->addChannel(channel);
 }
 
-void Server::unlinkClienttoChannel(Client* client, Channel* channel){
-	if (channel->is_in(client->getNick()) || channel->is_inv(client->getNick())){
+bool Server::unlinkClienttoChannel(Client* client, Channel* channel){
+	if (channel->is_in(client->getNick()) || channel->is_inv(client->getNick()))
 		channel->rmClient(client);
-	}
+	else
+		return true ;
 	if (client->is_Channel(channel->getName()))
 		client->rmChannel(channel);
 	if (channel->getNbMembb() == 0){
 		for(std::vector<Channel*>::iterator it = _chan.begin(); it != _chan.end(); it ++){
 			if (*it == channel){
+				Channel* tmp = *it;
 				_chan.erase(it);
-				delete *it;
-				return ;
+				delete tmp;
+				return false;
 			}
 		}
 	}
+	return true;
+}
+
+void Server::dlt_client(Client* clt, int fd){
+	Bot* bot = dynamic_cast<Bot *>(find_client("bot"));
+	bot->rmClient(clt);
+	for(std::vector<Client*>::iterator it = _client.begin(); it != _client.end(); it++){
+		if ((*it) == clt){
+			_client.erase(it);
+			break ;
+		}
+	}
+	for(size_t i = 0; i < _chan.size();){
+		if (!unlinkClienttoChannel(clt, _chan[i]))
+			continue ;
+		i++;
+	}
+	close (fd);
+	delete clt;
 }
 
 void Server::addFd(int fd){
@@ -129,22 +150,7 @@ Client* Server::find_fd(int fd){
 	return NULL;
 }
 
-void Server::dlt_client(Client* clt, int fd){
-	Bot* bot = dynamic_cast<Bot *>(find_client("bot"));
-	bot->rmClient(clt);
-	for(std::vector<Client*>::iterator it = _client.begin(); it != _client.end(); it++){
-		if ((*it) == clt){
-			_client.erase(it);
-			break ;
-		}
-	}
 
-	for(size_t i = 0; i < _chan.size(); i++){
-		unlinkClienttoChannel(clt, _chan[i]);
-	}
-	close (fd);
-	delete clt;
-}
 
 void Server::send_ping(){
 	for(size_t i = 0; i < _client.size(); i++){
@@ -178,6 +184,7 @@ void Server::GoServ(){
 			_fds[i].events = POLLIN;
 			Client* client = find_fd(_fds[i].fd);
 			if (client && !client->getBuffOut().empty()){
+				std::cout << "bu =-----" << client->getBuffOut() << "----------" << client->getFd() << std::endl;
 				_fds[i].events |= POLLOUT;
 			}
 		}
@@ -197,6 +204,7 @@ void Server::GoServ(){
 			if (!tmp)
 				continue ;
 			if (_fds[i].revents & POLLOUT){
+				std::cout << "in bucle =-----" << tmp->getBuffOut() << "-------" << tmp->getFd() << std::endl;
 				tmp->write();
 			}
 			if (_fds[i].revents & POLLIN) {
